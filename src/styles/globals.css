@@ -48,3 +48,13 @@ h1 {
 button {
   cursor: pointer;
 }
+
+input,
+label {
+  font: 500 3rem "Karla", sans-serif;
+  outline: none;
+}
+
+input::placeholder {
+  color: var(--white);
+}

@@ -1,0 +1,7 @@
+.error {
+  display: block;
+  position: absolute;
+  color: red !important;
+  font-size: 1rem !important;
+  user-select: none !important;
+}
