@@ -1,3 +1,4 @@
+import { BackgroundVideo } from "../components/BackgroundVideo";
 import styles from "../styles/pages/Home.module.css";
 export default function Home() {
   function handleStart() {
@@ -12,15 +13,7 @@ export default function Home() {
         <button onClick={handleStart}>Jogar</button>
       </div>
 
-      <div className={styles.overlay} />
-
-      <video
-        className={styles.background}
-        autoPlay
-        muted
-        loop
-        src="/videos/soccer.mp4"
-      />
+      <BackgroundVideo />
     </div>
   );
 }

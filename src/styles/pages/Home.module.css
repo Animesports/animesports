@@ -1,24 +1,3 @@
-.background,
-.overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.background {
-  object-fit: cover;
-  z-index: -1;
-  opacity: 0.8;
-}
-
-.overlay {
-  background-color: #002c72;
-  mix-blend-mode: overlay;
-  opacity: 0.9;
-}
-
 .container {
   width: 100vw;
   height: 100vh;
