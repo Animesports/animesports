@@ -9,7 +9,7 @@
 
 .background {
   object-fit: cover;
-  z-index: -1;
+  z-index: -2;
   opacity: 0.8;
 }
 
@@ -17,4 +17,5 @@
   background-color: #002c72;
   mix-blend-mode: overlay;
   opacity: 0.9;
+  z-index: -1;
 }
