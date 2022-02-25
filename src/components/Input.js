@@ -3,7 +3,7 @@ import { useField } from "@unform/core";
 import globalStyles from "../styles/components/Forms.module.css";
 import styles from "../styles/components/Input.module.css";
 
-export default function Input({
+export function Input({
   children,
   name,
   type,

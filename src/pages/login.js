@@ -1,6 +1,6 @@
 import { Form } from "@unform/web";
 import Link from "next/link";
-import Input from "../components/input";
+import { Input } from "../components/input";
 import styles from "../styles/pages/Home.module.css";
 
 export default function Login() {
