@@ -1,7 +1,7 @@
 import { Form } from "@unform/web";
 import Link from "next/link";
 import { Input } from "../components/Input";
-import styles from "../styles/pages/Register.module.css";
+import styles from "../styles/pages/UserAuth.module.css";
 
 export default function Register() {
   function handleSubmit() {
