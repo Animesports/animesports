@@ -9,7 +9,7 @@ export function BackgroundVideo() {
         autoPlay
         muted
         loop
-        src="/videos/soccer.mp4"
+        src="https://github.com/Animesports/animesports/blob/main/public/videos/soccer_otz.mp4?raw=true"
       />
     </>
   );
