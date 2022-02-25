@@ -1,0 +1,50 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: clamp(7px, 10px, 0.5vw);
+  --blue: #0e83bc;
+  --dark-blue: #002c72;
+  --yellow: #fff500;
+  --red: #c32830;
+  --light-red: #f2dedf;
+  --gray: #262626;
+  --gray-1: #565656;
+  --gray-2: #d7d7d7;
+  --gray-3: #bdbdbd;
+  --black: #000000;
+  --white: #ffffff;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  transition: 0.2s;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+}
+
+body,
+input,
+button {
+  font: 400 2.4rem "Poppins", sans-serif;
+  border: 0;
+  color: var(--white);
+
+  font-style: normal;
+
+  overflow-x: hidden;
+}
+
+h1 {
+  line-height: 1.5;
+}
+
+button {
+  cursor: pointer;
+}
