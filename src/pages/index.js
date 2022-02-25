@@ -1,9 +1,8 @@
-import { BackgroundVideo } from "../components/BackgroundVideo";
+import Router from "next/router";
 import styles from "../styles/pages/Home.module.css";
 export default function Home() {
   function handleStart() {
-    // handle start function
-    // redirect to games or login
+    Router.push("/login");
   }
 
   return (
@@ -12,8 +11,6 @@ export default function Home() {
         <h1>Animesports</h1>
         <button onClick={handleStart}>Jogar</button>
       </div>
-
-      <BackgroundVideo />
     </div>
   );
 }
