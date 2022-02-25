@@ -1,7 +1,7 @@
 import { Form } from "@unform/web";
 import Link from "next/link";
 import { Input } from "../components/Input";
-import styles from "../styles/pages/Home.module.css";
+import styles from "../styles/pages/Login.module.css";
 
 export default function Login() {
   function handleSubmit() {
@@ -11,12 +11,14 @@ export default function Login() {
   }
 
   return (
-    <div className={styles.container}>
+    <div className="container-fwh">
       <div className={styles.content}>
-        <h1>Entrar</h1>
-        <p>
-          Entre com sua conta ou <Link href="/register">registre-se</Link>
-        </p>
+        <div className={styles.title}>
+          <h1>Entrar</h1>
+          <p>
+            Entre com sua conta ou <Link href="/register">registre-se</Link>
+          </p>
+        </div>
 
         <Form onSubmit={handleSubmit}>
           <Input
@@ -27,6 +29,7 @@ export default function Login() {
           <Input
             name="password"
             autoComplete="off"
+            type="password"
             placeholder="Insira sua senha"
             tag="senha"
           ></Input>

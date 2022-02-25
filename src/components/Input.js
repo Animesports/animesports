@@ -33,7 +33,7 @@ export function Input({
         {...rest}
         ref={InputRef}
         name={name}
-        type={type}
+        type={type ?? "text"}
         autoComplete={autoComplete}
       />
 

@@ -1,3 +1,5 @@
+/* DOCS - STYLES */
+
 * {
   padding: 0;
   margin: 0;
@@ -6,8 +8,10 @@
 
 :root {
   font-size: clamp(7px, 10px, 0.5vw);
-  --blue: #0e83bc;
-  --dark-blue: #002c72;
+  --blue: #2c9ed6;
+  --blue-1: #0e83bc;
+  --blue-2: #227ca9;
+  --blue-3: #002c72;
   --yellow: #fff500;
   --red: #c32830;
   --light-red: #f2dedf;
@@ -57,4 +61,10 @@ label {
 
 input::placeholder {
   color: var(--white);
+}
+
+/* CLASS - STYLES */
+.container-fwh {
+  min-height: 100vh;
+  min-width: 100vw;
 }

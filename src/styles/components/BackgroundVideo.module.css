@@ -1,6 +1,6 @@
 .background,
 .overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   width: 100%;
@@ -14,7 +14,7 @@
 }
 
 .overlay {
-  background-color: #002c72;
+  background-color: var(--blue-3);
   mix-blend-mode: overlay;
   opacity: 0.9;
   z-index: -1;

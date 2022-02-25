@@ -1,7 +1,7 @@
 import { Form } from "@unform/web";
 import Link from "next/link";
 import { Input } from "../components/Input";
-import styles from "../styles/pages/Home.module.css";
+import styles from "../styles/pages/Register.module.css";
 
 export default function Register() {
   function handleSubmit() {
@@ -11,11 +11,11 @@ export default function Register() {
   }
 
   return (
-    <div className={styles.container}>
+    <div className="container-fwh">
       <div className={styles.content}>
         <h1>Registrar</h1>
         <p>
-          Cadastre-se em nossa plataforma ou faça
+          Cadastre-se em nossa plataforma ou faça{" "}
           <Link href="/login">login</Link>
         </p>
 
