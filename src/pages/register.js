@@ -33,6 +33,7 @@ export default function Register() {
           <Input
             name="password"
             autoComplete="off"
+            type="password"
             placeholder="Crie uma senha"
             tag="senha"
           ></Input>
