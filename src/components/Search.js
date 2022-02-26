@@ -11,17 +11,18 @@ export function Search() {
   }
 
   function changeState() {
+    if (open) return handleSubmit();
     setOpen(!open);
   }
 
   function handleSubmit() {
     console.info("search:", inputRef.current.placeholder);
+    setOpen(false);
   }
 
   useEffect(() => {
     document.addEventListener("click", ({ target }) => {
       if (!ref.current.contains(target)) {
-        inputRef.current.value = null;
         setQuery("");
         setOpen(false);
       }
