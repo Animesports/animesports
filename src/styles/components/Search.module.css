@@ -1,11 +1,10 @@
 .searchBox {
   transition: 0.2s;
-  cursor: pointer;
   flex: 0.9;
   display: inline-flex;
 }
 
-.searchBox:hover {
+.searchBox.opened {
   padding: 0 1rem;
   min-width: 200px;
   background: #fff;
@@ -24,18 +23,19 @@
   color: var(--gray);
 }
 
-.searchBox:hover input {
+.searchBox.opened input {
   flex: 1;
   width: auto;
   opacity: 1;
   background: transparent;
 }
 
-.searchBox:not(:hover) {
+.searchBox:not(.opened) {
   justify-content: flex-end;
 }
 
 .searchBox img {
+  cursor: pointer;
   width: 4.2rem;
   padding: 0.6rem;
   color: red;
@@ -44,10 +44,10 @@
   float: right;
 }
 
-.searchBox:hover img {
+.searchBox.opened img {
   filter: invert(0.8);
 }
 
-.searchBox:hover input {
+.searchBox.opened input {
   padding-left: 1.5rem;
 }

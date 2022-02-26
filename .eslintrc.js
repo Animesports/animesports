@@ -15,5 +15,6 @@ module.exports = {
   plugins: ["react"],
   rules: {
     "@next/next/no-img-element": "off",
+    "react-hooks/exhaustive-deps": "off",
   },
 };
