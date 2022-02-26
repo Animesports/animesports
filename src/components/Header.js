@@ -44,6 +44,7 @@ export default function Header({ use }) {
 
       <div className={styles.searchBox}>
         <img src="/icons/search.svg" alt="search" />
+        <input type="text" placeholder="flamengo vasco sexta feira" />
       </div>
     </header>
   );
