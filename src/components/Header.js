@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/components/Header.module.css";
+import { Search } from "./Search";
 
 export default function Header({ use }) {
   const [current, setCurrent] = useState(null);
@@ -42,10 +43,7 @@ export default function Header({ use }) {
         <div className={styles.itemsList}>{itemsList}</div>
       </div>
 
-      <div className={styles.searchBox}>
-        <img src="/icons/search.svg" alt="search" />
-        <input type="text" placeholder="flamengo vasco sexta feira" />
-      </div>
+      <Search />
     </header>
   );
 }
