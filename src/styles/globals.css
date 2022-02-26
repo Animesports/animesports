@@ -33,6 +33,11 @@
   border-radius: 2px;
 }
 
+body {
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
 body,
 input,
 button {
@@ -67,4 +72,5 @@ input::placeholder {
 .container-fwh {
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
 }
