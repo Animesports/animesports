@@ -1,0 +1,60 @@
+.container,
+.container div {
+  background: var(--blue);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.container {
+  padding: 0 1rem;
+  justify-content: space-between;
+  font: 400 2.5rem "Karla", sans-serif;
+}
+
+.headerContent {
+  gap: 2rem;
+}
+
+.userProfile {
+  gap: 1rem;
+}
+
+.userProfile img {
+  position: relative;
+  width: calc(2.9rem + 0.8rem);
+  padding: 0.4rem;
+  border-radius: 50%;
+  background: var(--white);
+}
+
+.itemsList {
+  gap: 2rem;
+}
+
+.itemsList a {
+  line-height: 2em;
+  color: var(--white);
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.2s;
+  user-select: none;
+}
+
+.itemsList a:not(.current):hover {
+  color: var(--gray-2);
+}
+
+.current {
+  color: var(--yellow) !important;
+}
+
+.separator {
+  height: calc(2em + 0.6rem);
+  background: var(--gray-3);
+  width: 1px;
+}
+
+.searchBox img {
+  width: 3.2rem;
+}

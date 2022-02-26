@@ -13,5 +13,7 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["react"],
-  rules: {},
+  rules: {
+    "@next/next/no-img-element": "off",
+  },
 };

@@ -1,5 +1,6 @@
 import { Form } from "@unform/web";
 import Link from "next/link";
+import Router from "next/router";
 import { Input } from "../components/Input";
 import styles from "../styles/pages/UserAuth.module.css";
 
@@ -8,6 +9,7 @@ export default function Login() {
     // Validação dos campos
     // Validação do usuário
     // Login e cache
+    Router.push("/soccer");
   }
 
   return (
