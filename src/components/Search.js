@@ -10,19 +10,22 @@ export function Search() {
     setQuery(target.value);
   }
 
-  function changeState() {
+  function openSearch() {
     if (open) return handleSubmit();
-    setOpen(!open);
+    inputRef.current.focus();
+    setOpen(true);
   }
 
   function handleSubmit() {
     console.info("search:", inputRef.current.placeholder);
+    inputRef.current.blur();
     setOpen(false);
   }
 
   useEffect(() => {
     document.addEventListener("click", ({ target }) => {
       if (!ref.current.contains(target)) {
+        inputRef.current.blur();
         setQuery("");
         setOpen(false);
       }
@@ -42,7 +45,7 @@ export function Search() {
       ref={ref}
       className={`${styles.searchBox} ${(open && styles.opened) || null}`}
     >
-      <img onClick={changeState} src="/icons/search.svg" alt="search" />
+      <img onClick={openSearch} src="/icons/search.svg" alt="search" />
       <input onChange={updateQuery} ref={inputRef} placeholder={query} />
     </div>
   );
