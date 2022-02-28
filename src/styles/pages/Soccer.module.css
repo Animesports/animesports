@@ -1,12 +1,50 @@
 .content {
   width: 100%;
-  max-width: 150rem;
   height: 100%;
+  overflow: scroll;
 }
+
+.content,
+.container header {
+  max-width: 150rem;
+  transition: 0.2s;
+}
+
+.content::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.container header {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
   padding-top: 25rem;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+@media screen and (max-height: 540px) {
+  .container {
+    padding-top: 0;
+  }
+
+  .container header {
+    margin: 0;
+    box-shadow: 0 2rem 2rem rgba(0, 0, 0, 0.2);
+    z-index: 10;
+  }
+}
+
+@media screen and (max-height: 540px) and (min-width: 1050px) {
+  .content,
+  .container header {
+    max-width: 100%;
+  }
 }

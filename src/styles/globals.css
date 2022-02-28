@@ -12,6 +12,7 @@
   --blue-1: #0e83bc;
   --blue-2: #227ca9;
   --blue-3: #002c72;
+  --blue-4: #0a64a6;
   --yellow: #fff500;
   --red: #c32830;
   --light-red: #f2dedf;
@@ -21,6 +22,7 @@
   --gray-3: #bdbdbd;
   --black: #000000;
   --white: #ffffff;
+  --white-1: #e8e8e8;
 }
 
 ::-webkit-scrollbar {
