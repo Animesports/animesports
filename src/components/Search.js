@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "../styles/components/Search.module.css";
 
-export function Search({ searchRef, onChange }) {
+export function Search({ searchRef, onChange, parentNode }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const inputRef = useRef(null);
@@ -34,13 +34,16 @@ export function Search({ searchRef, onChange }) {
     console.info("search:", inputRef.current.placeholder);
   }
 
+  function checkClicks({ target }) {
+    if (!searchRef.current.contains(target)) {
+      setQuery("");
+      closeSearch();
+    }
+  }
+
   useEffect(() => {
-    document.addEventListener("click", ({ target }) => {
-      if (!searchRef.current.contains(target)) {
-        setQuery("");
-        closeSearch();
-      }
-    });
+    if (!parentNode) return;
+    parentNode.addEventListener("click", checkClicks);
 
     inputRef.current.addEventListener("keydown", ({ keyCode }) => {
       keyCode === 13 && handleSubmit();

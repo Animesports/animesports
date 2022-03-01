@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "../styles/components/Header.module.css";
 import { Search } from "./Search";
+import Link from "next/link";
 
-export default function Header({ use }) {
+export default function Header({ use, parentNode }) {
   const [current, setCurrent] = useState(null);
   const [activeMenu, setActiveMenu] = useState(false);
   const [showButton, setShowButton] = useState(false);
@@ -30,7 +31,8 @@ export default function Header({ use }) {
       setShowButton,
     });
 
-    document.addEventListener("click", ({ target }) => {
+    if (!parentNode) return;
+    parentNode.addEventListener("click", ({ target }) => {
       if (!dropDownRef.current.contains(target)) {
         setActiveMenu(false);
       }
@@ -45,7 +47,7 @@ export default function Header({ use }) {
           className={(imCurrent && styles.current) || null}
           key={name + index}
         >
-          <a href={(!imCurrent && href) || null}>{name}</a>
+          <Link href={(!imCurrent && href) || "#"}>{name}</Link>
         </li>
       );
     return null;
@@ -96,8 +98,8 @@ export default function Header({ use }) {
 }
 
 function dynamicListener({ menu, search, dropdown, setShowButton }) {
-  const preCkeckItems = [].slice.call(menu?.childNodes[0]?.children);
-  if (!preCkeckItems) return;
+  const preCkeckItems = [].slice.call(menu?.childNodes[0]?.children ?? []);
+  if (!preCkeckItems || preCkeckItems.length === 0) return;
 
   updateDynamicMenu({ menu, search, dropdown, setShowButton });
 
@@ -107,10 +109,10 @@ function dynamicListener({ menu, search, dropdown, setShowButton }) {
 }
 
 function updateDynamicMenu({ menu, search, dropdown, setShowButton }) {
-  const items = [].slice.call(menu?.childNodes[0]?.children);
-  const menuItems = [].slice.call(dropdown?.childNodes[1]?.children);
+  const items = [].slice.call(menu?.childNodes[0]?.children ?? []);
+  const menuItems = [].slice.call(dropdown?.childNodes[1]?.children ?? []);
 
-  if (!items) return;
+  if (!items || items.length === 0) return;
   const windowRect = { right: window.innerWidth, bottom: window.innerHeight };
   const dropdownRect = dropdown.childNodes[0].getBoundingClientRect();
   const searchRect = search.getBoundingClientRect();
