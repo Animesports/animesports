@@ -107,7 +107,6 @@ function dynamicListener({ menu, search, dropdown, setShowButton }) {
 }
 
 function updateDynamicMenu({ menu, search, dropdown, setShowButton }) {
-  console.info("updating...");
   const items = [].slice.call(menu?.childNodes[0]?.children);
   const menuItems = [].slice.call(dropdown?.childNodes[1]?.children);
 
