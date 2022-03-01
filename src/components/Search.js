@@ -42,13 +42,13 @@ export function Search({ searchRef, onChange, parentNode }) {
   }
 
   useEffect(() => {
-    if (!parentNode) return;
-    parentNode.addEventListener("click", checkClicks);
+    if (!parentNode.current) return;
+    parentNode.current.addEventListener("click", checkClicks);
 
     inputRef.current.addEventListener("keydown", ({ keyCode }) => {
       keyCode === 13 && handleSubmit();
     });
-  }, []);
+  }, [parentNode]);
 
   useEffect(() => {
     if (query.length === 0) setQuery("flamengo vasco sexta feira");

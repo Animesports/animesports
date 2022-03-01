@@ -31,13 +31,13 @@ export default function Header({ use, parentNode }) {
       setShowButton,
     });
 
-    if (!parentNode) return;
-    parentNode.addEventListener("click", ({ target }) => {
+    if (!parentNode.current) return;
+    parentNode.current.addEventListener("click", ({ target }) => {
       if (!dropDownRef.current.contains(target)) {
         setActiveMenu(false);
       }
     });
-  }, []);
+  }, [parentNode]);
 
   const itemsList = items.map(([href, name], index) => {
     const imCurrent = current === href;
@@ -92,6 +92,7 @@ export default function Header({ use, parentNode }) {
             setShowButton,
           });
         }}
+        parentNode={parentNode}
       />
     </header>
   );
@@ -112,23 +113,26 @@ function updateDynamicMenu({ menu, search, dropdown, setShowButton }) {
   const items = [].slice.call(menu?.childNodes[0]?.children ?? []);
   const menuItems = [].slice.call(dropdown?.childNodes[1]?.children ?? []);
 
-  if (!items || items.length === 0) return;
+  if (items.length === 0 && menuItems.length === 0) return;
+
   const windowRect = { right: window.innerWidth, bottom: window.innerHeight };
   const dropdownRect = dropdown.childNodes[0].getBoundingClientRect();
   const searchRect = search.getBoundingClientRect();
 
-  const overflowItem = items
-    .filter(({ classList }) => !classList.contains(styles.overflow))
-    .slice(-1)[0];
+  if (items && items.length > 0) {
+    const overflowItem = items
+      .filter(({ classList }) => !classList.contains(styles.overflow))
+      .slice(-1)[0];
 
-  if (searchRect.right >= windowRect.right && overflowItem) {
-    dropdown.childNodes[1].appendChild(overflowItem);
-    setTimeout(() => {
-      updateDynamicMenu({ menu, search, dropdown, setShowButton });
-    }, 10);
+    if (searchRect.right >= windowRect.right && overflowItem) {
+      dropdown.childNodes[1].appendChild(overflowItem);
+      setTimeout(() => {
+        updateDynamicMenu({ menu, search, dropdown, setShowButton });
+      }, 10);
 
-    if (dropdown.childNodes[1].children.length > 0) {
-      setShowButton(true);
+      if (dropdown.childNodes[1].children.length > 0) {
+        setShowButton(true);
+      }
     }
   }
 
