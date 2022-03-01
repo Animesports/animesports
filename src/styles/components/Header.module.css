@@ -3,7 +3,8 @@
   background: var(--blue-1);
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  flex-shrink: 1;
 }
 
 .container {
@@ -17,7 +18,12 @@
 }
 
 .userProfile {
+  flex-grow: 1;
   gap: 1rem;
+}
+
+.userProfile span {
+  white-space: nowrap;
 }
 
 .userProfile img {
@@ -29,10 +35,25 @@
 }
 
 .itemsList {
+  background: red;
+  position: relative;
+  margin-right: 0.5rem;
   gap: 2rem;
 }
 
+.itemsList ul {
+  white-space: nowrap;
+  list-style: none;
+  padding: 0;
+}
+
+.itemsList li {
+  display: inline-block;
+  padding: 0 0.8rem;
+}
+
 .itemsList a {
+  display: block;
   line-height: 2em;
   color: var(--white);
   text-decoration: none;
@@ -41,11 +62,11 @@
   user-select: none;
 }
 
-.itemsList a:not(.current):hover {
+.itemsList li:not(.current) a:hover {
   color: var(--gray-2);
 }
 
-.itemsList .current {
+.itemsList .current a {
   color: var(--yellow);
 }
 
@@ -53,4 +74,100 @@
   height: calc(2em + 0.6rem);
   background: var(--gray-3);
   width: 1px;
+}
+
+.itemsList:not(.dropdown) .overflow {
+  background-color: red !important;
+  display: none !important;
+}
+
+.itemsList .dropdown {
+  opacity: 0;
+  height: 100%;
+  position: relative;
+  margin-right: 1rem;
+  z-index: 10;
+}
+
+.dropdown button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background: transparent;
+  border-radius: 3px 3px 0 0;
+  transition: 0.2s;
+}
+
+.dropdown img {
+  width: 2.5rem;
+  height: 2.5rem;
+  opacity: 1;
+  filter: invert(1);
+}
+
+.dropdown.active {
+  background: var(--blue-1);
+  filter: drop-shadow(5px 15px 20px rgba(0, 0, 0, 0.5));
+}
+
+.dropdown.active .dropdownContent {
+  padding-top: 2rem;
+}
+
+.dropdown .dropdownContent {
+  display: flex;
+  flex-direction: column;
+  top: 100%;
+  right: 0;
+  position: absolute;
+  background: var(--blue-1);
+  white-space: nowrap;
+
+  z-index: 11;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  transition: 0.2s;
+  overflow: hidden;
+}
+
+.dropdown.active .dropdownContent {
+  opacity: 1;
+  width: auto;
+  height: auto;
+}
+
+.dropdown .dropdownContent li {
+  animation: 0.2s appear backwards;
+}
+
+.dropdownContent a {
+  color: var(--white);
+  padding: 0.4rem 3rem;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown.show {
+  opacity: 1;
+}
+
+@media screen and (max-width: 450px) {
+  .userProfile span {
+    display: none;
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+
+    height: 0;
+  }
+
+  to {
+    opacity: 1;
+    height: initial;
+  }
 }

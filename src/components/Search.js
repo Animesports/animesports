@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "../styles/components/Search.module.css";
 
-export function Search() {
+export function Search({ searchRef, onChange }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
-  const [ref, inputRef] = [useRef(null), useRef(null)];
+  const inputRef = useRef(null);
 
   function updateQuery({ target }) {
     setQuery(target.value);
@@ -14,20 +14,31 @@ export function Search() {
     if (open) return handleSubmit();
     inputRef.current.focus();
     setOpen(true);
+    const loop = setInterval(onChange, 30);
+    setTimeout(() => {
+      clearInterval(loop);
+    }, 200);
+  }
+
+  function closeSearch() {
+    inputRef.current.blur();
+    setOpen(false);
+    const loop = setInterval(onChange, 30);
+    setTimeout(() => {
+      clearInterval(loop);
+    }, 200);
   }
 
   function handleSubmit() {
+    closeSearch();
     console.info("search:", inputRef.current.placeholder);
-    inputRef.current.blur();
-    setOpen(false);
   }
 
   useEffect(() => {
     document.addEventListener("click", ({ target }) => {
-      if (!ref.current.contains(target)) {
-        inputRef.current.blur();
+      if (!searchRef.current.contains(target)) {
         setQuery("");
-        setOpen(false);
+        closeSearch();
       }
     });
 
@@ -42,7 +53,7 @@ export function Search() {
 
   return (
     <div
-      ref={ref}
+      ref={searchRef}
       className={`${styles.searchBox} ${(open && styles.opened) || null}`}
     >
       <img onClick={openSearch} src="/icons/search.svg" alt="search" />
