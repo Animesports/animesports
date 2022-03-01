@@ -6,7 +6,7 @@ export default function Soccer() {
     <div className={`${styles.container} container-fwh`}>
       <Header use="all" />
       <div className={styles.content}>
-        <SoccerTable style={{ overflow: "scroll" }} />
+        <SoccerTable />
         <div className={styles.shadow} />
       </div>
     </div>
