@@ -1,0 +1,163 @@
+.content {
+  padding: 4rem 0;
+}
+
+.content form {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 8rem;
+  gap: 12rem;
+  min-height: 300px;
+  height: 100%;
+  flex-wrap: wrap;
+}
+
+.content form > div,
+.content label {
+  color: var(--gray);
+  font-size: 2.8rem;
+  font-weight: 400;
+  font-family: "karla", sans-serif;
+}
+
+.content form > div {
+  min-width: 295px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  flex: 1;
+}
+
+.leftBox,
+.rightBox {
+  align-items: flex-start;
+}
+
+.leftBox > div,
+.rightBox > div {
+  width: 100%;
+}
+
+.profileBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.userImageBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--gray-2);
+  width: 16rem;
+  height: 16rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.userName {
+  display: inline-flex;
+  align-items: center;
+}
+
+.userImageBox .image {
+  width: 100%;
+  padding: 2rem;
+}
+
+.userName span {
+  font: 500 3.6rem "Poppins", sans-serif;
+}
+
+.userName button {
+  background: transparent;
+}
+
+.userName button img {
+  width: 2.5em;
+  opacity: 0.85;
+}
+
+.userInfoBox input,
+.userInfoBox input::placeholder,
+.userInfoBox label div {
+  color: var(--gray) !important;
+  font: 400 2.7rem "Karla", sans-serif !important;
+}
+
+.userInfoBox label {
+  left: 0 !important;
+}
+
+.userInfoBox label div {
+  font-size: 2.3rem !important;
+  transform: translate(0, -4.8rem) !important;
+  font-weight: 700 !important;
+  color: var(--gray);
+}
+
+.userInfoBox input::placeholder {
+  opacity: 1 !important;
+  transform: translate(0) !important;
+}
+
+.userInfoBox input {
+  height: 4.7rem;
+  border-radius: 3px;
+}
+
+.userInfoBox input {
+  margin-bottom: 2.2rem !important;
+}
+
+.emailInputBox {
+  position: relative;
+}
+
+.emailInputBox button {
+  color: var(--red);
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 4.7rem;
+  background: transparent;
+  padding: 0 1rem;
+}
+
+.paymentBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3rem;
+  background: var(--gray-2);
+  border-radius: 3px;
+  padding-bottom: 1.9rem;
+}
+
+.paymentBox > div:first-child {
+  background: var(--gray);
+  color: var(--white);
+  text-align: center;
+  border-radius: 3px 3px 0 0;
+  padding: 0.6rem;
+}
+
+.paymentBox img {
+  max-height: 8.9rem;
+}
+
+.paymentBox > span {
+  text-align: center;
+}
+
+.rightBox button {
+  background: var(--blue);
+  padding: 0.9rem;
+  min-width: 40%;
+}
+
+.submitBox {
+  text-align: right;
+}
