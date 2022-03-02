@@ -6,8 +6,8 @@
 
 
 <p align="justify">
-<img width="48%" align="left" src='http://api.pagepeeker.com/v2/thumbs.php?size=x&code=085ed7ce54&url=animesports.cf/leagues'>
-<img  width="48%" align="right"  src='http://api.pagepeeker.com/v2/thumbs.php?size=x&code=085ed7ce54&url=animesports.cf/soccer'>
+<img width="48%" align="left" src='https://user-images.githubusercontent.com/71078903/156276986-4a37b30e-9c4f-4034-958e-eab1e907e5d0.png'>
+<img  width="48%" align="right"  src='https://user-images.githubusercontent.com/71078903/156277115-73f66c71-2a68-46bb-817a-8f6ebaa07c41.png'>
  </p>
 
 
