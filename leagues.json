@@ -1,0 +1,50 @@
+[
+  {
+    "name": "teller",
+    "display": "Vidente",
+    "image": "/icons/teller.svg",
+    "points": 100
+  },
+  {
+    "name": "expert",
+    "display": "Perito",
+    "image": "/icons/expert.svg",
+    "points": 80
+  },
+  {
+    "name": "analyst",
+    "display": "Analista",
+    "image": "/icons/analyst.svg",
+    "points": 60
+  },
+  {
+    "name": "reckoner",
+    "display": "Calculista",
+    "image": "/icons/reckoner.svg",
+    "points": 30
+  },
+  {
+    "name": "lucker",
+    "display": "Sortudo",
+    "image": "/icons/lucker.svg",
+    "points": 10
+  },
+  {
+    "name": "none",
+    "display": "Nenhuma",
+    "image": "/icons/none.svg",
+    "points": 0
+  },
+  {
+    "name": "jinx",
+    "display": "Pé frio",
+    "image": "/icons/jinx.svg",
+    "points": -5
+  },
+  {
+    "name": "unlucky",
+    "display": "Azarado",
+    "image": "/icons/unlucky.svg",
+    "points": -10
+  }
+]
