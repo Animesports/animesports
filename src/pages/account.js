@@ -26,6 +26,9 @@ export default function Account() {
                   src="/icons/user.svg"
                   alt="user"
                 />
+                <div className={styles.imageOverlay}>
+                  <img src="/icons/camera.svg" alt="Change" />
+                </div>
               </div>
               <div className={styles.userName}>
                 <span>Gabriel Bardasson</span>
@@ -70,7 +73,7 @@ export default function Account() {
                 <span>Pagamento</span>
               </div>
               <img src="icons/fuel.svg" alt="fuel" />
-              <span>Duas recargas em andamento</span>
+              <span>Recarregue e continue jogando</span>
             </div>
             <div className={styles.checkBox}>
               <Checkbox name="2step" label="Verificação em duas etapas" />
