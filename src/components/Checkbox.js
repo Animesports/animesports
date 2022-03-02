@@ -18,19 +18,25 @@ export function Checkbox({ children, name, getRef, checked, label }) {
 
   return (
     <div className={styles.inputBox}>
-      <label className="container">
-        {label}
-        <input
-          onFocus={clearError}
-          ref={InputRef}
-          name={name}
-          checked={checked}
-          type="checkbox"
-        />
-        <span className="checkmark"></span>
-      </label>
+      <div>
+        <label>
+          <input
+            onFocus={clearError}
+            ref={InputRef}
+            name={name}
+            checked={checked}
+            type="checkbox"
+          />
+          <span className={styles.checkmark}></span>
+        </label>
+        <span className={styles.label}>{label}</span>
+      </div>
 
-      {<span className={globalStyles.error}>errorMessageHere {error}</span>}
+      {
+        <span className={[globalStyles.error, styles.error].join(" ")}>
+          {error && error}
+        </span>
+      }
       {
         // error && span  >> later
       }

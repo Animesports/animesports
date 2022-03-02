@@ -1,0 +1,64 @@
+.inputBox {
+  padding: calc(2.7rem / 4) 0;
+  position: relative;
+}
+
+.inputBox > div {
+  display: inline-flex;
+  align-items: center;
+}
+
+.inputBox label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 3.4rem;
+}
+
+.inputBox input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkmark {
+  display: block;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 7.3rem;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 3px;
+}
+
+.inputBox .label {
+  user-select: none;
+  margin-left: calc(7.4rem + 1rem);
+}
+
+.inputBox .checkmark:before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 50%;
+  border-radius: 3px;
+  background-color: var(--gray);
+  box-shadow: 0.7rem 0 10px 0 rgba(0, 0, 0, 0.3);
+  transition: 0.4s;
+}
+
+.inputBox input:checked + .checkmark:before {
+  transform: translateX(100%);
+  box-shadow: -0.7rem 0 10px 0 rgba(0, 0, 0, 0.3);
+}
+
+.error {
+  display: block;
+  font-size: 1.6rem !important;
+}
