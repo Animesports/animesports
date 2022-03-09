@@ -51,7 +51,7 @@ export default function Account() {
                   name="email"
                   defaultValue="g*****son@gmail.com"
                   placeholder="Insira um email válido"
-                  tag="email"
+                  tag="Email"
                 />
                 <button type="button" ref={openEmailVerify}>
                   verificar
@@ -62,7 +62,7 @@ export default function Account() {
                   name="pix"
                   defaultValue="minhachavepixtop"
                   placeholder="Insira sua chave PIX"
-                  tag="chave pix"
+                  tag="Chave PIX"
                 />
               </div>
               <div>
@@ -72,7 +72,7 @@ export default function Account() {
                   type="password"
                   defaultValue="vhdsr20192020"
                   placeholder="Insira uma nova senha"
-                  tag="Email"
+                  tag="Senha"
                 />
               </div>
             </div>
