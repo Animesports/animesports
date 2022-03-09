@@ -1,0 +1,58 @@
+.container {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, calc(50vh - 50%));
+  background: var(--white);
+  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.15);
+  display: flex;
+
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 100;
+  padding: 4rem;
+  text-align: left;
+
+  border-radius: 3px;
+
+  justify-content: space-between;
+  min-width: 300px;
+  color: var(--gray);
+  max-height: 90vh;
+}
+
+.overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.37);
+  z-index: 99;
+}
+
+.container h4 {
+  font-size: 3rem;
+  margin-bottom: 0.8rem;
+}
+
+.container p {
+  margin-bottom: 1.4rem;
+}
+
+.container .sendEmail {
+  color: var(--blue);
+  cursor: pointer;
+  transition: 0.18s;
+}
+
+.container .sendEmail:hover {
+  color: var(--blue-2);
+  cursor: pointer;
+}
+
+.container .close {
+  position: absolute;
+  right: 0;
+  top: 0;
+}

@@ -5,9 +5,17 @@ import styles from "../styles/pages/Account.module.css";
 import SoccerStyle from "../styles/pages/Soccer.module.css";
 import { Input } from "../components/Input";
 import { Checkbox } from "../components/Checkbox";
+import { Payment } from "../components/Payment";
+import { Modal } from "../components/Modal";
+import { VerifyEmail } from "../components/VerifyEmail";
 
 export default function Account() {
-  const ref = useRef(null);
+  const [ref, openPaymentRef, openEmailVerify] = [
+    useRef(null),
+    useRef(null),
+    useRef(null),
+  ];
+
   return (
     <div ref={ref} className={` ${SoccerStyle.container} container-fwh`}>
       <Header use="all" parentNode={ref} />
@@ -45,7 +53,9 @@ export default function Account() {
                   placeholder="Insira um email válido"
                   tag="email"
                 />
-                <button>verificar</button>
+                <button type="button" ref={openEmailVerify}>
+                  verificar
+                </button>
               </div>
               <div>
                 <Input
@@ -68,7 +78,7 @@ export default function Account() {
             </div>
           </div>
           <div className={styles.rightBox}>
-            <div className={styles.paymentBox}>
+            <div className={styles.paymentBox} ref={openPaymentRef}>
               <div>
                 <span>Pagamento</span>
               </div>
@@ -86,6 +96,14 @@ export default function Account() {
           </div>
         </Form>
       </div>
+
+      <Modal openRef={openPaymentRef}>
+        <Payment />
+      </Modal>
+
+      <Modal openRef={openEmailVerify}>
+        <VerifyEmail />
+      </Modal>
     </div>
   );
 }

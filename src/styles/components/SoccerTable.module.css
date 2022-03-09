@@ -79,12 +79,22 @@
   padding-right: 2rem;
 }
 
-.row .closure_closed {
+.row.closure_closed .display,
+.row.closure_canceled .display {
   color: var(--red);
 }
 
-.row .closure_running {
+.row.closure_running .display {
   color: var(--blue-4);
+}
+
+.row.closure_running .display {
+  color: var(--blue-4);
+}
+
+.row.closure_canceled td {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 @media screen and (max-width: 700px) {
