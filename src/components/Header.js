@@ -20,6 +20,7 @@ export default function Header({ use, parentNode }) {
     ["/leagues", "LIGAS"],
     ["/rules", "REGRAS"],
     ["/account", "CONTA"],
+    ["/admin", "ADM", "adminOnly"],
   ];
 
   useEffect(() => {

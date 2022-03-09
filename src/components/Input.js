@@ -11,6 +11,7 @@ export function Input({
   placeholder,
   tag,
   getRef,
+
   ...rest
 }) {
   const InputRef = useRef(null);

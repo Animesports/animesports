@@ -1,13 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import Header from "../components/Header";
-import SoccerStyles from "../styles/pages/Soccer.module.css";
+import { useEffect, useState } from "react";
 import styles from "../styles/pages/Leagues.module.css";
 import leagues from "../../leagues.json";
+import { Structure } from "../components/Structure";
 
 export default function Leagues() {
   const score = 72;
 
-  const [ref, [offset, setOffset]] = [useRef(null), useState(null)];
+  const [offset, setOffset] = useState(null);
 
   const progress = getProgressLeague({ league: getMyLeague({ score }) });
   const distance = progress.next.points - progress.current.points;
@@ -32,43 +31,40 @@ export default function Leagues() {
   }, []);
 
   return (
-    <div ref={ref} className={`${SoccerStyles.container} container-fwh`}>
-      <Header use="all" parentNode={ref} />
-      <div className={`${SoccerStyles.content} ${styles.content}`}>
-        <div className={styles.progressBox}>
-          <div className={styles.progressBar}>
-            <span>{score}</span>
-            <div className={styles.progressGroup}>
-              {progress.progressElement}
+    <Structure contentClass={styles.content}>
+      <div className={styles.progressBox}>
+        <div className={styles.progressBar}>
+          <span>{score}</span>
+          <div className={styles.progressGroup}>
+            {progress.progressElement}
 
-              <div className={styles.progressLine}>
-                <div
-                  style={{
-                    width: lineWidth,
-                    background: `var(--${progress.current.name})`,
-                  }}
-                  className={styles.currentLine}
-                ></div>
-              </div>
+            <div className={styles.progressLine}>
+              <div
+                style={{
+                  width: lineWidth,
+                  background: `var(--${progress.current.name})`,
+                }}
+                className={styles.currentLine}
+              ></div>
             </div>
-            <span>
-              {progress.isTheLastLeague ? "máx." : progress.next.points}
-            </span>
           </div>
+          <span>
+            {progress.isTheLastLeague ? "máx." : progress.next.points}
+          </span>
+        </div>
 
-          <h3
-            style={{ color: `var(--${progress.current.name})` }}
-            className={styles.currentTitle}
-          >
-            {progress.current.display}
-          </h3>
-        </div>
-        <div className={styles.leaguesList}>
-          <span>Vença mais jogos consecutivos para avançar de liga</span>
-          <div className={styles.allLeagues}>{getAllLeagues()}</div>
-        </div>
+        <h3
+          style={{ color: `var(--${progress.current.name})` }}
+          className={styles.currentTitle}
+        >
+          {progress.current.display}
+        </h3>
       </div>
-    </div>
+      <div className={styles.leaguesList}>
+        <span>Vença mais jogos consecutivos para avançar de liga</span>
+        <div className={styles.allLeagues}>{getAllLeagues()}</div>
+      </div>
+    </Structure>
   );
 }
 

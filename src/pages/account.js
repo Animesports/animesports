@@ -1,26 +1,19 @@
 import { Form } from "@unform/web";
 import { useRef } from "react";
-import Header from "../components/Header";
 import styles from "../styles/pages/Account.module.css";
-import SoccerStyle from "../styles/pages/Soccer.module.css";
 import { Input } from "../components/Input";
 import { Checkbox } from "../components/Checkbox";
 import { Payment } from "../components/Payment";
 import { Modal } from "../components/Modal";
 import { VerifyEmail } from "../components/VerifyEmail";
+import { Structure } from "../components/Structure";
 
 export default function Account() {
-  const [ref, openPaymentRef, openEmailVerify] = [
-    useRef(null),
-    useRef(null),
-    useRef(null),
-  ];
+  const [openPaymentRef, openEmailVerify] = [useRef(null), useRef(null)];
 
   return (
-    <div ref={ref} className={` ${SoccerStyle.container} container-fwh`}>
-      <Header use="all" parentNode={ref} />
-
-      <div className={[SoccerStyle.content, styles.content].join(" ")}>
+    <>
+      <Structure contentClass={styles.content}>
         <Form
           onSubmit={(data) => {
             console.info(data);
@@ -95,7 +88,7 @@ export default function Account() {
             </div>
           </div>
         </Form>
-      </div>
+      </Structure>
 
       <Modal openRef={openPaymentRef}>
         <Payment />
@@ -104,6 +97,6 @@ export default function Account() {
       <Modal openRef={openEmailVerify}>
         <VerifyEmail />
       </Modal>
-    </div>
+    </>
   );
 }
