@@ -1,0 +1,64 @@
+.container {
+  max-width: 30.6rem;
+  background: var(--gray-2);
+  height: 100%;
+  position: fixed;
+  width: 100%;
+  transition: 200ms;
+}
+
+.container > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 1.6rem;
+  padding-right: 0.6rem;
+  font-weight: 500;
+}
+
+.header {
+  background: var(--gray);
+  margin-bottom: 4.5rem;
+  padding-bottom: 0.6rem;
+  padding-top: 0.6rem;
+}
+
+.header img {
+  max-width: 4rem;
+}
+
+.container .item {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 2.3rem;
+  color: var(--gray);
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.item img {
+  max-width: 3.7rem;
+}
+
+.current {
+  background: var(--white);
+}
+
+.container span {
+  transition: 200ms;
+  overflow: hidden;
+}
+
+.container:not(.open) {
+  max-width: 7rem;
+  overflow: hidden;
+}
+
+.container:not(.open) header {
+  align-items: center;
+  justify-content: center;
+}
+
+.container:not(.open) span {
+  max-width: 0;
+}

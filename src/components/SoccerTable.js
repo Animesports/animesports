@@ -9,6 +9,7 @@ export function SoccerTable() {
     <table className={`${styles.container}`}>
       {groupGames.map(({ group, games }, index) => {
         const { day, month, year } = getDisplayDate(group);
+
         return (
           <>
             <thead key={group + "-head-" + index}>
