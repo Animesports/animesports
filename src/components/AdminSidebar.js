@@ -1,3 +1,4 @@
+import Router from "next/router";
 import { useState } from "react";
 import styles from "../styles/components/AdminSidebar.module.css";
 
@@ -25,7 +26,13 @@ export function AdminSidebar({ current }) {
       {items.map(([target, display, image], index) => {
         const cStyle = target === current ? styles.current : null;
         return (
-          <div key={target + index} className={[cStyle, styles.item].join(" ")}>
+          <div
+            onClick={() => {
+              Router.push(target);
+            }}
+            key={target + index}
+            className={[cStyle, styles.item].join(" ")}
+          >
             <span>{display}</span>
             <img alt={display} src={image} />
           </div>

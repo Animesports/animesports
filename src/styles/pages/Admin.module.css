@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.content {
+  overflow-y: scroll;
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+  height: 100%;
+}
