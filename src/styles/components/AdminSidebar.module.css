@@ -91,7 +91,12 @@
   }
 }
 
-@media screen and (max-width: 452px), screen and (max-height: 315px) {
+@media screen and (max-width: 452px), (max-height: 315px) {
+  .container.open {
+    max-width: 100%;
+    min-width: 100%;
+  }
+
   .container:not(.open) {
     max-width: 100%;
     min-width: 100%;

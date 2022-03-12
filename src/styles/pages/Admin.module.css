@@ -18,3 +18,9 @@
   flex-direction: column;
   gap: 2.9rem;
 }
+
+@media screen and (max-width: 452px), screen and (max-height: 315px) {
+  .content {
+    padding-bottom: 8rem;
+  }
+}
