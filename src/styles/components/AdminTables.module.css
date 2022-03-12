@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.container > table {
+  flex: 1;
+  background: var(--gray-2);
+  color: var(--gray);
+  height: fit-content;
+}
+
+.container > table tr:first-child {
+  background: var(--gray);
+  color: var(--white);
+  max-height: 3.8rem;
+}
+
+.container > table span {
+  font-weight: 400;
+}
+
+.container > table button {
+  background: var(--gray-5);
+  color: var(--gray);
+  max-width: 37.2rem;
+  width: 100%;
+  padding: 0.4rem 2.5rem;
+  font-size: 2.5rem;
+}
+
+.container > table {
+  border-collapse: collapse;
+}
+
+.container > table td {
+  padding: 1.4rem 1.6rem;
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.container > table td {
+  white-space: nowrap;
+  max-width: 19.7rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

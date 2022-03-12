@@ -92,7 +92,7 @@ export function SoccerTable() {
 // DEMO: Change later
 //
 
-function makeADate({ compense }) {
+export function makeADate({ compense }) {
   const date = new Date();
   date.setHours(date.getHours() + compense);
   return date;
