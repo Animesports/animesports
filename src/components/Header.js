@@ -24,7 +24,7 @@ export default function Header({ use, parentNode }) {
   ];
 
   useEffect(() => {
-    setCurrent(window.location.pathname);
+    setCurrent("/" + window.location.pathname.split("/")[1]);
     dynamicListener({
       menu: menuRef.current,
       search: searchRef.current,
@@ -41,6 +41,7 @@ export default function Header({ use, parentNode }) {
   }, [parentNode]);
 
   const itemsList = items.map(([href, name], index) => {
+    console.info(current);
     const imCurrent = current === href;
     if (use?.includes(href) || use === "all")
       return (
