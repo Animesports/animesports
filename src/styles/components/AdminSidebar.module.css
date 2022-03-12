@@ -102,11 +102,10 @@
     display: flex;
     justify-content: space-between;
     min-width: 100vw;
-
+    box-shadow: 0 0 26px 3px var(--gray-5);
     bottom: -0.8rem;
     height: fit-content;
     position: fixed;
-    overflow: scroll;
   }
 
   .container .item {
@@ -114,7 +113,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
+    padding-left: 0;
     text-align: center;
   }
 
