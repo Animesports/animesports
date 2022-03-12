@@ -1,0 +1,66 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.block {
+  cursor: pointer;
+  display: flex;
+  min-height: 14.5rem;
+  min-width: 24.4rem;
+  flex: 1;
+  background: var(--gray-2);
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  border-radius: 3px;
+  user-select: none;
+  flex-wrap: wrap;
+  transition: 0.14s;
+}
+
+.block:hover {
+  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.08);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue-1);
+  border-radius: 500px;
+  width: 8.7rem;
+  height: 8.7rem;
+}
+
+.icon img {
+  width: 5.5rem;
+}
+
+.blockContent {
+  color: var(--gray);
+}
+
+.name {
+  font-size: 2rem;
+}
+
+.value {
+  font-size: 3.9rem;
+}
+
+.symbol {
+  font-size: 1.8rem;
+  height: 100%;
+  vertical-align: top;
+}
+
+.value,
+.symbol,
+.cents {
+  font-weight: 700;
+  line-height: 0.9;
+}

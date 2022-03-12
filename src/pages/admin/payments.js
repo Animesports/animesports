@@ -6,7 +6,7 @@ export default function Payments() {
   return (
     <Structure contentClass={styles.container}>
       <AdminSidebar current="/admin/payments" />
-      <div className={styles.content}>content here</div>
+      <div className={styles.content}></div>
     </Structure>
   );
 }

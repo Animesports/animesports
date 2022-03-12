@@ -1,0 +1,23 @@
+.container {
+  background: var(--light-red);
+  color: var(--red);
+  display: flex;
+  justify-content: space-between;
+  padding: 1.1rem 1.4rem;
+  border-radius: 3px;
+  transition: 200ms;
+}
+
+.container span {
+  font-weight: 500;
+  font-family: "Karla", sans-serif;
+}
+
+.container img {
+  width: 2rem;
+  cursor: pointer;
+}
+
+.remove {
+  opacity: 0;
+}
