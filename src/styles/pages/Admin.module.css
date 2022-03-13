@@ -19,8 +19,77 @@
   gap: 2.9rem;
 }
 
+.table {
+  position: relative;
+}
+
+.table::before {
+  content: "";
+  display: block;
+  position: absolute;
+  border: 1px solid var(--gray);
+  top: 1.5rem;
+  left: -1px;
+  bottom: -1px;
+  right: -1px;
+}
+
+.table td button {
+  background-color: var(--gray-5);
+  color: var(--gray);
+  max-width: 15.1rem;
+  width: 100%;
+  z-index: 100 !important;
+  pointer-events: all;
+}
+
+.table td {
+  padding-top: 0.2rem;
+}
+
+.table thead {
+  border-top: 3rem solid var(--white);
+}
+
+.header {
+  color: var(--gray);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  font-size: 3rem;
+  font-weight: 500;
+}
+
+.header button {
+  background: var(--blue);
+  border-radius: 8px;
+  max-width: 11.4rem;
+  width: 100%;
+  font-weight: 400;
+  font-size: 2.6rem;
+  font-family: "Poppins", sans-serif;
+  padding: 0.9rem 0;
+}
+
 @media screen and (max-width: 452px), screen and (max-height: 315px) {
   .content {
     padding-bottom: 8rem;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .table tr th:nth-last-child(-n + 3),
+  .table td:nth-last-child(-n + 3) {
+    display: table-cell;
+  }
+}
+
+@media screen and (max-width: 610px) {
+  .table tr th:nth-last-child(3),
+  .table td:nth-last-child(3) {
+    display: none;
   }
 }

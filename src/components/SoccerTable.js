@@ -2,11 +2,13 @@ import styles from "../styles/components/SoccerTable.module.css";
 import { getDisplayDate, organizeByDate, sortByDate } from "../utils/Date";
 import { getGameState } from "../utils/Soccer";
 
-export function SoccerTable() {
+export function SoccerTable({ disable, editable, customClass }) {
   const groupGames = sortByDate(organizeByDate(games()));
 
+  disable = disable?.filter((item) => ["state"].includes(item)) ?? [];
+
   return (
-    <table className={`${styles.container}`}>
+    <table className={[styles.container, customClass].join(" ")}>
       {groupGames.map(({ group, games }, index) => {
         const { day, month, year } = getDisplayDate(group);
 
@@ -19,21 +21,32 @@ export function SoccerTable() {
                     {day}/{month}/{year} - Sexta
                   </span>
                 </th>
+
                 <th>
                   <span>Placar</span>
                 </th>
+
                 <th>
                   <span>Fechamento</span>
                 </th>
-                <th>
-                  <span>Visitado</span>
-                </th>
-                <th>
-                  <span>Empate</span>
-                </th>
-                <th>
-                  <span>Visitante</span>
-                </th>
+
+                {!disable.includes("state") && (
+                  <>
+                    <th>
+                      <span>Visitado</span>
+                    </th>
+
+                    <th>
+                      <span>Empate</span>
+                    </th>
+
+                    <th>
+                      <span>Visitante</span>
+                    </th>
+                  </>
+                )}
+
+                {editable && <th></th>}
               </tr>
             </thead>
 
@@ -68,15 +81,31 @@ export function SoccerTable() {
                     <td className={styles.display}>
                       <span>{display}</span>
                     </td>
-                    <td className="visited">
-                      <span>{entries.visited}</span>
-                    </td>
-                    <td className="draw">
-                      <span>{entries.draw}</span>
-                    </td>
-                    <td className="visitor">
-                      <span>{entries.visitor}</span>
-                    </td>
+                    {!disable.includes("state") && (
+                      <>
+                        <td className="visited">
+                          <span>{entries.visited}</span>
+                        </td>
+                        <td className="draw">
+                          <span>{entries.draw}</span>
+                        </td>
+                        <td className="visitor">
+                          <span>{entries.visitor}</span>
+                        </td>
+                      </>
+                    )}
+
+                    {editable && (
+                      <td>
+                        {["running"].includes(state) && (
+                          <button>Atualizar</button>
+                        )}
+
+                        {!["running"].includes(state) && (
+                          <button>Editar</button>
+                        )}
+                      </td>
+                    )}
                   </tr>
                 );
               })}
