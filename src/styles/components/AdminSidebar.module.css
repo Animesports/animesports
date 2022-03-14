@@ -5,6 +5,7 @@
   width: 100%;
   min-width: 29rem;
   transition: 0.2s;
+  z-index: 9999;
 }
 
 .container > div {

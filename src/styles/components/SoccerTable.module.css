@@ -38,6 +38,10 @@
   padding: 0.5rem 0.5rem;
   padding-top: 2rem;
   border-top: 1rem solid var(--white);
+  white-space: nowrap;
+  max-width: 17rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .row:hover {

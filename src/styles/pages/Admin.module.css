@@ -20,6 +20,7 @@
 }
 
 .table {
+  width: 100%;
   position: relative;
 }
 
@@ -47,6 +48,10 @@
   padding-top: 0.2rem;
 }
 
+.table td:last-child {
+  text-align: center;
+}
+
 .table thead {
   border-top: 3rem solid var(--white);
 }
@@ -66,12 +71,12 @@
 .header button {
   background: var(--blue);
   border-radius: 8px;
-  max-width: 11.4rem;
+  max-width: 11.2rem;
   width: 100%;
   font-weight: 400;
   font-size: 2.6rem;
   font-family: "Poppins", sans-serif;
-  padding: 0.9rem 0;
+  padding: 0.9rem 0.2;
 }
 
 @media screen and (max-width: 452px), screen and (max-height: 315px) {
@@ -80,16 +85,23 @@
   }
 }
 
+@media screen and (max-width: 770px) {
+  .table tr th:nth-last-child(3),
+  .table td:nth-last-child(3) {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 700px) {
-  .table tr th:nth-last-child(-n + 3),
-  .table td:nth-last-child(-n + 3) {
+  .table tr th:nth-last-child(-n + 2),
+  .table td:nth-last-child(-n + 2) {
     display: table-cell;
   }
 }
 
-@media screen and (max-width: 610px) {
-  .table tr th:nth-last-child(3),
-  .table td:nth-last-child(3) {
+@media screen and (max-width: 648px) {
+  .table tr th:nth-child(3),
+  .table td:nth-child(1) {
     display: none;
   }
 }
