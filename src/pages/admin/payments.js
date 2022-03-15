@@ -6,7 +6,20 @@ export default function Payments() {
   return (
     <Structure contentClass={styles.container}>
       <AdminSidebar current="/admin/payments" />
-      <div className={styles.content}></div>
+      <div className={styles.content}>
+        <div className={styles.header}>
+          <h2>Pagamentos Pendentes</h2>
+        </div>
+
+        <div className={styles.header}>
+          <h2>Entrada de Pagamentos</h2>
+        </div>
+
+        <div className={styles.header}>
+          <h2>Histórico de Transações</h2>
+          <button>Exportar</button>
+        </div>
+      </div>
     </Structure>
   );
 }
