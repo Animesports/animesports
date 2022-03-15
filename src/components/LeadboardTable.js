@@ -1,131 +1,141 @@
 import styles from "../styles/components/LeadboardTable.module.css";
 
-export function LeadboardTable() {
+export function LeadboardTable({ editable, disable, customClass, title }) {
+  disable =
+    disable?.filter((item) => ["hits", "position"].includes(item)) ?? [];
+
+  const users = [
+    {
+      name: "Gabriel Bardasson",
+      position: 1,
+      image: "/icons/user.svg",
+      league: {
+        name: "teller",
+        display: "Vidente",
+        image: "/icons/teller.svg",
+      },
+      hits: 0.8,
+    },
+    {
+      name: "Michel Lopes",
+      position: 2,
+      image: "/icons/user.svg",
+      league: {
+        name: "expert",
+        display: "Perito",
+        image: "/icons/expert.svg",
+      },
+      hits: 0.74,
+    },
+    {
+      name: "Victor Pinto",
+      position: 3,
+      image: "/icons/user.svg",
+      league: {
+        name: "expert",
+        display: "Perito",
+        image: "/icons/expert.svg",
+      },
+      hits: 0.7,
+    },
+
+    {
+      name: "Maria Isabel",
+      position: 4,
+      image: "/icons/user.svg",
+      league: {
+        name: "reckoner",
+        display: "Pé Frio",
+        image: "/icons/reckoner.svg",
+      },
+      hits: 0.7,
+    },
+  ];
   return (
-    <table className={`${styles.container}`}>
+    <table className={[styles.container, customClass].join(" ")}>
       <thead>
         <tr className={styles.header}>
-          <th colSpan="2">
-            <span>Melhores jogadores</span>
+          <th
+            colSpan={(!disable.includes("position") && "2") || "1"}
+            className={[styles.position, styles.profile].join(" ")}
+          >
+            <span>{title || "Melhores jogadores"}</span>
           </th>
-          <th></th>
-          <th>
+
+          <th className={styles.league}></th>
+
+          <th className={styles.leagueName}>
             <span>Liga</span>
           </th>
-          <th>
-            <span>Acertividade</span>
-          </th>
+          {!disable.includes("hits") && (
+            <th className={styles.hits}>
+              <span>Acertividade</span>
+            </th>
+          )}
+          {editable && (
+            <>
+              <th></th>
+              <th></th>
+              <th></th>
+            </>
+          )}
         </tr>
       </thead>
 
       <tbody>
-        <tr className={styles.row}>
-          <td className="position">
-            <div>
-              <img src="icons/award1.svg" alt="1" />
-            </div>
-          </td>
-          <td className="profile">
-            <div>
-              <img src="/icons/user.svg" alt="user" />
-              <span>Gabriel Bardasson</span>
-            </div>
-          </td>
-          <td className="league">
-            <div>
-              <img src="/icons/teller.svg" alt="teller" />
-            </div>
-          </td>
-          <td>
-            <div>
-              <span className="teller">vidente</span>
-            </div>
-          </td>
-          <td className="hits">
-            <span>80%</span>
-          </td>
-        </tr>
+        {users.map(({ name, position, league, image, hits }, index) => {
+          return (
+            <tr className={styles.row} key={name + index}>
+              {!disable.includes("position") && (
+                <td className={["position", styles.position].join(" ")}>
+                  <div>
+                    {[1, 2, 3].includes(position) && (
+                      <img src={`/icons/award${position}.svg`} alt={position} />
+                    )}
+                    {![1, 2, 3].includes(position) && <span>{position}</span>}
+                  </div>
+                </td>
+              )}
+              <td className={["profile", styles.profile].join(" ")}>
+                <div>
+                  <img src={image} alt="user" />
+                  <span>{name}</span>
+                </div>
+              </td>
+              <td className={["league", styles.league].join(" ")}>
+                <div>
+                  <img src={league.image} alt={league.name} />
+                </div>
+              </td>
+              <td className={styles.leagueName}>
+                <div>
+                  <span className={league.name}>{league.display}</span>
+                </div>
+              </td>
+              {!disable.includes("hits") && (
+                <td className={["hits", styles.hits].join(" ")}>
+                  <span>{hits * 100}%</span>
+                </td>
+              )}
 
-        <tr className={styles.row}>
-          <td className="position">
-            <div>
-              <img src="icons/award2.svg" alt="2" />
-            </div>
-          </td>
-          <td className="profile">
-            <div>
-              <img src="/icons/user.svg" alt="user" />
-              <span>Michel Lopes</span>
-            </div>
-          </td>
-          <td className="league">
-            <div>
-              <img src="/icons/expert.svg" alt="expert" />
-            </div>
-          </td>
-          <td>
-            <div>
-              <span className="expert">Perito</span>
-            </div>
-          </td>
-          <td className="hits">
-            <span>74%</span>
-          </td>
-        </tr>
+              {editable && (
+                <>
+                  <td className={styles.editable}>
+                    <img src="/icons/email.svg" alt="email" />
+                  </td>
 
-        <tr className={styles.row}>
-          <td className="position">
-            <div>
-              <img src="icons/award3.svg" alt="3" />
-            </div>
-          </td>
-          <td className="profile">
-            <div>
-              <img src="/icons/user.svg" alt="user" />
-              <span>Victor Pinto</span>
-            </div>
-          </td>
-          <td className="league">
-            <div>
-              <img src="/icons/reckoner.svg" alt="reckoner" />
-            </div>
-          </td>
-          <td>
-            <div>
-              <span className="reckoner">Perito</span>
-            </div>
-          </td>
-          <td className="hits">
-            <span>70%</span>
-          </td>
-        </tr>
+                  <td className={styles.editable}>
+                    <img src="/icons/info.svg" alt="i" />
+                  </td>
 
-        <tr className={styles.row}>
-          <td className="position">
-            <div>
-              <span>4</span>
-            </div>
-          </td>
-          <td className="profile">
-            <div>
-              <img src="/icons/user.svg" alt="user" />
-              <span>Maria Isabel</span>
-            </div>
-          </td>
-          <td className="league">
-            <div>
-              <img src="/icons/jinx.svg" alt="jinx" />
-            </div>
-          </td>
-          <td>
-            <div>
-              <span className="jinx">Pé Frio</span>
-            </div>
-          </td>
-          <td className="hits">
-            <span>30%</span>
-          </td>
-        </tr>
+                  <td className={[styles.editable, styles.trash].join(" ")}>
+                    <img src="/icons/delete.svg" alt="del" />
+                  </td>
+                </>
+              )}
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

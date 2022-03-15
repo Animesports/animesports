@@ -50,85 +50,121 @@
   padding-top: 2rem;
 }
 
-.row td:first-child div {
+.row td.position div {
   justify-content: center;
 }
 
-.row td:first-child span {
+.row td.position span {
   font: 700 2.6rem "Poppins", sans-serif;
   color: var(--black);
 }
 
-.row td:nth-child(2) img {
+.row td.profile img {
   background: var(--gray-2);
   border-radius: 50px;
 }
 
-.row td:nth-child(2) img,
-.row td:nth-child(3) img {
+.row td.profile img,
+.row td.league img {
   max-width: 5.8rem;
   padding: 0.5rem;
 }
 
-.row td:nth-child(2) div {
+.row td.profile div {
   padding-left: 1.5rem;
 }
 
-.row td:first-child div,
-.row td:nth-child(2) div,
-.row td:nth-child(3) div,
-.row td:nth-child(4) div {
+.row td.position div,
+.row td.profile div,
+.row td.league div,
+.row td.leagueName div {
   display: flex;
   align-items: center;
   gap: 2rem;
 }
 
-.row td:first-child,
-.row td:first-child div {
+.row td.position,
+.row td.position div {
   width: 5rem;
   height: 5rem;
 }
 
-.row td:first-child div img {
+.row td.position div img {
   width: 100%;
 }
 
-.row td:nth-child(3) div {
+.row td.league div {
   justify-content: right;
 }
 
-.row td:nth-child(4) div {
+.row td.leagueName div {
   justify-content: left;
 }
 
-.header th:first-child,
-.header th:nth-child(3),
-.row td:nth-child(2) {
+.header th.position,
+.header th.leagueName,
+.row td.profile {
   text-align: left;
 }
 
-.header th:first-child,
-.row td:first-child {
+.header th.position,
+.row td.position {
   padding-left: 2rem;
 }
 
+td.editable {
+  width: 6rem;
+}
+
+.editable img {
+  width: 4.5rem;
+  cursor: pointer;
+  transition: 0.18s;
+}
+
+.editable img:hover {
+  filter: brightness(70%);
+}
+
+.editable.trash:hover img {
+  filter: invert(22%) sepia(59%) saturate(2800%) hue-rotate(337deg)
+    brightness(95%) contrast(98%);
+}
+
+.row td.profile {
+  white-space: nowrap;
+  max-width: 19.7rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 2rem;
+}
+
+@media screen and (max-width: 710px) {
+  .row td.leagueName,
+  .row td.league,
+  .header th.league,
+  .header th.leagueName {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 480px) {
-  .header th:nth-child(2),
-  .row td:nth-child(4) {
+  .header th.league,
+  .row td.leagueName {
     display: none;
   }
 }
 
 @media screen and (max-width: 415px) {
-  .header th:nth-child(3),
-  .row td:nth-child(3) {
+  .header th.leagueName,
+  .row td.league {
     display: none;
   }
 }
 
 @media screen and (max-width: 364px) {
-  .header th:nth-child(4),
-  .row td:nth-child(5) {
+  .header th.hits,
+  .row td.hits {
     display: none;
   }
 }

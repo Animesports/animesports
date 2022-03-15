@@ -12,7 +12,11 @@ export default function Calendar() {
           <h1>Jogos Agendados</h1>
           <button>Novo</button>
         </div>
-        <SoccerTable disable={["state"]} customClass={styles.table} editable />
+        <SoccerTable
+          disable={["state"]}
+          customClass={styles.soccerTable}
+          editable
+        />
       </div>
     </Structure>
   );

@@ -41,7 +41,6 @@ export default function Header({ use, parentNode }) {
   }, [parentNode]);
 
   const itemsList = items.map(([href, name], index) => {
-    console.info(current);
     const imCurrent = current === href;
     if (use?.includes(href) || use === "all")
       return (
