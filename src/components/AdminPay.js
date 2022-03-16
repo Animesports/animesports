@@ -1,5 +1,6 @@
 import leadStyle from "../styles/components/LeadboardTable.module.css";
 import styles from "../styles/components/AdminPay.module.css";
+import { Empty } from "../components/Empty";
 
 const receiveUsers = [
   {
@@ -50,6 +51,15 @@ const HistoryUsers = [
 
 export function PendingPayments({ type }) {
   const users = type === "receive" ? receiveUsers : sendUsers;
+
+  if (users.length === 0) {
+    const desc =
+      type === "receive"
+        ? "Nenhuma entrada pendente para exibir aqui"
+        : "Nenhum pagamento pendente para exibir aqui";
+    return <Empty descrition={desc} />;
+  }
+
   return (
     <table
       className={[leadStyle.container, styles.container, styles.pending].join(
