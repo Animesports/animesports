@@ -51,10 +51,14 @@ const HistoryUsers = [
 export function PendingPayments({ type }) {
   const users = type === "receive" ? receiveUsers : sendUsers;
   return (
-    <table className={[leadStyle.container, styles.container].join(" ")}>
+    <table
+      className={[leadStyle.container, styles.container, styles.pending].join(
+        " "
+      )}
+    >
       <thead>
         <tr className={leadStyle.header}>
-          <th className={leadStyle.profile}>
+          <th className={[leadStyle.profile, styles.profile].join(" ")}>
             <span>Usuário</span>
           </th>
 
@@ -71,7 +75,11 @@ export function PendingPayments({ type }) {
         {users.map(({ name, amount, image }, index) => {
           return (
             <tr className={leadStyle.row} key={name + index + "history"}>
-              <td className={["profile", leadStyle.profile].join(" ")}>
+              <td
+                className={["profile", leadStyle.profile, styles.profile].join(
+                  " "
+                )}
+              >
                 <div>
                   <img src={image} alt="user" />
                   <span>{name}</span>
@@ -112,10 +120,14 @@ export function PendingPayments({ type }) {
 
 export function History() {
   return (
-    <table className={[leadStyle.container, styles.container].join(" ")}>
+    <table
+      className={[leadStyle.container, styles.container, styles.history].join(
+        " "
+      )}
+    >
       <thead>
         <tr className={leadStyle.header}>
-          <th className={leadStyle.profile}>
+          <th className={[leadStyle.profile, styles.profile].join(" ")}>
             <span>Usuário</span>
           </th>
 
@@ -129,7 +141,11 @@ export function History() {
         {HistoryUsers.map(({ name, amount, type, image }, index) => {
           return (
             <tr className={leadStyle.row} key={name + index + "history"}>
-              <td className={["profile", leadStyle.profile].join(" ")}>
+              <td
+                className={["profile", leadStyle.profile, styles.profile].join(
+                  " "
+                )}
+              >
                 <div>
                   <img src={image} alt="user" />
                   <span>{name}</span>

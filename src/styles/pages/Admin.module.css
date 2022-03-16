@@ -72,6 +72,10 @@
   font-weight: 500;
 }
 
+.header h2:last-child {
+  text-align: right;
+}
+
 .header button {
   background: var(--blue);
   border-radius: 8px;

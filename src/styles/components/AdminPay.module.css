@@ -26,7 +26,7 @@
   text-align: center;
 }
 
-.container td.amountAction {
+.container t .container td.amountAction {
   text-align: left;
 }
 
@@ -41,4 +41,37 @@
   width: 100%;
   z-index: 100 !important;
   pointer-events: all;
+}
+
+@media screen and (max-width: 630px) {
+  .pending .profile img,
+  .pending .email {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .pending .profile img {
+    display: block;
+  }
+
+  .pending .profile span {
+    display: none;
+  }
+
+  .history .profile span {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 322px) {
+  .history .profile {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 316px) {
+  .pending .profile {
+    display: none;
+  }
 }
