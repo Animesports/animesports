@@ -126,7 +126,7 @@ td.editable {
   filter: brightness(70%);
 }
 
-.editable.trash:hover img {
+.editable.trash img:hover {
   filter: invert(22%) sepia(59%) saturate(2800%) hue-rotate(337deg)
     brightness(95%) contrast(98%);
 }

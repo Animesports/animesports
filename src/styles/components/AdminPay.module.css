@@ -1,0 +1,44 @@
+.container {
+  width: 100%;
+  position: relative;
+}
+
+.container:before {
+  content: "";
+  display: block;
+  position: absolute;
+  border: 1px solid var(--gray);
+  top: 0;
+  left: -1px;
+  bottom: -1px;
+  right: -1px;
+}
+
+.receive {
+  color: var(--blue-4);
+}
+
+.send {
+  color: var(--red-2);
+}
+
+.container .amount {
+  text-align: center;
+}
+
+.container td.amountAction {
+  text-align: left;
+}
+
+.container td:last-child:not(.trash) {
+  padding-right: 2rem;
+}
+
+.container td button {
+  background-color: var(--gray-5);
+  color: var(--gray);
+  max-width: 15.1rem;
+  width: 100%;
+  z-index: 100 !important;
+  pointer-events: all;
+}
