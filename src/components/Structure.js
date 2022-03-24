@@ -8,6 +8,7 @@ export function Structure({
   headerUse,
   containerClass,
   contentClass,
+  contentStyle,
 }) {
   const ref = useRef(null);
 
@@ -19,7 +20,10 @@ export function Structure({
       )}
     >
       <Header use={headerUse ?? "all"} parentNode={customRef ?? ref} />
-      <div className={[soccerStyle.content, contentClass].join(" ")}>
+      <div
+        style={contentStyle}
+        className={[soccerStyle.content, contentClass].join(" ")}
+      >
         {children}
       </div>
     </div>
