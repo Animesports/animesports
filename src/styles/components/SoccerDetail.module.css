@@ -1,12 +1,21 @@
 .container {
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 999;
   background: var(--white);
+  padding: 2rem;
 }
+
+.container > div {
+  max-width: 136rem;
+}
+
 .close {
   top: 0;
   position: absolute;
@@ -46,4 +55,25 @@
 
 .separator::before {
   content: "X";
+}
+
+.statusBox {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--gray-3);
+}
+
+.statusBox .statusName {
+  background: var(--blue);
+  padding: 0.4rem 4rem;
+}
+
+.statusBox .statusDetail {
+  color: var(--gray);
+}
+
+.statusBox .statusDetail.opened {
+  color: var(--red-2);
 }

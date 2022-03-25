@@ -5,6 +5,15 @@ import styles from "../styles/components/SoccerDetail.module.css";
 export function SoccerDetail() {
   const { modalVisible, changeModalState } = useContext(soccerContext);
 
+  const gameStatus = ["opened", "canceled", "running", "closed"][0];
+
+  const gameStatusDisplay = {
+    opened: "Aberto",
+    closed: "Encerrado",
+    running: "Em andamento",
+    canceled: "Cancelado",
+  };
+
   return (
     <>
       {modalVisible && (
@@ -21,6 +30,34 @@ export function SoccerDetail() {
               <img src="/team1-demo.svg" alt="team-demo" />
               <span>São Paulo</span>
             </div>
+          </div>
+
+          <div className={styles.statusBox}>
+            <div className={styles.statusName}>
+              <span>{gameStatusDisplay[gameStatus]}</span>
+            </div>
+            {gameStatus === "running" && (
+              <p className={[styles.statusDetail, styles.running].join(" ")}>
+                2P
+              </p>
+            )}
+            {gameStatus === "opened" && (
+              <p className={[styles.statusDetail, styles.opened].join(" ")}>
+                Fechamento em 2H
+              </p>
+            )}
+
+            {gameStatus === "closed" && (
+              <p className={[styles.statusDetail, styles.closed].join(" ")}>
+                5P
+              </p>
+            )}
+
+            {gameStatus === "canceled" && (
+              <p className={[styles.statusDetail, styles.canceled].join(" ")}>
+                0P
+              </p>
+            )}
           </div>
 
           <span
