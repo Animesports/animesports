@@ -63,7 +63,7 @@ export default function Account() {
                   name="password"
                   autoComplete="off"
                   type="password"
-                  defaultValue="vhdsr20192020"
+                  defaultValue="commonPassword"
                   placeholder="Insira uma nova senha"
                   tag="Senha"
                 />
@@ -80,7 +80,7 @@ export default function Account() {
             </div>
             <div className={styles.checkBox}>
               <Checkbox name="2step" label="Verificação em duas etapas" />
-              <Checkbox name="notification" label="Notificações por e-mail" />
+              <Checkbox name="backgroundVideo" label="Desabilitar vídeo" />
               <Checkbox name="darkmode" label="Modo escuro" />
             </div>
             <div className={styles.submitBox}>
