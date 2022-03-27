@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { soccerContext } from "../contexts/SoccerContext";
 import styles from "../styles/components/SoccerDetail.module.css";
+import { SoccerPlay, SoccerScore } from "./SoccerBlocks";
 
 export function SoccerDetail() {
   const { modalVisible, changeModalState } = useContext(soccerContext);
@@ -59,6 +60,10 @@ export function SoccerDetail() {
               </p>
             )}
           </div>
+
+          {["closed", "running"].includes(gameStatus) && <SoccerScore />}
+
+          {["opened"].includes(gameStatus) && <SoccerPlay />}
 
           <span
             onClick={changeModalState}

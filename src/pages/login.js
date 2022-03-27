@@ -1,15 +1,27 @@
 import { Form } from "@unform/web";
 import Link from "next/link";
 import Router from "next/router";
+import { useRef } from "react";
 import { Input } from "../components/Input";
 import styles from "../styles/pages/UserAuth.module.css";
+import { useNextOnEnter } from "../utils/Inputs";
 
 export default function Login() {
-  function handleSubmit() {
+  const formRef = useRef(null);
+
+  function handleSubmit(data, { reset }) {
     // Validação dos campos
     // Validação do usuário
     // Login e cache
-    Router.push("/soccer");
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useNextOnEnter(
+      ["email", "password"].map((name) => formRef.current.getFieldRef(name)),
+      () => {
+        Router.push("/soccer");
+        reset();
+      }
+    );
   }
 
   return (
@@ -22,7 +34,7 @@ export default function Login() {
           </p>
         </div>
 
-        <Form onSubmit={handleSubmit}>
+        <Form ref={formRef} onSubmit={handleSubmit}>
           <Input
             name="email"
             placeholder="Introduza seu email"

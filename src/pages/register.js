@@ -2,21 +2,36 @@ import { Form } from "@unform/web";
 import Link from "next/link";
 import Router from "next/router";
 import { useState } from "react";
+import { useRef } from "react";
 import { Input } from "../components/Input";
 import styles from "../styles/pages/UserAuth.module.css";
+import { useNextOnEnter } from "../utils/Inputs";
 
 export default function Register() {
   const [currentStep, setCurrentStep] = useState("initial");
+  const formRef = useRef(null);
 
   function handleNextStep(data, { reset }) {
     // Validação dos campos
-    setCurrentStep("email-validation");
+    // Verificação de cadastro existente
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useNextOnEnter(
+      ["name", "email", "password"].map((name) =>
+        formRef.current.getFieldRef(name)
+      ),
+      () => {
+        setCurrentStep("email-validation");
+        reset();
+      }
+    );
   }
 
   function handleEmailValidation(data, { reset }) {
     // Validação de Email
     // Conclusão de cadastro
     Router.push("/soccer");
+    reset();
   }
 
   return (
@@ -29,7 +44,7 @@ export default function Register() {
         </p>
 
         {["initial"].includes(currentStep) && (
-          <Form onSubmit={handleNextStep}>
+          <Form ref={formRef} onSubmit={handleNextStep}>
             <Input
               name="name"
               placeholder="Introduza seu nome"

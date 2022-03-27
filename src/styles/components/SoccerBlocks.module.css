@@ -1,0 +1,122 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.container > div {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 6.1rem;
+
+  padding-top: 5rem;
+}
+
+.container > div > div {
+  flex: 1;
+}
+
+.container .playBox form {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  align-items: flex-end;
+  gap: 1.3rem;
+}
+
+.playBox span {
+  display: block;
+  background: var(--blue);
+  width: 100%;
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
+.playBox button {
+  background: var(--gray);
+  padding: 0.3rem 1.2rem;
+}
+
+.playBox div {
+  margin-top: 0;
+}
+
+.playBox form > div:not(.button) {
+  min-width: 15rem;
+}
+
+.playBox form input {
+  text-align: center;
+  background-color: var(--white);
+  border: 1px inset var(--gray-3);
+  border-top: 0;
+  color: var(--gray);
+  font-weight: 700;
+  height: 100%;
+}
+
+.playBox form input::placeholder {
+  color: var(--gray-4);
+  opacity: 1 !important;
+  transform: translateY(0);
+}
+
+.standBox table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 26rem;
+}
+
+.standBox tr th {
+  background: var(--blue);
+  font-weight: 400;
+  padding: 0.5rem 0;
+}
+
+.standBox tr td {
+  border: 1px inset var(--gray-3);
+  color: var(--gray);
+}
+
+.standBox tr td:first-child {
+  padding-left: 1rem;
+  border-right: 0;
+}
+
+.standBox tr td:last-child {
+  text-align: center;
+  border-left: 0;
+}
+
+.standBox tr:first-child td {
+  border-top: 0;
+}
+
+.playBox form > div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.playBox form > div > div {
+  flex: 1;
+}
+
+@media screen and (max-width: 360px) {
+  .playBox form {
+    flex-direction: column !important;
+  }
+
+  .playBox form .button {
+    order: 3;
+    width: 100%;
+    padding-top: 2rem;
+  }
+
+  .playBox form .button button {
+    padding: 0.8rem;
+  }
+}
