@@ -12,10 +12,10 @@
   height: fit-content;
 }
 
-.container > table tr:first-child {
+.container > table thead th {
   background: var(--gray);
   color: var(--white);
-  max-height: 3.8rem;
+  height: 4.2rem;
 }
 
 .container > table span {

@@ -6,7 +6,7 @@ import { SoccerPlay, SoccerScore } from "./SoccerBlocks";
 export function SoccerDetail() {
   const { modalVisible, changeModalState } = useContext(soccerContext);
 
-  const gameStatus = ["opened", "canceled", "running", "closed"][0];
+  const gameStatus = ["opened", "canceled", "running", "closed"][3];
 
   const gameStatusDisplay = {
     opened: "Aberto",

@@ -86,8 +86,9 @@
 }
 
 .standBox tr td:last-child {
-  text-align: center;
+  text-align: right;
   border-left: 0;
+  padding-right: 1rem;
 }
 
 .standBox tr:first-child td {

@@ -5,7 +5,55 @@ import { useNextOnEnter } from "../utils/Inputs";
 import { Input } from "./Input";
 
 export function SoccerScore() {
-  return <div className={styles.container}></div>;
+  return (
+    <div className={styles.container}>
+      <div>
+        <div className={styles.standBox}>
+          <table>
+            <thead>
+              <tr>
+                <th colSpan={2}>Meu Jogo</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Vitória</td>
+                <td>São Paulo</td>
+              </tr>
+
+              <tr>
+                <td>Placar</td>
+                <td>1 - 4</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className={styles.standBox}>
+          <table>
+            <thead>
+              <tr>
+                <th colSpan={2}>Placar</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Flamengo</td>
+                <td>2</td>
+              </tr>
+
+              <tr>
+                <td>São Paulo</td>
+                <td>4</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function SoccerPlay() {
@@ -55,21 +103,26 @@ export function SoccerPlay() {
 
         <div className={styles.standBox}>
           <table>
-            <tr>
-              <th colSpan={2}>Banca</th>
-            </tr>
-            <tr>
-              <td>Flamengo</td>
-              <td>19</td>
-            </tr>
-            <tr>
-              <td>Empate</td>
-              <td>8</td>
-            </tr>
-            <tr>
-              <td>São Paulo</td>
-              <td>12</td>
-            </tr>
+            <thead>
+              <tr>
+                <th colSpan={2}>Banca</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Flamengo</td>
+                <td>19</td>
+              </tr>
+              <tr>
+                <td>Empate</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td>São Paulo</td>
+                <td>12</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>

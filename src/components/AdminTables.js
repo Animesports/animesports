@@ -57,53 +57,61 @@ export function AdminTables() {
   return (
     <div className={styles.container}>
       <table className={styles.paymentTable}>
-        <tr>
-          <th colSpan="2">
-            <span>PAGAMENTOS</span>
-          </th>
-        </tr>
+        <thead>
+          <tr>
+            <th colSpan="2">
+              <span>PAGAMENTOS</span>
+            </th>
+          </tr>
+        </thead>
 
-        {payments.map(({ name }, index) => {
-          return (
-            <tr key={"adm payments" + index}>
-              <td>
-                <span>{name}</span>
-              </td>
-              <td>
-                <button>Pagar</button>
-              </td>
-            </tr>
-          );
-        })}
+        <tbody>
+          {payments.map(({ name }, index) => {
+            return (
+              <tr key={"adm payments" + index}>
+                <td>
+                  <span>{name}</span>
+                </td>
+                <td>
+                  <button>Pagar</button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
 
       <table className={styles.soccerTable}>
-        <tr>
-          <th colSpan="3">
-            <span>JOGOS</span>
-          </th>
-        </tr>
+        <thead>
+          <tr>
+            <th colSpan="3">
+              <span>JOGOS</span>
+            </th>
+          </tr>
+        </thead>
 
-        {games.map(({ date, id, teams }, index) => {
-          return (
-            <tr key={"adm games" + index}>
-              <td className={styles.hour}>
-                <span>
-                  {date.getHours()}:{date.getMinutes()}
-                </span>
-              </td>
-              <td>
-                <span>
-                  {teams.visited.name} - {teams.visitor.name}
-                </span>
-              </td>
+        <tbody>
+          {games.map(({ date, id, teams }, index) => {
+            return (
+              <tr key={"adm games" + index}>
+                <td className={styles.hour}>
+                  <span>
+                    {date.getHours()}:{date.getMinutes()}
+                  </span>
+                </td>
+                <td>
+                  <span>
+                    {teams.visited.name} - {teams.visitor.name}
+                  </span>
+                </td>
 
-              <td>
-                <button>Atualizar</button>
-              </td>
-            </tr>
-          );
-        })}
+                <td>
+                  <button>Atualizar</button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
     </div>
   );

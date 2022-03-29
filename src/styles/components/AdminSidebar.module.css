@@ -20,6 +20,7 @@
 
 .container > div:not(.header):not(.current):hover {
   background: var(--gray-3);
+  cursor: pointer;
 }
 
 .header {

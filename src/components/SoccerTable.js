@@ -14,7 +14,7 @@ export function SoccerTable({ disable, editable, customClass }) {
 
         return (
           <>
-            <thead key={group + "-head-" + index}>
+            <thead key={"head-soccer-index-" + index + group.toString()}>
               <tr className={styles.header}>
                 <th colSpan="2">
                   <span>
@@ -50,14 +50,19 @@ export function SoccerTable({ disable, editable, customClass }) {
               </tr>
             </thead>
 
-            <tbody key={group + "-body-" + index}>
+            <tbody key={"body-soccer-index-" + index + group.toString()}>
               {games.map(({ date, entries, score, teams, status }, index) => {
                 const { hours, minutes } = getDisplayDate(date);
                 const { state, display } = getGameState({ date, status });
 
                 return (
                   <tr
-                    key={date + index}
+                    key={
+                      "body-child-soccer-index" +
+                      index +
+                      teams.visited.name +
+                      teams.visitor.name
+                    }
                     className={[styles.row, styles[`closure_${state}`]].join(
                       " "
                     )}
