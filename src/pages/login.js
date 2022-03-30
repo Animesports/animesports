@@ -2,14 +2,17 @@ import { Form } from "@unform/web";
 import Link from "next/link";
 import Router from "next/router";
 import { useRef } from "react";
+import { useContext } from "react";
 import { Input } from "../components/Input";
+import { authContext } from "../contexts/AuthContext";
 import styles from "../styles/pages/UserAuth.module.css";
 import { useNextOnEnter } from "../utils/Inputs";
 
 export default function Login() {
   const formRef = useRef(null);
+  const { signIn } = useContext(authContext);
 
-  function handleSubmit(data, { reset }) {
+  function handleSubmit({ email, password }, { reset }) {
     // Validação dos campos
     // Validação do usuário
     // Login e cache
@@ -17,7 +20,8 @@ export default function Login() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useNextOnEnter(
       ["email", "password"].map((name) => formRef.current.getFieldRef(name)),
-      () => {
+      async () => {
+        await signIn({ email, password });
         Router.push("/soccer");
         reset();
       }

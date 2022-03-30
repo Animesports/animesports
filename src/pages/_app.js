@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { BackgroundVideo } from "../components/BackgroundVideo";
+import { AuthProvider } from "../contexts/AuthContext";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
@@ -8,7 +9,11 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Component {...pageProps} />
+
+      <AuthProvider>
+        <Component {...pageProps} />
+      </AuthProvider>
+
       <BackgroundVideo />
     </>
   );
