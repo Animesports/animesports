@@ -7,9 +7,13 @@ import { Payment } from "../components/Payment";
 import { Modal } from "../components/Modal";
 import { VerifyEmail } from "../components/VerifyEmail";
 import { Structure } from "../components/Structure";
+import { useContext } from "react";
+import { authContext } from "../contexts/AuthContext";
+import { hideEmailChars } from "../utils/Global";
 
 export default function Account() {
   const [openPaymentRef, openEmailVerify] = [useRef(null), useRef(null)];
+  const { user } = useContext(authContext);
 
   return (
     <>
@@ -32,7 +36,7 @@ export default function Account() {
                 </div>
               </div>
               <div className={styles.userName}>
-                <span>Gabriel Bardasson</span>
+                <span>{user.data.name}</span>
                 <button>
                   <img src="/icons/pencil.svg" alt="edit" />
                 </button>
@@ -42,18 +46,20 @@ export default function Account() {
               <div className={styles.emailInputBox}>
                 <Input
                   name="email"
-                  defaultValue="g*****son@gmail.com"
+                  defaultValue={hideEmailChars(user.data.email.address)}
                   placeholder="Insira um email válido"
                   tag="Email"
                 />
-                <button type="button" ref={openEmailVerify}>
-                  verificar
-                </button>
+                {!user.data.email.verified && (
+                  <button type="button" ref={openEmailVerify}>
+                    verificar
+                  </button>
+                )}
               </div>
               <div>
                 <Input
                   name="pix"
-                  defaultValue="minhachavepixtop"
+                  defaultValue={user.data.pix}
                   placeholder="Insira sua chave PIX"
                   tag="Chave PIX"
                 />
@@ -63,7 +69,7 @@ export default function Account() {
                   name="password"
                   autoComplete="off"
                   type="password"
-                  defaultValue="commonPassword"
+                  defaultValue={user.data.password}
                   placeholder="Insira uma nova senha"
                   tag="Senha"
                 />
@@ -79,9 +85,21 @@ export default function Account() {
               <span>Recarregue e continue jogando</span>
             </div>
             <div className={styles.checkBox}>
-              <Checkbox name="2step" label="Verificação em duas etapas" />
-              <Checkbox name="backgroundVideo" label="Desabilitar vídeo" />
-              <Checkbox name="darkmode" label="Modo escuro" />
+              <Checkbox
+                name="twosteps"
+                label="Verificação em duas etapas"
+                checked={user.config.twosteps}
+              />
+              <Checkbox
+                name="video"
+                label="Vídeo de fundo"
+                checked={user.config.video}
+              />
+              <Checkbox
+                name="darkmode"
+                label="Modo escuro"
+                checked={user.config.darkmode}
+              />
             </div>
             <div className={styles.submitBox}>
               <button type="submit">Salvar</button>

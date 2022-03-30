@@ -5,12 +5,48 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { recoveryUserData, signInRequest } from "../services/auth";
 
-export const authContext = createContext({});
+export const authContext = createContext({
+  user: {
+    id: String,
+    data: {
+      name: String,
+      email: {
+        address: String,
+        verified: Boolean,
+      },
+      pix: String,
+      password: String,
+      admin: Boolean,
+    },
+    config: {
+      twosteps: Boolean,
+      video: Boolean,
+      darkmode: Boolean,
+    },
+  },
+});
 
 export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({
+    id: String,
+    data: {
+      name: String,
+      email: {
+        address: String,
+        verified: Boolean,
+      },
+      pix: String,
+      password: String,
+      admin: Boolean,
+    },
+    config: {
+      twosteps: Boolean,
+      video: Boolean,
+      darkmode: Boolean,
+    },
+  });
 
   async function signIn({ email, password }) {
     const { id, user } = await signInRequest({ email, password });
@@ -36,12 +72,13 @@ export function AuthProvider({ children }) {
 
     if (id) {
       recoveryUserData({ id }).then((response) => {
-        setUser(response.user);
+        setUser(response);
       });
     }
   }, []);
 
   useEffect(() => {
+    console.info(user);
     setIsAuthenticated(user !== null);
     setIsAdmin(user && user.admin);
   }, [user]);

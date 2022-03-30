@@ -148,12 +148,13 @@
 }
 
 .emailInputBox button {
+  background: var(--gray-3);
   color: var(--red);
   position: absolute;
   right: 0;
   top: 0;
   height: 4.7rem;
-  background: transparent;
+
   padding: 0 1rem;
 }
 

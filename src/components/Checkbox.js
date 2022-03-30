@@ -24,8 +24,8 @@ export function Checkbox({ children, name, getRef, checked, label }) {
             onFocus={clearError}
             ref={InputRef}
             name={name}
-            checked={checked}
             type="checkbox"
+            defaultChecked={checked}
           />
           <span className={styles.checkmark}></span>
         </label>

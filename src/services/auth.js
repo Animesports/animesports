@@ -5,10 +5,10 @@ export async function signInRequest({ email, password }) {
 
   return {
     id: uuid(),
-    user: {
+    data: {
       name: "Gabriel Bardasson",
       email: {
-        adress: "grabrielbardasson@animesports.cf",
+        address: "grabrielbardasson@animesports.cf",
         verified: false,
       },
       pix: "minhachavepixtop",
@@ -17,7 +17,7 @@ export async function signInRequest({ email, password }) {
     },
     config: {
       twosteps: false,
-      video: false,
+      video: true,
       darkmode: false,
     },
   };
@@ -28,10 +28,10 @@ export async function recoveryUserData({ id }) {
 
   return {
     id: uuid(),
-    user: {
+    data: {
       name: "Gabriel Bardasson",
       email: {
-        adress: "grabrielbardasson@animesports.cf",
+        address: "grabrielbardasson@animesports.cf",
         verified: false,
       },
       pix: "minhachavepixtop",
@@ -40,7 +40,7 @@ export async function recoveryUserData({ id }) {
     },
     config: {
       twosteps: false,
-      video: false,
+      video: true,
       darkmode: false,
     },
   };
@@ -51,6 +51,7 @@ async function delay() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve();
-    }, 1500);
+      console.info("Response");
+    }, 2000);
   });
 }
