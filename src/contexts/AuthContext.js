@@ -6,6 +6,12 @@ import { useEffect } from "react";
 import { recoveryUserData, signInRequest } from "../services/auth";
 
 export const authContext = createContext({
+  isFetched: Boolean,
+  isAuthenticated: Boolean,
+  isAdmin: Boolean,
+  signIn: Function,
+  signUp: Function,
+  signOut: Function,
   user: {
     id: String,
     data: {
@@ -27,6 +33,7 @@ export const authContext = createContext({
 });
 
 export function AuthProvider({ children }) {
+  const [isFetched, setIsFetched] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState({
@@ -67,14 +74,16 @@ export function AuthProvider({ children }) {
     // SignUp steps
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     const { ["animesports.id"]: id } = parseCookies();
 
     if (id) {
-      recoveryUserData({ id }).then((response) => {
+      return recoveryUserData({ id }).then((response) => {
         setUser(response);
+        setIsFetched(true);
       });
     }
+    setIsFetched(true);
   }, []);
 
   useEffect(() => {
@@ -86,6 +95,7 @@ export function AuthProvider({ children }) {
   return (
     <authContext.Provider
       value={{
+        isFetched,
         isAuthenticated,
         isAdmin,
         user,

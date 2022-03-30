@@ -1,4 +1,15 @@
+import Router from "next/router";
 import { v4 as uuid } from "uuid";
+
+export function onlyRegisteredUsers(
+  { isFetched, isAuthenticated },
+  accept,
+  reject
+) {
+  if (isFetched && !isAuthenticated) return accept();
+  if (!isFetched) return null;
+  return reject?.() ?? (Router.push("/login") && null);
+}
 
 export async function signInRequest({ email, password }) {
   await delay();
