@@ -1,13 +1,14 @@
 import Router from "next/router";
 import { v4 as uuid } from "uuid";
+import { Loading } from "../components/Loading";
 
 export function onlyRegisteredUsers(
   { isFetched, isAuthenticated },
   accept,
   reject
 ) {
-  if (isFetched && !isAuthenticated) return accept();
-  if (!isFetched) return null;
+  if (isFetched && isAuthenticated) return accept();
+  if (!isFetched) return <Loading />;
   return reject?.() ?? (Router.push("/login") && null);
 }
 

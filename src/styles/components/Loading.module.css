@@ -1,0 +1,90 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.container img {
+  height: 15rem;
+  animation: colorWhile2 2s alternate infinite ease-out;
+}
+.loading {
+  transform: translateX(-20%);
+  display: inline-block;
+  position: relative;
+  width: 8rem;
+  height: 8rem;
+}
+.loading div {
+  position: absolute;
+  top: 0;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: var(--gray-3);
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.loading div:nth-child(1) {
+  left: 8px;
+  animation: loading1 0.5s infinite, colorWhile 1s infinite alternate;
+}
+.loading div:nth-child(2) {
+  left: 8px;
+  animation: loading2 0.5s infinite, colorWhile 2s infinite alternate;
+}
+.loading div:nth-child(3) {
+  left: 32px;
+  animation: loading2 0.5s infinite, colorWhile 3s infinite alternate;
+}
+.loading div:nth-child(4) {
+  left: 56px;
+  animation: loading3 0.5s infinite, colorWhile 4s infinite alternate;
+}
+@keyframes loading1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes loading3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes loading2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}
+
+@keyframes colorWhile {
+  from {
+    background-color: var(--gray-3);
+  }
+
+  to {
+    background-color: var(--gray-1);
+  }
+}
+
+@keyframes colorWhile2 {
+  from {
+    opacity: 0.2;
+  }
+
+  to {
+    opacity: 0.4;
+  }
+}
+/* Thanks: loading.io */
