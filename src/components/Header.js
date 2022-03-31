@@ -2,8 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import styles from "../styles/components/Header.module.css";
 import { Search } from "./Search";
 import Link from "next/link";
+import { useContext } from "react";
+import { authContext } from "../contexts/AuthContext";
 
 export default function Header({ use, parentNode }) {
+  const { isAdmin, isAuthenticated } = useContext(authContext);
+
   const [current, setCurrent] = useState(null);
   const [activeMenu, setActiveMenu] = useState(false);
   const [showButton, setShowButton] = useState(false);
@@ -19,9 +23,9 @@ export default function Header({ use, parentNode }) {
     ["/soccer", "JOGOS"],
     ["/leagues", "LIGAS"],
     ["/rules", "REGRAS"],
-    ["/account", "CONTA"],
-    ["/admin", "ADM", "adminOnly"],
-  ];
+    isAuthenticated && ["/account", "CONTA"],
+    isAdmin && ["/admin", "ADM", "adminOnly"],
+  ].filter((e) => e);
 
   useEffect(() => {
     setCurrent("/" + window.location.pathname.split("/")[1]);

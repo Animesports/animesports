@@ -1,33 +1,44 @@
 import { Form } from "@unform/web";
 import { useRef } from "react";
+import { OnlyRegisteredUsers } from "../services/auth";
 import styles from "../styles/components/SoccerBlocks.module.css";
 import { useNextOnEnter } from "../utils/Inputs";
 import { Input } from "./Input";
+import { HideContent } from "./HideContent";
 
 export function SoccerScore() {
   return (
     <div className={styles.container}>
       <div>
         <div className={styles.standBox}>
-          <table>
-            <thead>
-              <tr>
-                <th colSpan={2}>Meu Jogo</th>
-              </tr>
-            </thead>
+          {OnlyRegisteredUsers(
+            () => {
+              return (
+                <table>
+                  <thead>
+                    <tr>
+                      <th colSpan={2}>Meu Jogo</th>
+                    </tr>
+                  </thead>
 
-            <tbody>
-              <tr>
-                <td>Vitória</td>
-                <td>São Paulo</td>
-              </tr>
+                  <tbody>
+                    <tr>
+                      <td>Vitória</td>
+                      <td>São Paulo</td>
+                    </tr>
 
-              <tr>
-                <td>Placar</td>
-                <td>1 - 4</td>
-              </tr>
-            </tbody>
-          </table>
+                    <tr>
+                      <td>Placar</td>
+                      <td>1 - 4</td>
+                    </tr>
+                  </tbody>
+                </table>
+              );
+            },
+            () => (
+              <HideContent vertical text="para ver seus resultados" />
+            )
+          )}
         </div>
 
         <div className={styles.standBox}>
@@ -76,29 +87,38 @@ export function SoccerPlay() {
     <div className={styles.container}>
       <div>
         <div className={styles.playBox}>
-          <Form ref={formRef} onSubmit={handlePlaySubmit}>
-            <div>
-              <span>Flamengo</span>
-              <Input
-                name="visited"
-                placeholder={0}
-                autoComplete="off"
-                type="number"
-              />
-            </div>
-            <div className={styles.button}>
-              <button>Jogar</button>
-            </div>
-            <div>
-              <span>São Paulo</span>
-              <Input
-                name="visitor"
-                placeholder={0}
-                autoComplete="off"
-                type="number"
-              />
-            </div>
-          </Form>
+          {OnlyRegisteredUsers(
+            () => {
+              return (
+                <Form ref={formRef} onSubmit={handlePlaySubmit}>
+                  <div>
+                    <span>Flamengo</span>
+                    <Input
+                      name="visited"
+                      placeholder={0}
+                      autoComplete="off"
+                      type="number"
+                    />
+                  </div>
+                  <div className={styles.button}>
+                    <button>Jogar</button>
+                  </div>
+                  <div>
+                    <span>São Paulo</span>
+                    <Input
+                      name="visitor"
+                      placeholder={0}
+                      autoComplete="off"
+                      type="number"
+                    />
+                  </div>
+                </Form>
+              );
+            },
+            () => (
+              <HideContent vertical text="para fazer uma previsão" />
+            )
+          )}
         </div>
 
         <div className={styles.standBox}>

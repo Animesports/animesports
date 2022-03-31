@@ -4,6 +4,7 @@ import { createContext } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { recoveryUserData, signInRequest } from "../services/auth";
+import { User } from "../utils/Types";
 
 export const authContext = createContext({
   isFetched: Boolean,
@@ -12,57 +13,24 @@ export const authContext = createContext({
   signIn: Function,
   signUp: Function,
   signOut: Function,
-  user: {
-    id: String,
-    data: {
-      name: String,
-      email: {
-        address: String,
-        verified: Boolean,
-      },
-      pix: String,
-      password: String,
-      admin: Boolean,
-    },
-    config: {
-      twosteps: Boolean,
-      video: Boolean,
-      darkmode: Boolean,
-    },
-  },
+  user: User,
 });
 
 export function AuthProvider({ children }) {
   const [isFetched, setIsFetched] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [user, setUser] = useState({
-    id: String,
-    data: {
-      name: String,
-      email: {
-        address: String,
-        verified: Boolean,
-      },
-      pix: String,
-      password: String,
-      admin: Boolean,
-    },
-    config: {
-      twosteps: Boolean,
-      video: Boolean,
-      darkmode: Boolean,
-    },
-  });
+  const [user, setUser] = useState(new User());
 
   async function signIn({ email, password }) {
-    const { id, user } = await signInRequest({ email, password });
+    await signInRequest({ email, password }).then((user) => {
+      setCookie(undefined, "animesports.id", user.id, {
+        maxAge: 60 * 60 * (24 * 7), // Seven days
+      });
 
-    setCookie(undefined, "animesports.id", id, {
-      maxAge: 60 * 60 * (24 * 7), // Seven days
+      setUser(user);
     });
-
-    setUser(user);
+    setIsFetched(true);
   }
 
   async function signOut() {
@@ -78,19 +46,21 @@ export function AuthProvider({ children }) {
     const { ["animesports.id"]: id } = parseCookies();
 
     if (id) {
-      return recoveryUserData({ id }).then((response) => {
-        setUser(response);
-        setIsFetched(true);
+      await recoveryUserData({ id }).then((user) => {
+        setUser(user);
       });
     }
     setIsFetched(true);
   }, []);
 
   useEffect(() => {
-    console.info(user);
-    setIsAuthenticated(user !== null);
-    setIsAdmin(user && user.admin);
+    setIsAuthenticated(user.id !== String);
+    setIsAdmin(user?.data?.admin || false);
   }, [user]);
+
+  useEffect(() => {
+    console.info("admin:", isAdmin);
+  }, [isAdmin]);
 
   return (
     <authContext.Provider

@@ -7,20 +7,18 @@ import { Payment } from "../components/Payment";
 import { Modal } from "../components/Modal";
 import { VerifyEmail } from "../components/VerifyEmail";
 import { Structure } from "../components/Structure";
+import { hideEmailChars } from "../utils/Global";
+import { OnlyRegisteredUsers } from "../services/auth";
 import { useContext } from "react";
 import { authContext } from "../contexts/AuthContext";
-import { hideEmailChars } from "../utils/Global";
-import Router from "next/router";
-import { onlyRegisteredUsers } from "../services/auth";
 
 export default function Account() {
   const [openPaymentRef, openEmailVerify] = [useRef(null), useRef(null)];
-  const { user, isFetched, isAuthenticated } = useContext(authContext);
-
+  const { user } = useContext(authContext);
   return (
     <>
       <Structure contentClass={styles.content}>
-        {onlyRegisteredUsers({ isFetched, isAuthenticated }, () => {
+        {OnlyRegisteredUsers(() => {
           return (
             <>
               {

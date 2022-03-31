@@ -1,13 +1,20 @@
 import Router from "next/router";
+import { useContext } from "react";
 import { v4 as uuid } from "uuid";
 import { Loading } from "../components/Loading";
+import { authContext } from "../contexts/AuthContext";
 
-export function onlyRegisteredUsers(
-  { isFetched, isAuthenticated },
-  accept,
-  reject
-) {
-  if (isFetched && isAuthenticated) return accept();
+export function OnlyAdminUsers(accept, reject) {
+  const { isAdmin } = useContext(authContext);
+  return OnlyRegisteredUsers(() => {
+    if (isAdmin) return accept?.();
+    return reject?.() ?? (Router.push("/soccer") && null);
+  });
+}
+
+export function OnlyRegisteredUsers(accept, reject) {
+  const { isFetched, isAuthenticated } = useContext(authContext);
+  if (isFetched && isAuthenticated) return accept?.() ?? null;
   if (!isFetched) return <Loading />;
   return reject?.() ?? (Router.push("/login") && null);
 }
@@ -61,9 +68,6 @@ export async function recoveryUserData({ id }) {
 // Internet Delay Simulator
 async function delay() {
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve();
-      console.info("Response");
-    }, 2000);
+    setTimeout(resolve, 2000);
   });
 }
