@@ -4,6 +4,7 @@ import { Search } from "./Search";
 import Link from "next/link";
 import { useContext } from "react";
 import { authContext } from "../contexts/AuthContext";
+import Router from "next/router";
 
 export default function Header({ use, parentNode }) {
   const { isAdmin, isAuthenticated } = useContext(authContext);
@@ -24,7 +25,8 @@ export default function Header({ use, parentNode }) {
     ["/leagues", "LIGAS"],
     ["/rules", "REGRAS"],
     isAuthenticated && ["/account", "CONTA"],
-    isAdmin && ["/admin", "ADM", "adminOnly"],
+    isAdmin && ["/admin", "ADM"],
+    !isAuthenticated && ["/login", "ENTRAR"],
   ].filter((e) => e);
 
   useEffect(() => {
@@ -44,13 +46,14 @@ export default function Header({ use, parentNode }) {
     });
   }, [parentNode]);
 
-  const itemsList = items.map(([href, name], index) => {
+  const itemsList = items.map(([href, name, exec], index) => {
     const imCurrent = current === href;
     if (use?.includes(href) || use === "all")
       return (
         <li
           className={(imCurrent && styles.current) || null}
           key={name + index}
+          onClick={exec}
         >
           <Link href={(!imCurrent && href) || "#"}>{name}</Link>
         </li>
