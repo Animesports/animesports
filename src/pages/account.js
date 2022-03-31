@@ -9,16 +9,14 @@ import { VerifyEmail } from "../components/VerifyEmail";
 import { Structure } from "../components/Structure";
 import { hideEmailChars } from "../utils/Global";
 import { OnlyRegisteredUsers } from "../services/auth";
-import { useContext } from "react";
-import { authContext } from "../contexts/AuthContext";
 
 export default function Account() {
   const [openPaymentRef, openEmailVerify] = [useRef(null), useRef(null)];
-  const { user } = useContext(authContext);
+
   return (
     <>
       <Structure contentClass={styles.content}>
-        {OnlyRegisteredUsers(() => {
+        {OnlyRegisteredUsers((user) => {
           return (
             <>
               {
