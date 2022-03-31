@@ -2,7 +2,7 @@ import Router from "next/router";
 import styles from "../styles/pages/Home.module.css";
 export default function Home() {
   function handleStart() {
-    Router.push("/login");
+    Router.push("/soccer");
   }
 
   return (
