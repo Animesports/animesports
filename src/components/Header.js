@@ -4,7 +4,6 @@ import { Search } from "./Search";
 import Link from "next/link";
 import { useContext } from "react";
 import { authContext } from "../contexts/AuthContext";
-import Router from "next/router";
 
 export default function Header({ use, parentNode }) {
   const { isAdmin, isAuthenticated } = useContext(authContext);
