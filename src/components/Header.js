@@ -142,8 +142,6 @@ function updateDynamicMenu({ menu, search, dropdown, setShowButton }) {
 
       if (dropdown.childNodes[1].children.length > 0) {
         setShowButton(true);
-      } else {
-        setShowButton(false);
       }
     }
   }
