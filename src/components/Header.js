@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { authContext } from "../contexts/AuthContext";
 
 export default function Header({ use, parentNode }) {
-  const { isAdmin, isAuthenticated } = useContext(authContext);
+  const { isAdmin, isAuthenticated, isFetched } = useContext(authContext);
 
   const [current, setCurrent] = useState(null);
   const [activeMenu, setActiveMenu] = useState(false);
@@ -30,6 +30,8 @@ export default function Header({ use, parentNode }) {
 
   useEffect(() => {
     setCurrent("/" + window.location.pathname.split("/")[1]);
+    if (!isFetched) return;
+
     dynamicListener({
       menu: menuRef.current,
       search: searchRef.current,
@@ -38,12 +40,13 @@ export default function Header({ use, parentNode }) {
     });
 
     if (!parentNode.current) return;
+
     parentNode.current.addEventListener("click", ({ target }) => {
       if (!dropDownRef.current.contains(target)) {
         setActiveMenu(false);
       }
     });
-  }, [parentNode]);
+  }, [parentNode, isFetched]);
 
   const itemsList = items.map(([href, name, exec], index) => {
     const imCurrent = current === href;
@@ -120,6 +123,8 @@ function updateDynamicMenu({ menu, search, dropdown, setShowButton }) {
   const items = [].slice.call(menu?.childNodes[0]?.children ?? []);
   const menuItems = [].slice.call(dropdown?.childNodes[1]?.children ?? []);
 
+  console.info("updating...", items);
+
   if (items.length === 0 && menuItems.length === 0) return;
 
   const windowRect = { right: window.innerWidth, bottom: window.innerHeight };
@@ -133,6 +138,7 @@ function updateDynamicMenu({ menu, search, dropdown, setShowButton }) {
 
     if (searchRect.right >= windowRect.right && overflowItem) {
       dropdown.childNodes[1].appendChild(overflowItem);
+
       setTimeout(() => {
         updateDynamicMenu({ menu, search, dropdown, setShowButton });
       }, 10);
@@ -152,6 +158,7 @@ function updateDynamicMenu({ menu, search, dropdown, setShowButton }) {
     if (dropdown.childNodes[1].children.length === 0) {
       setShowButton(false);
     }
+
     setTimeout(() => {
       updateDynamicMenu({ menu, search, dropdown, setShowButton });
     }, 10);
