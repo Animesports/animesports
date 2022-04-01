@@ -23,14 +23,13 @@ export default function Header({ use, parentNode }) {
     ["/soccer", "JOGOS"],
     ["/leagues", "LIGAS"],
     ["/rules", "REGRAS"],
-    isAuthenticated && ["/account", "CONTA"],
-    isAdmin && ["/admin", "ADM"],
-    !isAuthenticated && ["/login", "ENTRAR"],
+    isFetched && isAuthenticated && ["/account", "CONTA"],
+    isFetched && isAdmin && ["/admin", "ADM"],
+    isFetched && !isAuthenticated && ["/login", "ENTRAR"],
   ].filter((e) => e);
 
   useEffect(() => {
     setCurrent("/" + window.location.pathname.split("/")[1]);
-    if (!isFetched) return;
 
     dynamicListener({
       menu: menuRef.current,
@@ -123,8 +122,6 @@ function updateDynamicMenu({ menu, search, dropdown, setShowButton }) {
   const items = [].slice.call(menu?.childNodes[0]?.children ?? []);
   const menuItems = [].slice.call(dropdown?.childNodes[1]?.children ?? []);
 
-  console.info("updating...", items);
-
   if (items.length === 0 && menuItems.length === 0) return;
 
   const windowRect = { right: window.innerWidth, bottom: window.innerHeight };
@@ -145,6 +142,8 @@ function updateDynamicMenu({ menu, search, dropdown, setShowButton }) {
 
       if (dropdown.childNodes[1].children.length > 0) {
         setShowButton(true);
+      } else {
+        setShowButton(false);
       }
     }
   }
@@ -155,6 +154,7 @@ function updateDynamicMenu({ menu, search, dropdown, setShowButton }) {
 
   if (searchRect.left - dropdownRect.right >= lastMenuItemRect.width) {
     menu.childNodes[0].appendChild(lastMenuItem);
+
     if (dropdown.childNodes[1].children.length === 0) {
       setShowButton(false);
     }

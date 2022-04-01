@@ -1,8 +1,6 @@
 import Router from "next/router";
 import { destroyCookie, setCookie, parseCookies } from "nookies";
-import { createContext } from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import { recoveryUserData, signInRequest } from "../services/auth";
 import { User } from "../utils/Types";
 
@@ -57,10 +55,6 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(user.id !== String);
     setIsAdmin(user?.data?.admin || false);
   }, [user]);
-
-  useEffect(() => {
-    console.info("admin:", isAdmin);
-  }, [isAdmin]);
 
   return (
     <authContext.Provider
