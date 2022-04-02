@@ -31,7 +31,11 @@ export function OnlyRegisteredUsers(accept, reject) {
 }
 
 export async function signInRequest({ email, password }) {
-  await delay();
+  await fetch("https://ans-service.herokuapp.com/", {
+    headers: {
+      authorization: `$`,
+    },
+  });
 
   return {
     id: uuid(),
