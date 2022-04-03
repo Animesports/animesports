@@ -13,17 +13,21 @@ export default function Login() {
   const { signIn } = useContext(authContext);
 
   function handleSubmit({ email, password }, { reset }) {
-    // Validação dos campos
-    // Validação do usuário
-    // Login e cache
-
+    // Validação
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useNextOnEnter(
       ["email", "password"].map((name) => formRef.current.getFieldRef(name)),
       async () => {
-        await signIn({ email, password });
-        Router.push("/soccer");
-        reset();
+        signIn({ email, password }).then(
+          () => {
+            Router.push("/soccer");
+            reset();
+          },
+          (error) => {
+            console.info("error:", error);
+            reset();
+          }
+        );
       }
     );
   }

@@ -1,7 +1,11 @@
 import Router from "next/router";
 import { destroyCookie, setCookie, parseCookies } from "nookies";
 import { createContext, useState, useEffect } from "react";
-import { recoveryUserData, signInRequest } from "../services/auth";
+import {
+  recoveryUserData,
+  signInRequest,
+  signUpRequest,
+} from "../services/auth";
 import { User } from "../utils/Types";
 
 export const authContext = createContext({
@@ -20,24 +24,33 @@ export function AuthProvider({ children }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState(new User());
 
-  async function signIn({ email, password }) {
-    await signInRequest({ email, password }).then((user) => {
-      setCookie(undefined, "animesports.id", user.id, {
-        maxAge: 60 * 60 * (24 * 7), // Seven days
-      });
+  function signIn({ email, password }) {
+    return new Promise(async (resolve, reject) => {
+      await signInRequest({ email, password }).then((user) => {
+        setCookie(undefined, "animesports.id", user.id, {
+          maxAge: 60 * 60 * (24 * 7), // Seven days
+        });
 
-      setUser(user);
+        setUser(user);
+
+        resolve();
+      }, reject);
+
+      setIsFetched(true);
     });
-    setIsFetched(true);
   }
 
-  async function signOut() {
+  function signOut() {
     destroyCookie(undefined, "animesports.id");
     Router.reload();
   }
 
-  async function signUp() {
-    // SignUp steps
+  function signUp({ name, email, password }) {
+    return new Promise(async (resolve, reject) => {
+      await signUpRequest({ name, email, password }).then(resolve, (error) => {
+        reject(error);
+      });
+    });
   }
 
   useEffect(async () => {
@@ -46,8 +59,9 @@ export function AuthProvider({ children }) {
     if (id) {
       await recoveryUserData({ id }).then((user) => {
         setUser(user);
-      });
+      }, console.info);
     }
+
     setIsFetched(true);
   }, []);
 

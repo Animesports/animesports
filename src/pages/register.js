@@ -3,15 +3,18 @@ import Link from "next/link";
 import Router from "next/router";
 import { useState } from "react";
 import { useRef } from "react";
+import { useContext } from "react";
 import { Input } from "../components/Input";
+import { authContext } from "../contexts/AuthContext";
 import styles from "../styles/pages/UserAuth.module.css";
 import { useNextOnEnter } from "../utils/Inputs";
 
 export default function Register() {
   const [currentStep, setCurrentStep] = useState("initial");
+  const { signUp } = useContext(authContext);
   const formRef = useRef(null);
 
-  function handleNextStep(data, { reset }) {
+  function handleNextStep({ name, email, password }, { reset }) {
     // Validação dos campos
     // Verificação de cadastro existente
 
@@ -21,8 +24,15 @@ export default function Register() {
         formRef.current.getFieldRef(name)
       ),
       () => {
-        setCurrentStep("email-validation");
-        reset();
+        signUp({ name, email, password }).then(
+          () => {
+            setCurrentStep("email-validation");
+            reset();
+          },
+          (error) => {
+            console.info(error);
+          }
+        );
       }
     );
   }

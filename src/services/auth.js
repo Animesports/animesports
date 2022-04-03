@@ -1,15 +1,63 @@
 import Router from "next/router";
 import { useContext } from "react";
-import { v4 as uuid } from "uuid";
 import { Loading } from "../components/Loading";
 import { authContext } from "../contexts/AuthContext";
+import { Fetch } from "../utils/Fetch";
 import { User } from "../utils/Types";
 
-/**
- * @param { acceptCallback} accept accept callback
- * @param { rejectCallback } reject reject callback
- * @returns {React.Component} only admin component
- */
+export function signUpRequest({ email, name, password }) {
+  return new Promise((resolve, reject) => {
+    Fetch("https://ans-service.herokuapp.com/app/clients", {
+      method: "POST",
+      headers: {
+        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${process.env.NEXT_PUBLIC_APP_ID}`,
+      },
+      body: {
+        email,
+        password,
+        name,
+      },
+    }).then((data) => {
+      if (data.statusCode) return reject(data);
+      if (data.success) return resolve(data);
+      reject(data);
+    }, reject);
+  });
+}
+
+export function signInRequest({ email, password }) {
+  return new Promise((resolve, reject) => {
+    Fetch("https://ans-service.herokuapp.com/app/clients/validate", {
+      method: "POST",
+      headers: {
+        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${process.env.NEXT_PUBLIC_APP_ID}`,
+      },
+      body: {
+        email,
+        password,
+      },
+    }).then(({ valid, client }) => {
+      if (valid) return resolve(client);
+      reject({ valid });
+    }, reject);
+  });
+}
+
+export function recoveryUserData({ id }) {
+  return new Promise((resolve, reject) => {
+    Fetch("https://ans-service.herokuapp.com/clients", {
+      method: "GET",
+      headers: {
+        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${id}`,
+      },
+    }).then((data) => {
+      if (data.statusCode) return reject(data);
+      if (data.id) return resolve(data);
+      return reject({ error: "unknown" });
+    }, reject);
+  });
+}
+
 export function OnlyAdminUsers(accept, reject) {
   const { isAdmin, user } = useContext(authContext);
   return OnlyRegisteredUsers(() => {
@@ -18,83 +66,9 @@ export function OnlyAdminUsers(accept, reject) {
   });
 }
 
-/**
- * @param {acceptCallback}  accept accept callback
- * @param {rejectCallback} reject reject callback
- * @returns {JSX.Element}  only registered component
- */
 export function OnlyRegisteredUsers(accept, reject) {
   const { isFetched, isAuthenticated, user } = useContext(authContext);
   if (isFetched && isAuthenticated) return accept?.(user) ?? null;
   if (!isFetched) return <Loading />;
   return reject?.() ?? (Router.push("/login") && null);
 }
-
-export async function signInRequest({ email, password }) {
-  await fetch("https://ans-service.herokuapp.com/", {
-    headers: {
-      authorization: `$`,
-    },
-  });
-
-  return {
-    id: uuid(),
-    data: {
-      name: "Gabriel Bardasson",
-      email: {
-        address: "grabrielbardasson@animesports.cf",
-        verified: false,
-      },
-      pix: "minhachavepixtop",
-      password: "defaultpassword",
-      admin: true,
-    },
-    config: {
-      twosteps: false,
-      video: true,
-      darkmode: false,
-    },
-  };
-}
-
-export async function recoveryUserData({ id }) {
-  await delay();
-
-  return {
-    id: uuid(),
-    data: {
-      name: "Gabriel Bardasson",
-      email: {
-        address: "grabrielbardasson@animesports.cf",
-        verified: false,
-      },
-      pix: "minhachavepixtop",
-      password: "defaultpassword",
-      admin: true,
-    },
-    config: {
-      twosteps: false,
-      video: true,
-      darkmode: false,
-    },
-  };
-}
-
-// Internet Delay Simulator
-async function delay() {
-  return new Promise((resolve, reject) => {
-    setTimeout(resolve, 2000);
-  });
-}
-
-// Local Types:
-/**
- * @callback acceptCallback
- * @param {User}  user
- * Function executed when the user is accepted.
- */
-
-/**
- * @callback rejectCallback
- * Function executed when user is rejected.
- */
