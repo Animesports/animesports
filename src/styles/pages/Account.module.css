@@ -193,3 +193,8 @@
 .submitBox {
   text-align: right;
 }
+
+button.disable {
+  background: var(--blue-2);
+  cursor: inherit;
+}

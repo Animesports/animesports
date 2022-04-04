@@ -16,21 +16,25 @@ export const configContext = createContext({
   apply: Function,
   save: Function,
   saved: Boolean,
+  processing: Boolean,
 });
 
 export function ConfigProvider({ children }) {
   const [config, setConfig] = useState(new Config());
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState(true);
+  const [processing, setProcessing] = useState(false);
   const { user, setUser } = useContext(authContext);
 
   function apply(data) {
     setConfig(data);
   }
 
-  function save() {
-    updateUserConfig(config, user).then(() => {
+  async function save() {
+    setProcessing(true);
+    await updateUserConfig(config, user).then(() => {
       setUser(updateObject(user, convertConfigToUser(config)));
     });
+    setProcessing(false);
   }
 
   function checkIfSaved() {
@@ -56,6 +60,7 @@ export function ConfigProvider({ children }) {
         save,
         config,
         saved,
+        processing,
       }}
     >
       {children}

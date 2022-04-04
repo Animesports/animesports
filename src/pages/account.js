@@ -18,7 +18,7 @@ export default function Account() {
     useRef(null),
     useRef(null),
   ];
-  const { config, save, apply, saved } = useContext(configContext);
+  const { config, save, apply, saved, processing } = useContext(configContext);
 
   function handleChange() {
     const newConfigs = new Config();
@@ -118,10 +118,17 @@ export default function Account() {
                       />
                     </div>
                     <div className={styles.submitBox}>
-                      {!saved && <button type="submit">Salvar</button>}
-                      {saved && (
+                      {!processing && !saved && (
+                        <button type="submit">Salvar</button>
+                      )}
+                      {!processing && saved && (
                         <button className={styles.disable} type="button">
                           Salvo!
+                        </button>
+                      )}
+                      {processing && (
+                        <button className={styles.disable} type="button">
+                          Salvando...
                         </button>
                       )}
                     </div>
