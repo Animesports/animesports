@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { BackgroundVideo } from "../components/BackgroundVideo";
 import { AuthProvider } from "../contexts/AuthContext";
+import { ConfigProvider } from "../contexts/ConfigContext";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
@@ -11,7 +12,9 @@ function MyApp({ Component, pageProps }) {
       </Head>
 
       <AuthProvider>
-        <Component {...pageProps} />
+        <ConfigProvider>
+          <Component {...pageProps} />
+        </ConfigProvider>
       </AuthProvider>
 
       <BackgroundVideo />

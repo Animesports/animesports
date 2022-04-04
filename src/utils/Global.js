@@ -1,3 +1,45 @@
+export function getConfigFromUser(user) {
+  return {
+    email: user.data.email.address,
+    pix: user.data.pix,
+    password: user.data.password,
+    twosteps: user.config.twosteps,
+    video: user.config.video,
+    darkmode: user.config.darkmode,
+  };
+}
+
+export function convertConfigToUser(config) {
+  return {
+    data: {
+      email: {
+        address: config.email,
+      },
+      pix: config.pix,
+      password: config.password,
+    },
+    config: {
+      twosteps: config.twosteps,
+      video: config.video,
+      darkmode: config.darkmode,
+    },
+  };
+}
+
+export function updateObject(reference, update) {
+  const target = Object.assign({}, reference);
+  for (const field in target) {
+    if (update[field]) {
+      if (typeof target[field] === "object") {
+        target[field] = updateObject(target[field], update[field]);
+      } else {
+        target[field] = update[field];
+      }
+    }
+  }
+  return target;
+}
+
 export function hideEmailChars(emailString) {
   if (!emailString || typeof emailString !== "string") return null;
 

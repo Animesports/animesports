@@ -7,12 +7,30 @@ import { Payment } from "../components/Payment";
 import { Modal } from "../components/Modal";
 import { VerifyEmail } from "../components/VerifyEmail";
 import { Structure } from "../components/Structure";
-import { hideEmailChars } from "../utils/Global";
 import { OnlyRegisteredUsers } from "../services/auth";
+import { useContext } from "react";
+import { configContext } from "../contexts/ConfigContext";
+import { Config } from "../utils/Types";
 
 export default function Account() {
-  const [openPaymentRef, openEmailVerify] = [useRef(null), useRef(null)];
+  const [formref, openPaymentRef, openEmailVerify] = [
+    useRef(null),
+    useRef(null),
+    useRef(null),
+  ];
+  const { config, save, apply, saved } = useContext(configContext);
 
+  function handleChange() {
+    const newConfigs = new Config();
+
+    for (const option in newConfigs) {
+      newConfigs[option] = formref.current.getFieldValue(option);
+      if (typeof newConfigs[option] === "string")
+        newConfigs[option] = newConfigs[option].trim();
+      if (newConfigs[option].length === 0) newConfigs[option] = null;
+    }
+    apply(newConfigs);
+  }
   return (
     <>
       <Structure contentClass={styles.content}>
@@ -20,11 +38,7 @@ export default function Account() {
           return (
             <>
               {
-                <Form
-                  onSubmit={(data) => {
-                    console.info(data);
-                  }}
-                >
+                <Form ref={formref} onChange={handleChange} onSubmit={save}>
                   <div className={styles.leftBox}>
                     <div className={styles.profileBox}>
                       <div className={styles.userImageBox}>
@@ -48,7 +62,7 @@ export default function Account() {
                       <div className={styles.emailInputBox}>
                         <Input
                           name="email"
-                          defaultValue={hideEmailChars(user.data.email.address)}
+                          defaultValue={config.email}
                           placeholder="Insira um email válido"
                           tag="Email"
                         />
@@ -61,7 +75,7 @@ export default function Account() {
                       <div>
                         <Input
                           name="pix"
-                          defaultValue={user.data.pix}
+                          defaultValue={config.pix}
                           placeholder="Insira sua chave PIX"
                           tag="Chave PIX"
                         />
@@ -71,7 +85,7 @@ export default function Account() {
                           name="password"
                           autoComplete="off"
                           type="password"
-                          defaultValue={user.data.password}
+                          defaultValue={config.password}
                           placeholder="Insira uma nova senha"
                           tag="Senha"
                         />
@@ -90,21 +104,26 @@ export default function Account() {
                       <Checkbox
                         name="twosteps"
                         label="Verificação em duas etapas"
-                        checked={user.config.twosteps}
+                        checked={config.twosteps}
                       />
                       <Checkbox
                         name="video"
                         label="Vídeo de fundo"
-                        checked={user.config.video}
+                        checked={config.video}
                       />
                       <Checkbox
                         name="darkmode"
                         label="Modo escuro"
-                        checked={user.config.darkmode}
+                        checked={config.darkmode}
                       />
                     </div>
                     <div className={styles.submitBox}>
-                      <button type="submit">Salvar</button>
+                      {!saved && <button type="submit">Salvar</button>}
+                      {saved && (
+                        <button className={styles.disable} type="button">
+                          Salvo!
+                        </button>
+                      )}
                     </div>
                   </div>
                 </Form>

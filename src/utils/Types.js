@@ -16,3 +16,21 @@ export class User {
     darkmode: Boolean,
   };
 }
+
+export class Config {
+  email = String;
+  pix = String;
+  password = String;
+  twosteps = Boolean;
+  video = Boolean;
+  darkmode = Boolean;
+}
+
+export class DbConfig {
+  email = "data.email.address";
+  pix = "data.pix";
+  password = "data.password";
+  twosteps = "config.twosteps";
+  video = "config.video";
+  darkmode = "config.darkmode";
+}

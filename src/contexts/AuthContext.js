@@ -16,6 +16,7 @@ export const authContext = createContext({
   signUp: Function,
   signOut: Function,
   user: User,
+  setUser: Function,
 });
 
 export function AuthProvider({ children }) {
@@ -80,6 +81,7 @@ export function AuthProvider({ children }) {
         signIn,
         signUp,
         signOut,
+        setUser,
       }}
     >
       {children}

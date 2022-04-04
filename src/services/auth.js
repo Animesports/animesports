@@ -7,7 +7,7 @@ import { User } from "../utils/Types";
 
 export function signUpRequest({ email, name, password }) {
   return new Promise((resolve, reject) => {
-    Fetch("https://ans-service.herokuapp.com/app/clients", {
+    Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/app/clients`, {
       method: "POST",
       headers: {
         authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${process.env.NEXT_PUBLIC_APP_ID}`,
@@ -27,7 +27,7 @@ export function signUpRequest({ email, name, password }) {
 
 export function signInRequest({ email, password }) {
   return new Promise((resolve, reject) => {
-    Fetch("https://ans-service.herokuapp.com/app/clients/validate", {
+    Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/app/clients/validate`, {
       method: "POST",
       headers: {
         authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${process.env.NEXT_PUBLIC_APP_ID}`,
@@ -45,7 +45,7 @@ export function signInRequest({ email, password }) {
 
 export function recoveryUserData({ id }) {
   return new Promise((resolve, reject) => {
-    Fetch("https://ans-service.herokuapp.com/clients", {
+    Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/clients`, {
       method: "GET",
       headers: {
         authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${id}`,
