@@ -1,5 +1,6 @@
 .background,
-.overlay {
+.overlay,
+.default {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -18,4 +19,10 @@
   mix-blend-mode: overlay;
   opacity: 0.9;
   z-index: -1;
+}
+
+.default {
+  opacity: 0.8;
+  object-fit: cover;
+  z-index: -3;
 }

@@ -14,10 +14,9 @@ function MyApp({ Component, pageProps }) {
       <AuthProvider>
         <ConfigProvider>
           <Component {...pageProps} />
+          <BackgroundVideo />
         </ConfigProvider>
       </AuthProvider>
-
-      <BackgroundVideo />
     </>
   );
 }
