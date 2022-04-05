@@ -11,7 +11,8 @@ export function Input({
   placeholder,
   tag,
   getRef,
-
+  readOnly,
+  className,
   ...rest
 }) {
   const InputRef = useRef(null);
@@ -36,6 +37,8 @@ export function Input({
         name={name}
         type={type ?? "text"}
         autoComplete={autoComplete}
+        readOnly={readOnly}
+        className={className}
       />
 
       {tag && (

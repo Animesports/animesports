@@ -1,5 +1,4 @@
 import { Form } from "@unform/web";
-import { useRef } from "react";
 import styles from "../styles/pages/Account.module.css";
 import { Input } from "../components/Input";
 import { Checkbox } from "../components/Checkbox";
@@ -8,9 +7,9 @@ import { Modal } from "../components/Modal";
 import { VerifyEmail } from "../components/VerifyEmail";
 import { Structure } from "../components/Structure";
 import { OnlyRegisteredUsers } from "../services/auth";
-import { useContext } from "react";
 import { configContext } from "../contexts/ConfigContext";
 import { Config } from "../utils/Types";
+import { useContext, useRef } from "react";
 
 export default function Account() {
   const [formref, openPaymentRef, openEmailVerify] = [
@@ -18,6 +17,7 @@ export default function Account() {
     useRef(null),
     useRef(null),
   ];
+
   const { config, save, apply, saved, processing } = useContext(configContext);
 
   function handleChange() {
@@ -31,6 +31,7 @@ export default function Account() {
     }
     apply(newConfigs);
   }
+
   return (
     <>
       <Structure contentClass={styles.content}>
@@ -53,9 +54,6 @@ export default function Account() {
                       </div>
                       <div className={styles.userName}>
                         <span>{user.data.name}</span>
-                        <button>
-                          <img src="/icons/pencil.svg" alt="edit" />
-                        </button>
                       </div>
                     </div>
                     <div className={styles.userInfoBox}>

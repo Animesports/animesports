@@ -1,5 +1,5 @@
 const typeObj = typeof { aaa: "aa" };
-
+import { clientEncoder } from "../utils/crypto";
 /**
  *
  * @param {RequestInfo} url
@@ -7,19 +7,26 @@ const typeObj = typeof { aaa: "aa" };
  * @returns {Promise<(string|Array| typeObj>}
  */
 export async function Fetch(url, params) {
-  return new Promise((resolve, reject) => {
-    if (params.body && typeof params.body !== "string")
-      params.body = JSON.stringify(params.body);
+  return clientEncoder(process.env.NEXT_PUBLIC_KEY, async (client, server) => {
+    return new Promise((resolve, reject) => {
+      if (params.body && typeof params.body !== "string")
+        params.body = JSON.stringify(params.body);
 
-    fetch(url, params).then(async (response) => {
-      const text = await response.text();
+      if (params.body)
+        params.body = JSON.stringify({
+          encrypted: server.encrypt(params.body),
+        });
 
-      try {
-        const data = JSON.parse(text);
-        resolve(data);
-      } catch {
-        resolve(text);
-      }
-    }, reject);
+      fetch(url, params).then(async (response) => {
+        const text = await response.text();
+
+        try {
+          const data = JSON.parse(text);
+          resolve(data);
+        } catch {
+          resolve(text);
+        }
+      }, reject);
+    });
   });
 }
