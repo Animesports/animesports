@@ -1,11 +1,19 @@
 import { useState } from "react";
+import { useContext } from "react";
+import { authContext } from "../contexts/AuthContext";
+import { requestTokenValidation } from "../services/email";
 import styles from "../styles/components/VerifyEmail.module.css";
 
 export function VerifyEmail({ close }) {
   const [state, setState] = useState("initial");
+  const { user } = useContext(authContext);
 
   function handleSendRequest() {
-    setState("feedback");
+    requestTokenValidation({ email: user.data.email.address }).then(
+      (success) => {
+        success && setState("feedback");
+      }
+    );
   }
 
   function reset() {
@@ -21,7 +29,7 @@ export function VerifyEmail({ close }) {
           <h4>Verifique seu email</h4>
           <p>
             A confirmação do seu endereço de email é necessária para algumas
-            funções do app. Clique no link enviado para
+            funções do app. Clique no link enviado.
           </p>
           <span onClick={handleSendRequest} className={styles.sendEmail}>
             Envie novamente, por favor
@@ -39,7 +47,7 @@ export function VerifyEmail({ close }) {
         <div className={styles.container}>
           <h4>Verifique seu email</h4>
           <p>Foi enviado um novo link de confirmação para o email abaixo.</p>
-          <span className={styles.sendEmail}>g*****son@gmail.com</span>
+          <span className={styles.sendEmail}>{user.data.email.address}</span>
           <span
             onClick={reset}
             className={[styles.close, "close-button"].join(" ")}

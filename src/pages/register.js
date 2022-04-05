@@ -5,18 +5,39 @@ import { useState } from "react";
 import { useRef } from "react";
 import { useContext } from "react";
 import { Input } from "../components/Input";
+import { Loading } from "../components/Loading";
 import { authContext } from "../contexts/AuthContext";
+import {
+  requestCodeConfirmation,
+  requestCodeValidation,
+} from "../services/email";
 import styles from "../styles/pages/UserAuth.module.css";
 import { useNextOnEnter } from "../utils/Inputs";
 
 export default function Register() {
   const [currentStep, setCurrentStep] = useState("initial");
-  const { signUp } = useContext(authContext);
+  const { signUp, isFetched, isAuthenticated } = useContext(authContext);
   const formRef = useRef(null);
+
+  if (!isFetched)
+    return (
+      <div className="container-fwh">
+        <div className={styles.content}>
+          <h1>Registrar</h1>
+          <p>
+            Cadastre-se em nossa plataforma ou faça{" "}
+            <Link href="/login">login</Link>
+          </p>
+
+          <Loading />
+        </div>
+      </div>
+    );
+
+  if (isAuthenticated) return Router.push("/soccer") && null;
 
   function handleNextStep({ name, email, password }, { reset }) {
     // Validação dos campos
-    // Verificação de cadastro existente
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useNextOnEnter(
@@ -26,8 +47,11 @@ export default function Register() {
       () => {
         signUp({ name, email, password }).then(
           () => {
-            setCurrentStep("email-validation");
-            reset();
+            requestCodeValidation({ email }).then((success) => {
+              if (!success) throw "fetch-error";
+              setCurrentStep("email-validation");
+              reset();
+            });
           },
           (error) => {
             console.info(error);
@@ -37,11 +61,18 @@ export default function Register() {
     );
   }
 
-  function handleEmailValidation(data, { reset }) {
-    // Validação de Email
-    // Conclusão de cadastro
-    Router.push("/soccer");
-    reset();
+  function handleEmailValidation({ code }, { reset }) {
+    // Validação dos campos
+    requestCodeConfirmation({ code }).then(
+      (success) => {
+        if (!success) throw "invalid-code";
+        Router.push("/soccer");
+        reset();
+      },
+      (error) => {
+        console.info(error);
+      }
+    );
   }
 
   return (

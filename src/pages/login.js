@@ -4,13 +4,31 @@ import Router from "next/router";
 import { useRef } from "react";
 import { useContext } from "react";
 import { Input } from "../components/Input";
+import { Loading } from "../components/Loading";
 import { authContext } from "../contexts/AuthContext";
 import styles from "../styles/pages/UserAuth.module.css";
 import { useNextOnEnter } from "../utils/Inputs";
 
 export default function Login() {
   const formRef = useRef(null);
-  const { signIn } = useContext(authContext);
+  const { signIn, isAuthenticated, isFetched } = useContext(authContext);
+
+  if (!isFetched)
+    return (
+      <div className="container-fwh">
+        <div className={styles.content}>
+          <h1>Registrar</h1>
+          <p>
+            Cadastre-se em nossa plataforma ou faça{" "}
+            <Link href="/login">login</Link>
+          </p>
+
+          <Loading />
+        </div>
+      </div>
+    );
+
+  if (isAuthenticated) return Router.push("/soccer") && null;
 
   function handleSubmit({ email, password }, { reset }) {
     // Validação
