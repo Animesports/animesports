@@ -15,7 +15,7 @@ export function BackgroundVideo() {
   return (
     <>
       <div className={styles.overlay} />
-      {isFetched && config.video && (
+      {config.video && (
         <video
           className={styles.background}
           autoPlay
@@ -39,7 +39,7 @@ export function BackgroundVideo() {
         </video>
       )}
 
-      {isAuthenticated && !config.video && (
+      {!config.video && (
         <img className={styles.default} src="/poster.webp" alt="bf" />
       )}
     </>
