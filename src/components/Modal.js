@@ -5,7 +5,7 @@ export function Modal({ openRef, children }) {
   const [modalRef, overlayRef] = [useRef(null), useRef(null)];
 
   useEffect(() => {
-    if (!openRef?.current) return console.error("Modal.js: Missing openRef");
+    if (!openRef?.current) return;
     openRef.current.addEventListener("click", () => {
       open();
     });

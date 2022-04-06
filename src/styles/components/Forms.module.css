@@ -1,7 +1,10 @@
 .error {
+  bottom: -0.4rem;
   display: block;
   position: absolute;
   color: red !important;
-  font-size: 1rem !important;
+  font-size: 1.8rem !important;
   user-select: none !important;
+  font-family: "Poppins", sans-serif !important;
+  font-weight: 400;
 }

@@ -10,6 +10,8 @@ import { OnlyRegisteredUsers } from "../services/auth";
 import { configContext } from "../contexts/ConfigContext";
 import { Config } from "../utils/Types";
 import { useContext, useRef } from "react";
+import * as Yup from "yup";
+import { configValidation } from "../utils/Yup";
 
 export default function Account() {
   const [formref, openPaymentRef, openEmailVerify] = [
@@ -20,6 +22,10 @@ export default function Account() {
 
   const { config, save, apply, saved, processing } = useContext(configContext);
 
+  function handleSave() {
+    configValidation(config, save, formref);
+  }
+
   function handleChange() {
     const newConfigs = new Config();
 
@@ -29,7 +35,7 @@ export default function Account() {
         newConfigs[option] = newConfigs[option].trim();
       if (newConfigs[option].length === 0) newConfigs[option] = null;
     }
-    apply(newConfigs);
+    configValidation(newConfigs, () => apply(newConfigs), formref);
   }
 
   return (
@@ -39,7 +45,11 @@ export default function Account() {
           return (
             <>
               {
-                <Form ref={formref} onChange={handleChange} onSubmit={save}>
+                <Form
+                  ref={formref}
+                  onChange={handleChange}
+                  onSubmit={handleSave}
+                >
                   <div className={styles.leftBox}>
                     <div className={styles.profileBox}>
                       <div className={styles.userImageBox}>
@@ -74,7 +84,7 @@ export default function Account() {
                         <Input
                           name="pix"
                           defaultValue={config.pix}
-                          placeholder="Insira sua chave PIX"
+                          placeholder="Chave PIX para receber recompensas"
                           tag="Chave PIX"
                         />
                       </div>

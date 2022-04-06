@@ -38,7 +38,6 @@ export function ConfigProvider({ children }) {
   }
 
   function checkIfSaved() {
-    console.info(config);
     const userConfigs = getConfigFromUser(user);
     setSaved(
       Object.keys(userConfigs).filter((name) => {

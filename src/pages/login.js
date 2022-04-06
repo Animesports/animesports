@@ -8,6 +8,8 @@ import { Loading } from "../components/Loading";
 import { authContext } from "../contexts/AuthContext";
 import styles from "../styles/pages/UserAuth.module.css";
 import { useNextOnEnter } from "../utils/Inputs";
+import * as Yup from "yup";
+import { loginValidation } from "../utils/Yup";
 
 export default function Login() {
   const formRef = useRef(null);
@@ -31,22 +33,35 @@ export default function Login() {
   if (isAuthenticated) return Router.push("/soccer") && null;
 
   function handleSubmit({ email, password }, { reset }) {
-    // Validação
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useNextOnEnter(
-      ["email", "password"].map((name) => formRef.current.getFieldRef(name)),
-      async () => {
-        signIn({ email, password }).then(
-          () => {
-            Router.push("/soccer");
-            reset();
-          },
-          (error) => {
-            console.info("error:", error);
-            reset();
+    loginValidation(
+      { email, password },
+      () => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useNextOnEnter(
+          ["email", "password"].map((name) =>
+            formRef.current.getFieldRef(name)
+          ),
+          async () => {
+            signIn({ email, password }).then(
+              () => {
+                Router.push("/soccer");
+                reset();
+              },
+              (error) => {
+                if (error?.valid === false) {
+                  return formRef.current.setErrors({
+                    password: "Credenciais inválidas",
+                  });
+                }
+                formRef.current.setErrors({
+                  password: "Não foi possível concluir o login",
+                });
+              }
+            );
           }
         );
-      }
+      },
+      formRef
     );
   }
 

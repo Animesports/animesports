@@ -13,6 +13,8 @@ export function Input({
   getRef,
   readOnly,
   className,
+  min,
+  max,
   ...rest
 }) {
   const InputRef = useRef(null);
@@ -39,6 +41,8 @@ export function Input({
         autoComplete={autoComplete}
         readOnly={readOnly}
         className={className}
+        min={min}
+        max={max}
       />
 
       {tag && (

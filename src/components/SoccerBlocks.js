@@ -1,10 +1,11 @@
 import { Form } from "@unform/web";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { OnlyRegisteredUsers } from "../services/auth";
 import styles from "../styles/components/SoccerBlocks.module.css";
 import { useNextOnEnter } from "../utils/Inputs";
 import { Input } from "./Input";
 import { HideContent } from "./HideContent";
+import { gameValidate } from "../utils/Yup";
 
 export function SoccerScore() {
   return (
@@ -69,8 +70,11 @@ export function SoccerScore() {
 
 export function SoccerPlay() {
   const formRef = useRef(null);
+  const [visible, setVisible] = useState(true);
 
-  function handlePlaySubmit(data, { reset }) {
+  if (!visible) return SoccerScore() ?? null;
+
+  function handlePlaySubmit(data) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useNextOnEnter(
       [
@@ -78,8 +82,21 @@ export function SoccerPlay() {
         formRef.current.getFieldRef("visitor"),
       ],
       () => {
-        reset();
-      }
+        const replaceNum = {
+          visited: Number(data.visited),
+          visitor: Number(data.visitor),
+        };
+
+        gameValidate(
+          replaceNum,
+          () => {
+            console.info("game:", replaceNum);
+            setVisible(false);
+          },
+          formRef
+        );
+      },
+      { ignoreEmpty: false }
     );
   }
 
@@ -95,7 +112,8 @@ export function SoccerPlay() {
                     <span>Flamengo</span>
                     <Input
                       name="visited"
-                      placeholder={0}
+                      placeholder="0"
+                      min={0}
                       autoComplete="off"
                       type="number"
                     />
@@ -107,7 +125,8 @@ export function SoccerPlay() {
                     <span>São Paulo</span>
                     <Input
                       name="visitor"
-                      placeholder={0}
+                      placeholder="0"
+                      min={0}
                       autoComplete="off"
                       type="number"
                     />

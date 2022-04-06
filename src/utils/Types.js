@@ -34,3 +34,11 @@ export class DbConfig {
   video = "config.video";
   darkmode = "config.darkmode";
 }
+
+export class UseNextOp {
+  ignoreEmpty = Boolean;
+}
+
+export class DefaultOp {
+  ignoreEmpty = true;
+}

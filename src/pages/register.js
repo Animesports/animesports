@@ -13,6 +13,8 @@ import {
 } from "../services/email";
 import styles from "../styles/pages/UserAuth.module.css";
 import { useNextOnEnter } from "../utils/Inputs";
+import * as Yup from "yup";
+import { codeValidation, registerValidation } from "../utils/Yup";
 
 export default function Register() {
   const [currentStep, setCurrentStep] = useState("initial");
@@ -37,41 +39,63 @@ export default function Register() {
   if (isAuthenticated) return Router.push("/soccer") && null;
 
   function handleNextStep({ name, email, password }, { reset }) {
-    // Validação dos campos
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useNextOnEnter(
-      ["name", "email", "password"].map((name) =>
-        formRef.current.getFieldRef(name)
-      ),
+    registerValidation(
+      { name, email, password },
       () => {
-        signUp({ name, email, password }).then(
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useNextOnEnter(
+          ["name", "email", "password"].map((name) =>
+            formRef.current.getFieldRef(name)
+          ),
           () => {
-            requestCodeValidation({ email }).then((success) => {
-              if (!success) throw "fetch-error";
-              setCurrentStep("email-validation");
-              reset();
-            });
-          },
-          (error) => {
-            console.info(error);
+            signUp({ name, email, password }).then(
+              () => {
+                requestCodeValidation({ email }).then((success) => {
+                  if (!success) throw "fetch-error";
+                  setCurrentStep("email-validation");
+                  reset();
+                });
+              },
+              (error) => {
+                if (error?.message === "invalid email address") {
+                  return formRef.current.setErrors({
+                    email: "Já existe uma conta com este email",
+                  });
+                }
+
+                formRef.current.setErrors({
+                  password: "Não foi possível criar uma conta",
+                });
+              }
+            );
           }
         );
-      }
+      },
+      formRef
     );
   }
 
   function handleEmailValidation({ code }, { reset }) {
-    // Validação dos campos
-    requestCodeConfirmation({ code }).then(
-      (success) => {
-        if (!success) throw "invalid-code";
-        Router.push("/soccer");
-        reset();
+    codeValidation(
+      { code },
+      () => {
+        requestCodeConfirmation({ code }).then(
+          (success) => {
+            if (!success) {
+              formRef.current.setErrors({ code: "O código não corresponde" });
+              throw "invalid-code";
+            }
+            Router.push("/soccer");
+            reset();
+          },
+          () => {
+            formRef.current.setErrors({
+              code: "Ocorreu um erro",
+            });
+          }
+        );
       },
-      (error) => {
-        console.info(error);
-      }
+      formRef
     );
   }
 
@@ -108,7 +132,7 @@ export default function Register() {
         )}
 
         {["email-validation"].includes(currentStep) && (
-          <Form onSubmit={handleEmailValidation}>
+          <Form ref={formRef} onSubmit={handleEmailValidation}>
             <Input
               name="code"
               placeholder="Código de 6 dígitos enviado por email"
