@@ -15,30 +15,29 @@ export function BackgroundVideo() {
   return (
     <>
       <div className={styles.overlay} />
-      {!isAuthenticated ||
-        (isFetched && config.video && (
-          <video
-            className={styles.background}
-            autoPlay
-            playsInline
-            muted
-            loop
-            poster="/poster.webp"
-          >
-            {pageLoad && (
-              <>
-                <source
-                  src="https://github.com/Animesports/animesports/blob/main/public/videos/soccer_web.webm?raw=true"
-                  type="video/webm"
-                ></source>
-                <source
-                  src="https://github.com/Animesports/animesports/blob/main/public/videos/soccer_otz.mp4?raw=true"
-                  type="video/mp4"
-                ></source>
-              </>
-            )}
-          </video>
-        ))}
+      {isFetched && config.video && (
+        <video
+          className={styles.background}
+          autoPlay
+          playsInline
+          muted
+          loop
+          poster="/poster.webp"
+        >
+          {pageLoad && (
+            <>
+              <source
+                src="https://github.com/Animesports/animesports/blob/main/public/videos/soccer_web.webm?raw=true"
+                type="video/webm"
+              ></source>
+              <source
+                src="https://github.com/Animesports/animesports/blob/main/public/videos/soccer_otz.mp4?raw=true"
+                type="video/mp4"
+              ></source>
+            </>
+          )}
+        </video>
+      )}
 
       {isAuthenticated && !config.video && (
         <img className={styles.default} src="/poster.webp" alt="bf" />
