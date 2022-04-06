@@ -24,7 +24,7 @@ export function BackgroundVideo() {
           loop
           poster="/poster.webp"
         >
-          {pageLoad && (
+          {pageLoad && isFetched && (
             <>
               <source
                 src="https://github.com/Animesports/animesports/blob/main/public/videos/soccer_web.webm?raw=true"
