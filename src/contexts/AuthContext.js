@@ -72,6 +72,7 @@ export function AuthProvider({ children }) {
           setUser(user);
         },
         (err) => {
+          signOut({ reload: false });
           console.info(err);
         }
       );
@@ -84,10 +85,6 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(user.id !== String);
     setIsAdmin(user?.data?.admin || false);
   }, [user]);
-
-  useEffect(() => {
-    console.info(sessionId, user.id);
-  }, [sessionId]);
 
   return (
     <authContext.Provider

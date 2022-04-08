@@ -8,7 +8,7 @@ import {
   getConfigFromUser,
   updateObject,
 } from "../utils/Global";
-import { Config } from "../utils/Types";
+import { Config, User } from "../utils/Types";
 import { authContext } from "./AuthContext";
 
 export const configContext = createContext({
@@ -23,7 +23,7 @@ export function ConfigProvider({ children }) {
   const [config, setConfig] = useState(new Config());
   const [saved, setSaved] = useState(true);
   const [processing, setProcessing] = useState(false);
-  const { user, setUser, sessionId } = useContext(authContext);
+  const { user, setUser, sessionId, signOut } = useContext(authContext);
 
   function apply(data) {
     setConfig(data);
@@ -31,9 +31,14 @@ export function ConfigProvider({ children }) {
 
   async function save() {
     setProcessing(true);
-    await updateUserConfig(config, { sessionId }).then(() => {
-      setUser(updateObject(user, convertConfigToUser(config)));
-    });
+    await updateUserConfig(config, { sessionId }).then(
+      () => {
+        setUser(updateObject(user, convertConfigToUser(config)));
+      },
+      () => {
+        signOut({ reload: true });
+      }
+    );
     setProcessing(false);
   }
 
