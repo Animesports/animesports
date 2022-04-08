@@ -23,7 +23,7 @@ export function ConfigProvider({ children }) {
   const [config, setConfig] = useState(new Config());
   const [saved, setSaved] = useState(true);
   const [processing, setProcessing] = useState(false);
-  const { user, setUser } = useContext(authContext);
+  const { user, setUser, sessionId } = useContext(authContext);
 
   function apply(data) {
     setConfig(data);
@@ -31,7 +31,7 @@ export function ConfigProvider({ children }) {
 
   async function save() {
     setProcessing(true);
-    await updateUserConfig(config, user).then(() => {
+    await updateUserConfig(config, { sessionId }).then(() => {
       setUser(updateObject(user, convertConfigToUser(config)));
     });
     setProcessing(false);

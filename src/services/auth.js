@@ -36,19 +36,19 @@ export function signInRequest({ email, password }) {
         email,
         password,
       },
-    }).then(({ valid, client }) => {
-      if (valid) return resolve(client);
+    }).then(({ valid, sessionId, client }) => {
+      if (valid) return resolve({ sessionId, user: client });
       reject({ valid });
     }, reject);
   });
 }
 
-export function recoveryUserData({ id }) {
+export function recoveryUserData({ sessionId }) {
   return new Promise((resolve, reject) => {
     Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/clients`, {
       method: "GET",
       headers: {
-        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${id}`,
+        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${sessionId}`,
       },
     }).then((data) => {
       if (data.statusCode) return reject(data);

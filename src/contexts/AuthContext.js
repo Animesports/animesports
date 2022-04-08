@@ -17,6 +17,7 @@ export const authContext = createContext({
   signOut: Function,
   user: User,
   setUser: Function,
+  sessionId: String,
 });
 
 export function AuthProvider({ children }) {
@@ -24,26 +25,33 @@ export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState(new User());
+  const [sessionId, setSessionId] = useState(null);
 
   function signIn({ email, password }) {
     return new Promise(async (resolve, reject) => {
-      await signInRequest({ email, password }).then((user) => {
-        setCookie(undefined, "animesports.id", user.id, {
-          maxAge: 60 * 60 * (24 * 7), // Seven days
-        });
+      await signInRequest({ email, password }).then(
+        ({ sessionId, user }) => {
+          setCookie(undefined, "animesports.session", sessionId, {
+            maxAge: 60 * 60 * (24 * 7), // Seven days
+          });
 
-        setUser(user);
+          setSessionId(sessionId);
+          setUser(user);
 
-        resolve();
-      }, reject);
+          resolve();
+        },
+        (err) => {
+          reject(err);
+        }
+      );
 
       setIsFetched(true);
     });
   }
 
-  function signOut() {
-    destroyCookie(undefined, "animesports.id");
-    Router.reload();
+  function signOut({ reload }) {
+    destroyCookie(undefined, "animesports.session");
+    reload && Router.reload();
   }
 
   function signUp({ name, email, password }) {
@@ -55,12 +63,18 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(async () => {
-    const { ["animesports.id"]: id } = parseCookies();
+    const { ["animesports.session"]: sessionId } = parseCookies();
 
-    if (id) {
-      await recoveryUserData({ id }).then((user) => {
-        setUser(user);
-      }, console.info);
+    if (sessionId) {
+      await recoveryUserData({ sessionId }).then(
+        (user) => {
+          setSessionId(sessionId);
+          setUser(user);
+        },
+        (err) => {
+          console.info(err);
+        }
+      );
     }
 
     setIsFetched(true);
@@ -70,6 +84,10 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(user.id !== String);
     setIsAdmin(user?.data?.admin || false);
   }, [user]);
+
+  useEffect(() => {
+    console.info(sessionId, user.id);
+  }, [sessionId]);
 
   return (
     <authContext.Provider
@@ -82,6 +100,7 @@ export function AuthProvider({ children }) {
         signUp,
         signOut,
         setUser,
+        sessionId,
       }}
     >
       {children}

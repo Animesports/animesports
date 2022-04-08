@@ -1,12 +1,12 @@
 import { Fetch } from "../utils/Fetch";
 import { DbConfig } from "../utils/Types";
 
-export function updateUserConfig(config, { id }) {
+export function updateUserConfig(config, { sessionId }) {
   return new Promise((resolve, reject) => {
     Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/clients`, {
       method: "PATCH",
       headers: {
-        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${id}`,
+        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${sessionId}`,
       },
       body: convertToFetch(config),
     }).then(({ acknowledged }) => {
