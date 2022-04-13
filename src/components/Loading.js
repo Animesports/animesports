@@ -1,8 +1,8 @@
 import styles from "../styles/components/Loading.module.css";
 
-export function Loading() {
+export function Loading({ className, ...rest }) {
   return (
-    <div className={styles.container}>
+    <div className={[styles.container, className].join(" ")} {...rest}>
       <img src="/icons/cloud.svg" alt="cloud" />
 
       <div className={styles.loading}>

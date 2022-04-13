@@ -3,7 +3,6 @@ import { useContext } from "react";
 import { Loading } from "../components/Loading";
 import { authContext } from "../contexts/AuthContext";
 import { Fetch } from "../utils/Fetch";
-import { User } from "../utils/Types";
 
 export function signUpRequest({ email, name, password }) {
   return new Promise((resolve, reject) => {

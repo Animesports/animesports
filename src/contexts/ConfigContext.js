@@ -1,14 +1,11 @@
-import { createContext } from "react";
-import { useState } from "react";
-import { useContext } from "react";
-import { useEffect } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import { updateUserConfig } from "../services/config";
 import {
   convertConfigToUser,
   getConfigFromUser,
   updateObject,
 } from "../utils/Global";
-import { Config, User } from "../utils/Types";
+import { Config } from "../utils/Types";
 import { authContext } from "./AuthContext";
 
 export const configContext = createContext({

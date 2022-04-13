@@ -26,6 +26,14 @@ export class Config {
   darkmode = Boolean;
 }
 
+export class Payment {
+  value = Number; // Valor total do pagamento
+  verified = Boolean; // Se foi confirmado por um administrador
+  id = String; // Identificação do pagamento "michel-123456"
+  reference = String; // Id do usuário
+  expireAt = Object; // Data de expiração
+}
+
 export class DbConfig {
   email = "data.email.address";
   pix = "data.pix";

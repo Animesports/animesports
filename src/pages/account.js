@@ -12,6 +12,8 @@ import { Config } from "../utils/Types";
 import { useContext, useRef } from "react";
 import * as Yup from "yup";
 import { configValidation } from "../utils/Yup";
+import { paymentContext } from "../contexts/PaymentContext";
+import { Loading } from "../components/Loading";
 
 export default function Account() {
   const [formref, openPaymentRef, openEmailVerify] = [
@@ -21,6 +23,9 @@ export default function Account() {
   ];
 
   const { config, save, apply, saved, processing } = useContext(configContext);
+  const { payments, payFetched } = useContext(paymentContext);
+
+  const verifiedCount = payments.filter((pay) => pay?.verified).length;
 
   function handleSave() {
     configValidation(config, save, formref);
@@ -105,8 +110,19 @@ export default function Account() {
                       <div>
                         <span>Pagamento</span>
                       </div>
-                      <img src="icons/fuel.svg" alt="fuel" />
-                      <span>Recarregue e continue jogando</span>
+                      {payFetched && verifiedCount === 0 && (
+                        <>
+                          <img src="icons/fuel.svg" alt="fuel" />
+                          <span>Recarregue e continue jogando</span>
+                        </>
+                      )}
+                      {payFetched && verifiedCount > 0 && (
+                        <>
+                          <img src="icons/approve.svg" alt="approve" />
+                          <span>{verifiedCount} recargas em andamento</span>
+                        </>
+                      )}
+                      {!payFetched && <Loading />}
                     </div>
                     <div className={styles.checkBox}>
                       <Checkbox
