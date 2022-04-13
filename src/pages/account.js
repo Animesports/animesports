@@ -10,7 +10,6 @@ import { OnlyRegisteredUsers } from "../services/auth";
 import { configContext } from "../contexts/ConfigContext";
 import { Config } from "../utils/Types";
 import { useContext, useRef } from "react";
-import * as Yup from "yup";
 import { configValidation } from "../utils/Yup";
 import { paymentContext } from "../contexts/PaymentContext";
 import { Loading } from "../components/Loading";
@@ -164,11 +163,11 @@ export default function Account() {
         })}
       </Structure>
 
-      <Modal openRef={openPaymentRef}>
+      <Modal openRef={openPaymentRef} customStyle>
         <Payment />
       </Modal>
 
-      <Modal openRef={openEmailVerify}>
+      <Modal openRef={openEmailVerify} customStyle>
         <VerifyEmail />
       </Modal>
     </>

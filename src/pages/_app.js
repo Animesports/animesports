@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { BackgroundVideo } from "../components/BackgroundVideo";
+import { AdminProvider } from "../contexts/AdminContext";
 import { AuthProvider } from "../contexts/AuthContext";
 import { ConfigProvider } from "../contexts/ConfigContext";
 import { PaymentProvider } from "../contexts/PaymentContext";
@@ -15,7 +16,9 @@ function MyApp({ Component, pageProps }) {
       <AuthProvider>
         <PaymentProvider>
           <ConfigProvider>
-            <Component {...pageProps} />
+            <AdminProvider>
+              <Component {...pageProps} />
+            </AdminProvider>
             <BackgroundVideo />
           </ConfigProvider>
         </PaymentProvider>

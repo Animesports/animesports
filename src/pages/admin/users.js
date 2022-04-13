@@ -2,7 +2,8 @@ import { OnlyAdminUsers } from "../../services/auth";
 import { AdminSidebar } from "../../components/AdminSidebar";
 import { Structure } from "../../components/Structure";
 import styles from "../../styles/pages/Admin.module.css";
-import { LeadboardTable } from "../../components/LeadboardTable";
+
+import { AdminUsersTable } from "../../components/AdminUsersTable";
 
 export default function Users() {
   return (
@@ -15,7 +16,7 @@ export default function Users() {
               <div className={styles.header}>
                 <h1>Usuários Cadastrados</h1>
               </div>
-              <LeadboardTable
+              <AdminUsersTable
                 title="Usuários"
                 disable={["position", "hits"]}
                 customClass={styles.leadboardTable}
