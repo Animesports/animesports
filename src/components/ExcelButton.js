@@ -1,4 +1,5 @@
 import * as XLSX from "sheetjs-style";
+import React from "react";
 
 import { History } from "../components/AdminPay";
 import ReactDOMServer from "react-dom/server";
@@ -10,16 +11,24 @@ import {
   filterSheet,
   hStyle,
 } from "../utils/Excel";
+import { useContext } from "react";
+import { adminContext } from "../contexts/AdminContext";
 
 export function ExcelButton({ buttonText, name }) {
+  const { fetched, history } = useContext(adminContext);
+
   function download() {
+    if (history.length === 0) return;
+
     const tableDom = document.createElement("table");
-    tableDom.innerHTML = ReactDOMServer.renderToStaticMarkup(History());
+    tableDom.innerHTML = ReactDOMServer.renderToStaticMarkup(
+      React.cloneElement(<History ft={fetched} values={history} />)
+    );
 
     const workbook = XLSX.utils.table_to_book(tableDom);
     const ws = workbook.Sheets.Sheet1;
 
-    const wscols = [{ wch: 30 }, { wch: 18 }, { wch: 16 }];
+    const wscols = [{ wch: 30 }, { wch: 18 }, { wch: 16 }, { wch: 16 }];
 
     ws["!cols"] = wscols;
 
@@ -33,8 +42,8 @@ export function ExcelButton({ buttonText, name }) {
       ws[key].s = cStyle();
     });
 
-    // Set Colors "C" Column
-    filterColumn("C", filterSheet(ws)).map((key) => {
+    // Set Colors "D" Column
+    filterColumn("D", filterSheet(ws)).map((key) => {
       ws[key].s.alignment = { horizontal: "center" };
       if (ws[key].v === "Entrada") ws[key].s.font.color = { rgb: "000A64A6" };
       if (ws[key].v === "Saída") ws[key].s.font.color = { rgb: "00C70A0A" };
@@ -42,6 +51,11 @@ export function ExcelButton({ buttonText, name }) {
 
     // Set currency "B" column
     filterCells(filterColumn("B", filterSheet(ws))).map((key) => {
+      ws[key].s.alignment = { horizontal: "center" };
+    });
+
+    // Set currency "C" column
+    filterCells(filterColumn("C", filterSheet(ws))).map((key) => {
       ws[key].s.alignment = { horizontal: "right" };
     });
 
@@ -54,5 +68,9 @@ export function ExcelButton({ buttonText, name }) {
 
     XLSX.writeFile(workbook, "Histórico.xlsx");
   }
-  return <button onClick={download}>{buttonText}</button>;
+  return (
+    <button className={history.length === 0 && "disable"} onClick={download}>
+      {buttonText}
+    </button>
+  );
 }

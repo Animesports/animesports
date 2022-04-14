@@ -170,3 +170,8 @@ input[type="number"] {
   transform: translateY(0);
   transition: 0s;
 }
+
+.disable {
+  opacity: 0.9;
+  cursor: inherit;
+}

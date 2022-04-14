@@ -28,6 +28,7 @@ export class Config {
 
 export class Payment {
   value = Number; // Valor total do pagamento
+  type = "receive" || "send"; // Tipo de operação
   verified = Boolean; // Se foi confirmado por um administrador
   id = String; // Identificação do pagamento "michel-123456"
   reference = String; // Id do usuário

@@ -89,7 +89,7 @@ export function AdminUsersTable({ customClass, title }) {
                     src="/icons/info.svg"
                     alt="i"
                     onClick={() => {
-                      selectUser({ id, data });
+                      selectUser({ id, data, modal: "info" });
                     }}
                   />
                 </td>
@@ -100,7 +100,7 @@ export function AdminUsersTable({ customClass, title }) {
                     src="/icons/delete.svg"
                     alt="del"
                     onClick={() => {
-                      selectUser({ id, data });
+                      selectUser({ id, data, modal: "delete" });
                     }}
                   />
                 </td>
@@ -110,11 +110,21 @@ export function AdminUsersTable({ customClass, title }) {
         </tbody>
       </table>
 
-      <Modal openRef={userDetailRef}>
+      <Modal
+        openOn={selectedUser?.modal === "info"}
+        functions={{
+          close: () => selectUser(null),
+        }}
+      >
         <UserDetail user={selectedUser} />
       </Modal>
 
-      <Modal openRef={userDeleteRef}>
+      <Modal
+        openOn={selectedUser?.modal === "delete"}
+        functions={{
+          close: () => selectUser(null),
+        }}
+      >
         <DeleteUser user={selectedUser} />
       </Modal>
     </>

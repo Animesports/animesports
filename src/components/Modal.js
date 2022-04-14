@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "../styles/components/Modal.module.css";
 
-export function Modal({ openRef, children, alwaysOn, customStyle }) {
+export function Modal({ openRef, children, customStyle, openOn, functions }) {
   const [visible, setVisible] = useState(false);
   const [modalRef, overlayRef] = [useRef(null), useRef(null)];
 
   useEffect(() => {
-    if (openRef.current) {
+    if (openRef && openRef.current) {
       openRef.current.addEventListener("click", () => {
         open();
       });
@@ -19,19 +19,20 @@ export function Modal({ openRef, children, alwaysOn, customStyle }) {
         }
       });
     }
-  }, [modalRef, overlayRef, openRef.current]);
+  }, [modalRef, overlayRef, openRef?.current]);
 
   function close() {
-    setVisible(false);
+    functions?.close?.() || setVisible(false);
   }
 
   function open() {
-    setVisible(true);
+    functions?.open?.() || setVisible(true);
   }
 
+  console.info("Aqui:", { visible, openOn });
   return (
     <>
-      {visible && (
+      {(visible || openOn) && (
         <>
           <div
             className={!customStyle && styles.overlay}

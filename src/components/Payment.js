@@ -76,26 +76,29 @@ export function Payment({ close }) {
     );
   }
 
-  if (payments.length === 2 || current === "new-payment") {
+  if (payments.length === 0 || current === "new-payment") {
     return (
       <>
         <div className={styles.overlay} onClick={close} />
         <div className={styles.container}>
           <img src="/icons/pix-banco-central.svg" alt="PIX" />
           {["new-payment"].includes(current) && (
-            <img src={qrcode.base64} alt="QRcode" />
+            <>
+              <img src={qrcode.base64} alt="QRcode" />
+              <span>
+                <strong className={styles.payReferecnce}>{reference}</strong>Use
+                o código QR para realizar a recarga
+              </span>
+            </>
           )}
 
-          <span>
-            {" "}
-            <strong className={styles.payReferecnce}>{reference}</strong>Use o
-            código QR acima para realizar a recarga
-          </span>
-
           {["initial"].includes(current) && (
-            <button onClick={handleNewPayment} type="button">
-              Recarregar
-            </button>
+            <>
+              <span>Recarregue via PIX para continuar jogando</span>
+              <button onClick={handleNewPayment} type="button">
+                Recarregar
+              </button>
+            </>
           )}
 
           {["new-payment"].includes(current) && (
@@ -129,15 +132,38 @@ export function Payment({ close }) {
           <img src="/icons/pix-banco-central.svg" alt="PIX" />
 
           <span>
-            Você possui <strong>{nonVerifiedPayments.length}</strong> recarga
-            {nonVerifiedPayments.length > 1 || nonVerifiedPayments.length === 0
-              ? "s"
-              : ""}{" "}
-            aguardando aprovação
+            Você possui
+            {nonVerifiedPayments[0] && (
+              <>
+                {" "}
+                <strong>{nonVerifiedPayments.length}</strong> recarga
+                {nonVerifiedPayments.length > 1 ||
+                nonVerifiedPayments.length === 0
+                  ? "s"
+                  : ""}{" "}
+                aguardando aprovação
+              </>
+            )}
             {verifiedPayments[0] && (
               <>
                 {" "}
-                e <strong>{verifiedPayments.length}</strong> aprovada.
+                {nonVerifiedPayments[0] && "e "}
+                <strong>{verifiedPayments.length}</strong>{" "}
+                {!nonVerifiedPayments[0] && (
+                  <>
+                    recarga
+                    {nonVerifiedPayments.length > 1 ||
+                    nonVerifiedPayments.length === 0
+                      ? "s"
+                      : ""}{" "}
+                  </>
+                )}{" "}
+                aprovada
+                {nonVerifiedPayments.length > 1 ||
+                nonVerifiedPayments.length === 0
+                  ? "s"
+                  : ""}
+                .
               </>
             )}
           </span>

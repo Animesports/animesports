@@ -43,14 +43,15 @@
   pointer-events: all;
 }
 
-@media screen and (max-width: 630px) {
-  .pending .profile img,
+.container td.identification {
+  color: var(--blue-4);
+}
+
+@media screen and (max-width: 734px) {
   .pending .email {
     display: none;
   }
-}
 
-@media screen and (max-width: 390px) {
   .pending .profile img {
     display: block;
   }
@@ -64,14 +65,18 @@
   }
 }
 
-@media screen and (max-width: 322px) {
+@media screen and (max-width: 420px) {
+  .pending .profile {
+    display: none;
+  }
+
   .history .profile {
     display: none;
   }
 }
 
-@media screen and (max-width: 316px) {
-  .pending .profile {
+@media screen and (max-width: 360px) {
+  .history .identification {
     display: none;
   }
 }
