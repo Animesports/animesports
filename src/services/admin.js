@@ -1,13 +1,16 @@
 import { Fetch } from "../utils/Fetch";
 
-export function updatePayment({ sessionId, id }, props) {
+export function updatePayment({ sessionId, id, reference }, props) {
   return new Promise((resolve, reject) => {
     Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/admin/payments/${id}`, {
       method: "PATCH",
       headers: {
         authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${sessionId}`,
       },
-      body: props,
+      body: {
+        reference,
+        props,
+      },
     }).then((data) => {
       if (data.statusCode) return reject(data);
       if (data.acknowledged) return resolve(data);

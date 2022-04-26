@@ -57,9 +57,9 @@ export function PendingPayments({
         </thead>
 
         <tbody>
-          {payments.map(({ value, id, user }, index) => {
+          {payments.map(({ value, id, user, reference }, index) => {
             return (
-              <tr className={leadStyle.row} key={name + index + "history"}>
+              <tr className={leadStyle.row} key={id + index + "history"}>
                 <td
                   className={[
                     "profile",
@@ -88,7 +88,7 @@ export function PendingPayments({
                 <td className={styles.amountAction}>
                   <button
                     onClick={() => {
-                      confirmPayment({ id });
+                      confirmPayment({ id, reference });
                     }}
                   >
                     {{ receive: "Receber", send: "Pagar" }[type]}

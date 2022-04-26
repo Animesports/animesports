@@ -1,3 +1,19 @@
+export function plural(number) {
+  return {
+    convert: (text) => {
+      return number === 1 ? text : text + "s";
+    },
+  };
+}
+
+export function currency() {
+  return {
+    getCents: (number) =>
+      `00${(number - Math.trunc(number)).toFixed(2) * 100}`.slice(-2),
+    getReals: (number) => Math.trunc(number),
+  };
+}
+
 export function getConfigFromUser(user) {
   return {
     email: user.data.email.address,

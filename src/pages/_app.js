@@ -4,6 +4,7 @@ import { AdminProvider } from "../contexts/AdminContext";
 import { AuthProvider } from "../contexts/AuthContext";
 import { ConfigProvider } from "../contexts/ConfigContext";
 import { PaymentProvider } from "../contexts/PaymentContext";
+import { SeasonProvider } from "../contexts/SeasonContext";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
@@ -13,16 +14,18 @@ function MyApp({ Component, pageProps }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <AuthProvider>
-        <PaymentProvider>
-          <ConfigProvider>
-            <AdminProvider>
-              <Component {...pageProps} />
-            </AdminProvider>
-            <BackgroundVideo />
-          </ConfigProvider>
-        </PaymentProvider>
-      </AuthProvider>
+      <SeasonProvider>
+        <AuthProvider>
+          <PaymentProvider>
+            <ConfigProvider>
+              <AdminProvider>
+                <Component {...pageProps} />
+              </AdminProvider>
+              <BackgroundVideo />
+            </ConfigProvider>
+          </PaymentProvider>
+        </AuthProvider>
+      </SeasonProvider>
     </>
   );
 }

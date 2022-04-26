@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { paymentContext } from "../contexts/PaymentContext";
+import { seasonContext } from "../contexts/SeasonContext";
 import styles from "../styles/components/Payment.module.css";
 import { Loading } from "./Loading";
 import { QrCodePix } from "qrcode-pix";
@@ -7,6 +8,7 @@ import copy from "copy-to-clipboard";
 
 export function Payment({ close }) {
   const { payments, payFetched, newPayment } = useContext(paymentContext);
+  const { season, ["fetched"]: seasonFetched } = useContext(seasonContext);
 
   const verifiedPayments = payments.filter((pay) => pay?.verified === true);
   const nonVerifiedPayments = payments.filter((pay) => pay?.verified === false);
@@ -20,6 +22,7 @@ export function Payment({ close }) {
   }
 
   function handleNewPayment() {
+    if (!seasonFetched || !season.ticket) return console.info(season);
     newPayment().then(async (payment) => {
       const pix = QrCodePix({
         version: "01",
@@ -29,7 +32,7 @@ export function Payment({ close }) {
         cep: "01153000",
         transactionId: payment.id,
         message: "Recarregue e continue jogando",
-        value: 3.5,
+        value: season.ticket,
       });
       setQrcode({
         base64: await pix.base64(),

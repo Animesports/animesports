@@ -22,7 +22,7 @@ export const adminContext = createContext({
 });
 
 export function AdminProvider({ children }) {
-  const { sessionId, isFetched, isAdmin } = useContext(authContext);
+  const { sessionId, isFetched, isAdmin, user } = useContext(authContext);
   const [fetched, setFetched] = useState(false);
   const [users, setUsers] = useState([]);
 
@@ -34,9 +34,9 @@ export function AdminProvider({ children }) {
   const [receiveSum, setReceiveSum] = useState(0);
   const [sendSum, setSendSum] = useState(0);
 
-  function confirmPayment({ id }) {
+  function confirmPayment({ id, reference }) {
     updatePayment(
-      { sessionId, id },
+      { sessionId, id, reference },
       {
         verified: true,
       }
@@ -67,7 +67,12 @@ export function AdminProvider({ children }) {
   async function importInitialData() {
     let lusers = null;
     await getAllUsers({ sessionId }).then((users) => {
-      setUsers(users);
+      setUsers(
+        users.map((u) => {
+          if (u.id === user.id) u.data.name = `${u.data.name} (você)`;
+          return u;
+        })
+      );
       lusers = users;
     });
 

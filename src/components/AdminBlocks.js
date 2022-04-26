@@ -1,12 +1,19 @@
 import styles from "../styles/components/AdminBlocks.module.css";
 import Router from "next/router";
+import { useContext } from "react";
+import { seasonContext } from "../contexts/SeasonContext";
+import { adminContext } from "../contexts/AdminContext";
+import { Loading } from "./Loading";
+import { currency, plural } from "../utils/Global";
 
 export function AdminBlocks() {
+  const { season, fetched } = useContext(seasonContext);
+  const { users } = useContext(adminContext);
   const blocks = [
-    ["Usuários", 39, "/icons/group.svg", "number", "/admin/users"],
-    ["Montante", 74, "/icons/coins.svg", "cash", "/admin/payments"],
-    ["Ingresso", 2, "/icons/money.svg", "cash", "/admin/payments"],
-    ["Agendados", 12, "/icons/schedule.svg", "number", "/admin/calendar"],
+    ["Usuário", users.length, "/icons/group.svg", "number", "/admin/users"],
+    ["Montante", season.amount, "/icons/coins.svg", "cash", "/admin/payments"],
+    ["Ingresso", season.ticket, "/icons/money.svg", "cash", "/admin/payments"],
+    ["Agendado", 0, "/icons/schedule.svg", "number", "/admin/calendar"],
   ];
 
   function navigateTo(url) {
@@ -16,6 +23,13 @@ export function AdminBlocks() {
   return (
     <div className={styles.container}>
       {blocks.map(([name, value, icon, type, redirect], index) => {
+        if (!fetched)
+          return (
+            <div className={styles.block}>
+              <Loading />
+            </div>
+          );
+
         return (
           <div
             onClick={() => navigateTo(redirect)}
@@ -35,13 +49,19 @@ export function AdminBlocks() {
                 {type === "cash" && (
                   <>
                     <span className={styles.symbol}>R$</span>
-                    <span className={styles.value}>{value}</span>
-                    <span className={styles.cents}>,00</span>
+                    <span className={styles.value}>
+                      {currency().getReals(value)}
+                    </span>
+                    <span className={styles.cents}>
+                      ,{currency().getCents(value)}
+                    </span>
                   </>
                 )}
               </div>
 
-              <span className={styles.name}>{name}</span>
+              <span className={styles.name}>
+                {(type === "number" && plural(value).convert(name)) || name}
+              </span>
             </div>
           </div>
         );

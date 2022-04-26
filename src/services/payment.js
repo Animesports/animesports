@@ -23,7 +23,6 @@ export function createNewPayment({ sessionId, name }) {
         authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${sessionId}`,
       },
       body: {
-        value: 2,
         identifier: name && name.split(" ")[0].substring(0, 5).toLowerCase(),
       },
     }).then((data) => {
