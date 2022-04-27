@@ -13,6 +13,7 @@ import { useContext, useRef } from "react";
 import { configValidation } from "../utils/Yup";
 import { paymentContext } from "../contexts/PaymentContext";
 import { Loading } from "../components/Loading";
+import { plural } from "../utils/Global";
 
 export default function Account() {
   const [formref, openPaymentRef, openEmailVerify] = [
@@ -118,7 +119,11 @@ export default function Account() {
                       {payFetched && verifiedCount > 0 && (
                         <>
                           <img src="icons/approve.svg" alt="approve" />
-                          <span>{verifiedCount} recargas em andamento</span>
+                          <span>
+                            {verifiedCount}{" "}
+                            {plural(verifiedCount).convert("recarga")} em
+                            andamento
+                          </span>
                         </>
                       )}
                       {!payFetched && <Loading />}

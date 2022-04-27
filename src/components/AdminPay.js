@@ -9,6 +9,7 @@ import { Loading } from "./Loading";
 import { EmailLink } from "./EmailLink";
 import { useContext } from "react";
 import { adminContext } from "../contexts/AdminContext";
+import { currency } from "../utils/Global";
 
 export function PendingPayments({
   type,
@@ -81,7 +82,7 @@ export function PendingPayments({
 
                 <td className={styles.amount}>
                   <div>
-                    <span>R$ {value}</span>
+                    <span>{currency().get(value)}</span>
                   </div>
                 </td>
 
@@ -188,7 +189,7 @@ export function History({ ["values"]: history, ["ft"]: fetched }) {
 
               <td className={styles.amount}>
                 <div>
-                  <span>R$ {value}</span>
+                  <span>{currency().get(value)}</span>
                 </div>
               </td>
 

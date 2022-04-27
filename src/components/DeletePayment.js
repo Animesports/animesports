@@ -16,7 +16,7 @@ export function DeletePayment({ payment, close }) {
         <strong className={styles.blue}>{payment.id ?? "Desconhecido"}</strong>
 
         <span>
-          <strong>Valor:</strong> R$ {payment.value}
+          <strong>Valor:</strong> {currency().get(payment.value)}
         </span>
 
         <span>

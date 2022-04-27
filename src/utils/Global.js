@@ -11,6 +11,8 @@ export function currency() {
     getCents: (number) =>
       `00${(number - Math.trunc(number)).toFixed(2) * 100}`.slice(-2),
     getReals: (number) => Math.trunc(number),
+    get: (number) =>
+      `R$ ${currency().getReals(number)},${currency().getCents(number)}`,
   };
 }
 

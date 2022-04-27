@@ -6,6 +6,7 @@ import { Structure } from "../../components/Structure";
 import styles from "../../styles/pages/Admin.module.css";
 import { useContext } from "react";
 import { adminContext } from "../../contexts/AdminContext";
+import { currency } from "../../utils/Global";
 
 export default function Payments() {
   const { fetched, history, sendPay, receivePay, receiveSum, sendSum } =
@@ -20,14 +21,14 @@ export default function Payments() {
             <div className={styles.content}>
               <div className={styles.header}>
                 <h2>Pagamentos Pendentes</h2>
-                <h2>R$ {sendSum}</h2>
+                <h2>{currency().get(sendSum)}</h2>
               </div>
 
               <PendingPayments type="send" values={sendPay} ft={fetched} />
 
               <div className={styles.header}>
                 <h2>Entrada de Pagamentos</h2>
-                <h2>R$ {receiveSum}</h2>
+                <h2>{currency().get(receiveSum)}</h2>
               </div>
 
               <PendingPayments
