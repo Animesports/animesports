@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { adminContext } from "../contexts/AdminContext";
 import styles from "../styles/components/DeleteUser.module.css";
+import { currency } from "../utils/Global";
 
 export function DeletePayment({ payment, close }) {
   const { deletePayment } = useContext(adminContext);
