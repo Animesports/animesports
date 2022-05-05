@@ -21,3 +21,8 @@
   margin-top: 1rem;
   margin-bottom: 0.5rem;
 }
+
+.container span {
+  white-space: break-spaces;
+  text-align: center;
+}

@@ -1,17 +1,22 @@
+import Router from "next/router";
+import { useContext } from "react";
+import { adminContext } from "../contexts/AdminContext";
 import styles from "../styles/components/AdminTables.module.css";
+import { getDisplayDate } from "../utils/Date";
+import { Empty } from "./Empty";
+import { Loading } from "./Loading";
 import { makeADate } from "./SoccerTable";
 
 export function AdminTables() {
-  const payments = [
-    {
-      name: "Gabriel Bardasson",
-      value: 40.25,
-    },
-    {
-      name: "Victor Pinto",
-      value: 20.25,
-    },
-  ];
+  const {
+    fetched,
+    ["payments"]: admPayments,
+    users,
+  } = useContext(adminContext);
+
+  const payments = admPayments
+    .filter((p) => p.verified === false)
+    .filter((p) => p.type === "send");
 
   const games = [
     {
@@ -65,20 +70,46 @@ export function AdminTables() {
           </tr>
         </thead>
 
-        <tbody>
-          {payments.map(({ name }, index) => {
-            return (
-              <tr key={"adm payments" + index}>
-                <td>
-                  <span>{name}</span>
-                </td>
-                <td>
-                  <button>Pagar</button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
+        {!fetched && <Loading />}
+        {fetched && payments.length === 0 && (
+          <tbody>
+            <tr>
+              <Empty
+                className={styles.emptyBox}
+                descrition="Nenhum pagamento pendente"
+                title=" "
+              />
+            </tr>
+          </tbody>
+        )}
+        {fetched && payments.length > 0 && (
+          <tbody>
+            {payments.map(({ reference, id }, index) => {
+              return (
+                <tr key={id + index}>
+                  <td>
+                    <span>
+                      {users.filter((u) => u.id === reference)[0]?.data.name}
+                    </span>
+                  </td>
+
+                  <td className={styles.payId}>
+                    <span>{id}</span>
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => {
+                        Router.push("/admin/payments");
+                      }}
+                    >
+                      Pagar
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        )}
       </table>
 
       <table className={styles.soccerTable}>
@@ -92,11 +123,13 @@ export function AdminTables() {
 
         <tbody>
           {games.map(({ date, id, teams }, index) => {
+            const { hours, minutes } = getDisplayDate(date);
+
             return (
               <tr key={"adm games" + index}>
                 <td className={styles.hour}>
                   <span>
-                    {date.getHours()}:{date.getMinutes()}
+                    {hours}:{minutes}
                   </span>
                 </td>
                 <td>

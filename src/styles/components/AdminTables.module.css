@@ -9,7 +9,17 @@
   flex: 1;
   background: var(--gray-2);
   color: var(--gray);
-  height: fit-content;
+  height: 100%;
+}
+
+.container > table tr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container tr th {
+  width: 100%;
 }
 
 .container > table thead th {
@@ -20,6 +30,10 @@
 
 .container > table span {
   font-weight: 400;
+}
+
+.container tbody {
+  display: block;
 }
 
 .container > table button {
@@ -46,6 +60,15 @@
   max-width: 19.7rem;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.container .emptyBox {
+  width: 100%;
+  border-color: transparent;
+}
+
+.payId {
+  color: var(--blue-4);
 }
 
 @media screen and (max-width: 393px) {

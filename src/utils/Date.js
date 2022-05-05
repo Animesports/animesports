@@ -43,7 +43,7 @@ export function sortByHours(array) {
 }
 
 export function getDisplayDate(str) {
-  const d = new Date(str);
+  const d = typeof str === "string" ? new Date(str) : str;
   return {
     year: ("0000" + d.getFullYear()).slice(-4),
     month: ("00" + d.getMonth()).slice(-2),

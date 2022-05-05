@@ -2,7 +2,7 @@ import styles from "../styles/components/Empty.module.css";
 
 export function Empty({ className, title, descrition }) {
   return (
-    <div className={[className, styles.container].join(" ")}>
+    <div className={[styles.container, className].join(" ")}>
       <img src="/icons/cloud.svg" alt="no-results" />
       <p>{title || "Nada encontrado"}</p>
       <span>

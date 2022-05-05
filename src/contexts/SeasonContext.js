@@ -9,6 +9,7 @@ export function SeasonProvider({ children }) {
 
   async function loadSeason() {
     await seasonRequest().then((season) => {
+      console.info(season);
       setSeason(season);
     });
     setFetched(true);
