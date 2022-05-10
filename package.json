@@ -23,6 +23,7 @@
     "qrcode-pix": "^4.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-simple-timefield": "^3.2.5",
     "sheetjs-style": "^0.15.8",
     "uuid": "^8.3.2",
     "yup": "^0.32.11"

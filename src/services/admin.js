@@ -1,5 +1,27 @@
 import { Fetch } from "../utils/Fetch";
 
+export function removeClient({ id, email, name }, sessionId) {
+  console.info("fetching:", id, email, name);
+  return new Promise((resolve, reject) => {
+    Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/admin/clients`, {
+      method: "DELETE",
+      headers: {
+        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${sessionId}`,
+      },
+      body: {
+        id,
+        email,
+        name,
+      },
+    }).then((data) => {
+      console.info("receiving data:", data);
+      if (data.statusCode) return reject(data);
+      if (data.deleted) return resolve(data);
+      reject(data);
+    }, reject);
+  });
+}
+
 export function updatePayment({ sessionId, id, reference }, props) {
   return new Promise((resolve, reject) => {
     Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/admin/payments/${id}`, {

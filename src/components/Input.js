@@ -15,6 +15,7 @@ export function Input({
   className,
   min,
   max,
+  list,
   ...rest
 }) {
   const InputRef = useRef(null);
@@ -30,11 +31,12 @@ export function Input({
   }, [fieldName, registerField]);
 
   return (
-    <div className={styles.inputBox}>
+    <div className={[styles.inputBox, styles.fixedTag].join(" ")}>
       <input
+        id={name + "input"}
+        list={list && name + "list"}
         onFocus={clearError}
         placeholder={placeholder ?? " "}
-        {...rest}
         ref={InputRef}
         name={name}
         type={type ?? "text"}
@@ -43,10 +45,19 @@ export function Input({
         className={className}
         min={min}
         max={max}
+        {...rest}
       />
 
+      {list && (
+        <datalist id={name + "list"}>
+          {list.map((v, ix) => (
+            <option key={v + ix} value={v} />
+          ))}
+        </datalist>
+      )}
+
       {tag && (
-        <label>
+        <label htmlFor={name + "input"}>
           <div>{tag}</div>
         </label>
       )}

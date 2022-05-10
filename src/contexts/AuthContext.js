@@ -32,12 +32,11 @@ export function AuthProvider({ children }) {
       await signInRequest({ email, password }).then(
         ({ sessionId, user }) => {
           setCookie(undefined, "animesports.session", sessionId, {
-            maxAge: 60 * 60 * (24 * 7), // Seven days
+            maxAge: 60 * 60 * (24 * 2), // Two days
           });
 
           setSessionId(sessionId);
           setUser(user);
-
           resolve();
         },
         (err) => {
@@ -68,12 +67,13 @@ export function AuthProvider({ children }) {
     if (sessionId) {
       await recoveryUserData({ sessionId }).then(
         (user) => {
+          console.info("SignIn:", user.id);
           setSessionId(sessionId);
           setUser(user);
         },
         (err) => {
+          console.info("SignOut by error:", err);
           signOut({ reload: false });
-          console.info(err);
         }
       );
     }

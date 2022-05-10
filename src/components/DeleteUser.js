@@ -1,6 +1,25 @@
+import { useContext } from "react";
+import { adminContext } from "../contexts/AdminContext";
 import styles from "../styles/components/DeleteUser.module.css";
 
 export function DeleteUser({ user, close }) {
+  const { removeUser } = useContext(adminContext);
+
+  function handleDelete() {
+    removeUser({
+      id: user.id,
+      email: user.data.email.address,
+      name: user.data.name,
+    }).then(
+      () => {
+        close();
+      },
+      (err) => {
+        console.info("error", err);
+      }
+    );
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -23,7 +42,7 @@ export function DeleteUser({ user, close }) {
       </div>
 
       <div className={styles.buttons}>
-        <button className={styles.exclude} onClick={close}>
+        <button className={styles.exclude} onClick={handleDelete}>
           Excluir
         </button>
         <button onClick={close}> Voltar</button>

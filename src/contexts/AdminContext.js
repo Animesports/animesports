@@ -2,6 +2,7 @@ import { createContext, useState, useContext, useEffect } from "react";
 import {
   getAdminPayments,
   getAllUsers,
+  removeClient,
   removePayment,
   updatePayment,
 } from "../services/admin";
@@ -19,6 +20,7 @@ export const adminContext = createContext({
   sendSum: Number,
   confirmPayment: Function,
   deletePayment: Function,
+  removeUser: Function,
 });
 
 export function AdminProvider({ children }) {
@@ -33,6 +35,22 @@ export function AdminProvider({ children }) {
 
   const [receiveSum, setReceiveSum] = useState(0);
   const [sendSum, setSendSum] = useState(0);
+
+  function removeUser({ id, name, email }) {
+    return new Promise((accept, reject) => {
+      removeClient(
+        {
+          id,
+          name,
+          email,
+        },
+        sessionId
+      ).then(() => {
+        setUsers(users.filter((u) => u.id !== id));
+        accept();
+      }, reject);
+    });
+  }
 
   function confirmPayment({ id, reference }) {
     updatePayment(
@@ -96,7 +114,6 @@ export function AdminProvider({ children }) {
   }, [isFetched]);
 
   useEffect(() => {
-    console.info("Setting receive send");
     setPayReceive(
       payments
         .filter((payment) => payment?.verified === false)
@@ -113,7 +130,6 @@ export function AdminProvider({ children }) {
   }, [payments]);
 
   function updateCounters() {
-    console.info("Updating counters");
     if (receivePay[0]) {
       setReceiveSum(
         receivePay.reduce((a, b) => {
@@ -148,6 +164,7 @@ export function AdminProvider({ children }) {
         sendSum,
         confirmPayment,
         deletePayment,
+        removeUser,
       }}
     >
       {children}
