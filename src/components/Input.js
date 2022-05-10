@@ -31,7 +31,7 @@ export function Input({
   }, [fieldName, registerField]);
 
   return (
-    <div className={[styles.inputBox, styles.fixedTag].join(" ")}>
+    <div className={[styles.inputBox, list && styles.fixedTag].join(" ")}>
       <input
         id={name + "input"}
         list={list && name + "list"}

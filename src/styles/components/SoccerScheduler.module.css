@@ -89,6 +89,7 @@
 }
 
 .container .inputBox label {
+  font-size: 2.3rem;
   font-weight: 500;
   color: var(--gray);
   transform: translateY(-4.5rem);
