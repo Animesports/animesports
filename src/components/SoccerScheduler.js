@@ -34,6 +34,22 @@ export function SoccerScheduler() {
         onSubmit={handleSubmit}
       >
         <div className={styles.inputBox}>
+          <div className={styles.dualInputBox}>
+            <Input
+              type="date"
+              tag="Data"
+              name="date"
+              min="2022-05-06"
+              max="2022-05-27"
+            />
+            <Input
+              tag="Hora"
+              type="time"
+              name="time"
+              pattern="[0-9]{2}:[0-9]{2}"
+            />
+          </div>
+
           <Input
             tag="Time visitado"
             list={["Flamengo", "Peru", "Vasco", "EUA", "Barcelona"]}
@@ -49,11 +65,6 @@ export function SoccerScheduler() {
             placeholder="Nome do visitante"
             autocomplete="off"
           />
-
-          <div className={styles.dualInputBox}>
-            <Input type="date" name="date" min="2022-05-06" max="2022-05-27" />
-            <Input type="time" name="time" pattern="[0-9]{2}:[0-9]{2}" />
-          </div>
         </div>
 
         <div className={styles.previewBox}>

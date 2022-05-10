@@ -61,6 +61,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1.2rem;
+  position: relative;
 }
 
 .previewBox {
@@ -93,4 +95,9 @@
   font-weight: 500;
   color: var(--gray);
   transform: translateY(-4.5rem);
+}
+
+.container .inputBox .dualInputBox label {
+  transform: translateY(0);
+  text-transform: none;
 }
