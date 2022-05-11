@@ -1,7 +1,26 @@
 import { Fetch } from "../utils/Fetch";
 
+export function scheduleSoccerGame({ visitor, visited, date }, sessionId) {
+  return new Promise((resolve, reject) => {
+    Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/admin/soccer`, {
+      method: "POST",
+      headers: {
+        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${sessionId}`,
+      },
+      body: {
+        visitor,
+        visited,
+        date,
+      },
+    }).then((data) => {
+      if (data.statusCode) return reject(data);
+      if (data.success) return resolve(data);
+      reject(data);
+    }, reject);
+  });
+}
+
 export function removeClient({ id, email, name }, sessionId) {
-  console.info("fetching:", id, email, name);
   return new Promise((resolve, reject) => {
     Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/admin/clients`, {
       method: "DELETE",
@@ -14,7 +33,6 @@ export function removeClient({ id, email, name }, sessionId) {
         name,
       },
     }).then((data) => {
-      console.info("receiving data:", data);
       if (data.statusCode) return reject(data);
       if (data.deleted) return resolve(data);
       reject(data);

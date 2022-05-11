@@ -1,16 +1,18 @@
 import { Form } from "@unform/web";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import styles from "../styles/components/SoccerScheduler.module.css";
 import { Input } from "../components/Input";
 import { FetchSearcher } from "./FetchSearcher";
 import { teamsSearchFilter } from "../utils/Soccer";
 import { teamsSearcher } from "../services/soccer";
-
+import { authContext } from "../contexts/AuthContext";
 import { low } from "../utils/Global";
 import { soccerSchedulerValidate } from "../utils/Yup";
+import { scheduleSoccerGame } from "../services/admin";
 
 export function SoccerScheduler() {
   const formRef = useRef(null);
+  const { sessionId } = useContext(authContext);
 
   const [team1, setTeam1] = useState({});
   const [team2, setTeam2] = useState({});
@@ -24,11 +26,21 @@ export function SoccerScheduler() {
         time: values.time,
       },
       () => {
-        console.info({
-          visited: team1,
-          visitor: team2,
-          date: new Date(`${values.date}T${values.time}`),
-        });
+        scheduleSoccerGame(
+          {
+            visited: team1,
+            visitor: team2,
+            date: new Date(`${values.date}T${values.time}`),
+          },
+          sessionId
+        ).then(
+          (result) => {
+            console.info("result", result);
+          },
+          (err) => {
+            console.info("err", err);
+          }
+        );
       },
       formRef
     );
