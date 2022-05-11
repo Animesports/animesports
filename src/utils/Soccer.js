@@ -1,3 +1,9 @@
+export function teamsSearchFilter(teams) {
+  return teams.map((team) => {
+    return team.name;
+  });
+}
+
 export function getGameState({ date, status }) {
   const currentDate = new Date();
   const gameDate = new Date(date);

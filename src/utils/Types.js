@@ -1,3 +1,13 @@
+export class Team {
+  id = Number;
+  name = String;
+  code = String;
+  country = String;
+  founded = Number;
+  national = Boolean;
+  logo = String;
+}
+
 export class User {
   id = String;
   data = {

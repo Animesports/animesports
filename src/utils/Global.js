@@ -1,3 +1,11 @@
+export function low(text) {
+  return text?.toLowerCase?.() ?? text;
+}
+
+export function aLow(array) {
+  return array?.map((v) => v?.toLowerCase?.() ?? v) ?? [];
+}
+
 export function plural(number) {
   return {
     convert: (text) => {

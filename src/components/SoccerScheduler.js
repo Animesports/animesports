@@ -1,38 +1,42 @@
 import { Form } from "@unform/web";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import styles from "../styles/components/SoccerScheduler.module.css";
 import { Input } from "../components/Input";
+import { FetchSearcher } from "./FetchSearcher";
+import { teamsSearchFilter } from "../utils/Soccer";
+import { teamsSearcher } from "../services/soccer";
+
+import { low } from "../utils/Global";
+import { soccerSchedulerValidate } from "../utils/Yup";
 
 export function SoccerScheduler() {
   const formRef = useRef(null);
 
-  const [timeOut, setOut] = useState(setTimeout(() => {}, 0));
-  const [fetching, setFetching] = useState(false);
-
-  const [search, setSearch] = useState([]);
-
-  function onFormChange() {
-    clearTimeout(timeOut);
-    setOut(setTimeout(requestFetch, 1500));
-  }
-
-  function requestFetch() {
-    setFetching(true);
-    console.info(formRef.current);
-  }
+  const [team1, setTeam1] = useState({});
+  const [team2, setTeam2] = useState({});
 
   function handleSubmit(values) {
-    setState(values);
+    soccerSchedulerValidate(
+      {
+        visited: team1.name,
+        visitor: team2.name,
+        date: values.date,
+        time: values.time,
+      },
+      () => {
+        console.info({
+          visited: team1,
+          visitor: team2,
+          date: new Date(`${values.date}T${values.time}`),
+        });
+      },
+      formRef
+    );
   }
 
   return (
     <div className={styles.container}>
-      <Form
-        ref={formRef}
-        className={styles.content}
-        onChange={onFormChange}
-        onSubmit={handleSubmit}
-      >
+      <Form ref={formRef} className={styles.content} onSubmit={handleSubmit}>
         <div className={styles.inputBox}>
           <div className={styles.dualInputBox}>
             <Input
@@ -50,21 +54,35 @@ export function SoccerScheduler() {
             />
           </div>
 
-          <Input
-            tag="Time visitado"
-            list={["Flamengo", "Peru", "Vasco", "EUA", "Barcelona"]}
-            name="visited"
-            placeholder="Nome do visitado"
-            autocomplete="off"
-          />
+          <FetchSearcher
+            searcher={teamsSearcher}
+            filter={teamsSearchFilter}
+            effect={(result) => {
+              if (result.selected) setTeam1(result.selected);
+            }}
+          >
+            <Input
+              tag="Time visitado"
+              name="visited"
+              placeholder="Nome do visitado"
+              autoComplete="off"
+            />
+          </FetchSearcher>
 
-          <Input
-            tag="Time visitante"
-            list={["Flamengo", "Peru", "Vasco", "EUA", "Barcelona"]}
-            name="visitor"
-            placeholder="Nome do visitante"
-            autocomplete="off"
-          />
+          <FetchSearcher
+            searcher={teamsSearcher}
+            filter={teamsSearchFilter}
+            effect={(result) => {
+              if (result.selected) setTeam2(result.selected);
+            }}
+          >
+            <Input
+              tag="Time visitante"
+              name="visitor"
+              placeholder="Nome do visitante"
+              autoComplete="off"
+            />
+          </FetchSearcher>
         </div>
 
         <div className={styles.previewBox}>
@@ -74,13 +92,21 @@ export function SoccerScheduler() {
             </div>
             <div className={styles.teamsBox}>
               <div>
-                <img src="/icons/soccer-shield.svg" alt="" />
-                <strong>Time</strong>
+                <img
+                  src={team1.logo ?? "/icons/soccer-shield.svg"}
+                  alt={team1.id}
+                />
+                <strong>{low(team1.name) ?? "Time"}</strong>
               </div>
+
               <span className={styles.separator}>X</span>
+
               <div>
-                <img src="/icons/soccer-shield.svg" alt="" />
-                <strong>Time</strong>
+                <img
+                  src={team2.logo ?? "/icons/soccer-shield.svg"}
+                  alt={team2.id}
+                />
+                <strong>{low(team2.name) ?? "Time"}</strong>
               </div>
             </div>
 

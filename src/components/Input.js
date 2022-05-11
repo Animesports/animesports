@@ -61,7 +61,11 @@ export function Input({
           <div>{tag}</div>
         </label>
       )}
-      {error && <span className={globalStyles.error}>{error}</span>}
+      {error && (
+        <span className={[globalStyles.error, styles.error].join(" ")}>
+          {error}
+        </span>
+      )}
       {children}
     </div>
   );

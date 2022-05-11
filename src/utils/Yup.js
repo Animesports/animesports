@@ -1,4 +1,24 @@
 import * as Yup from "yup";
+import { Team } from "./Types";
+
+export function soccerSchedulerValidate(data, onValidate, formRef) {
+  const fields = Yup.object().shape({
+    date: Yup.string().required("Insira uma data"),
+    time: Yup.string().required("Insira uma hora"),
+    visited: Yup.string().required("É necessário inserir um time"),
+    visitor: Yup.string().required("É necessário inserir um time"),
+  });
+
+  fields.validate(data, { abortEarly: false }).then(
+    () => {
+      onValidate();
+    },
+    (error) => {
+      formErrors(error, formRef);
+    }
+  );
+}
+
 export function gameValidate({ visitor, visited }, onValidate, formRef) {
   const fields = Yup.object().shape({
     visitor: Yup.number()

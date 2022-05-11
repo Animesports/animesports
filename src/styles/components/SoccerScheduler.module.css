@@ -40,7 +40,7 @@
 }
 
 .teamsBox strong {
-  white-space: nowrap;
+  text-transform: capitalize;
   font-weight: 600;
 }
 
@@ -100,4 +100,10 @@
 .container .inputBox .dualInputBox label {
   transform: translateY(0);
   text-transform: none;
+}
+
+.container .teamsBox > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
