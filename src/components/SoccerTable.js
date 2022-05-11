@@ -16,11 +16,10 @@ export function SoccerTable({ disable, editable, customClass }) {
   const groupGames = sortByDate(organizeByDate(games));
   disable = disable?.filter((item) => ["state"].includes(item)) ?? [];
 
-  console.info(games[0].entries, games[0].teams);
   return (
     <table className={[styles.container, customClass].join(" ")}>
       {groupGames.map(({ group, games }, index) => {
-        const { day, month, year } = getDisplayDate(group);
+        const { day, month, year, week } = getDisplayDate(group);
 
         return (
           <>
@@ -28,7 +27,7 @@ export function SoccerTable({ disable, editable, customClass }) {
               <tr className={styles.header}>
                 <th colSpan="2">
                   <span>
-                    {day}/{month}/{year} - Semana
+                    {day}/{month}/{year} - {week}
                   </span>
                 </th>
 

@@ -44,14 +44,24 @@ export function sortByHours(array) {
 
 export function getDisplayDate(str, options) {
   const d = typeof str === "string" ? new Date(str) : str;
+
   const display = {
     year: ("0000" + d.getFullYear()).slice(-4),
-    month: ("00" + d.getMonth()).slice(-2),
+    month: ("00" + (d.getMonth() + 1)).slice(-2),
     day: ("00" + d.getDate()).slice(-2),
     hours: ("00" + d.getHours()).slice(-2),
     minutes: ("00" + d.getMinutes()).slice(-2),
     seconds: ("00" + d.getSeconds()).slice(-2),
     milliseconds: ("000" + d.getMilliseconds()).slice(-3),
+    week: [
+      "Domingo",
+      "Segunda",
+      "Terça",
+      "Quarta",
+      "Quinta",
+      "Sexta",
+      "Sábado",
+    ][d.getDay()],
   };
 
   if (options?.numeric) {
@@ -64,5 +74,7 @@ export function getDisplayDate(str, options) {
 }
 
 function dateWithoutTime(date) {
-  return new Date(`${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`);
+  return new Date(
+    `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+  );
 }
