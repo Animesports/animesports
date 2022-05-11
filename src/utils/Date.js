@@ -1,5 +1,6 @@
 export function organizeByDate(array) {
-  // ONLY: "YYYY-MM-DD"
+  if (array.length === 1) return array;
+
   return array.reduce((group, item, ind) => {
     if (ind === 1) {
       const date = dateWithoutTime(group.date);
