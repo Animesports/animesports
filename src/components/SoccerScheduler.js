@@ -9,6 +9,7 @@ import { authContext } from "../contexts/AuthContext";
 import { low } from "../utils/Global";
 import { soccerSchedulerValidate } from "../utils/Yup";
 import { scheduleSoccerGame } from "../services/admin";
+import { getDisplayDate } from "../utils/Date";
 
 export function SoccerScheduler() {
   const formRef = useRef(null);
@@ -16,6 +17,20 @@ export function SoccerScheduler() {
 
   const [team1, setTeam1] = useState({});
   const [team2, setTeam2] = useState({});
+
+  const [time, setTime] = useState("--:--");
+  const [date, setDate] = useState("--/--/--");
+
+  function handleFormChange() {
+    const { date, time } = formRef.current.getData();
+
+    if (date && date !== "") {
+      const { day, month, year } = getDisplayDate(date, { numeric: true });
+      setDate(new Date(year, month, day + 1).toLocaleDateString());
+    }
+
+    if (time && time !== "") setTime(time);
+  }
 
   function handleSubmit(values) {
     soccerSchedulerValidate(
@@ -48,7 +63,12 @@ export function SoccerScheduler() {
 
   return (
     <div className={styles.container}>
-      <Form ref={formRef} className={styles.content} onSubmit={handleSubmit}>
+      <Form
+        onChange={handleFormChange}
+        ref={formRef}
+        className={styles.content}
+        onSubmit={handleSubmit}
+      >
         <div className={styles.inputBox}>
           <div className={styles.dualInputBox}>
             <Input
@@ -100,7 +120,9 @@ export function SoccerScheduler() {
         <div className={styles.previewBox}>
           <div className={styles.previewContent}>
             <div className={styles.title}>
-              <span>Começa 14:50 • 12/01/2022</span>
+              <span>
+                Começa {time} • {date}
+              </span>
             </div>
             <div className={styles.teamsBox}>
               <div>

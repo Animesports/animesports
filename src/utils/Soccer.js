@@ -1,3 +1,11 @@
+export function computeEntries(entries) {
+  return {
+    visited: entries?.filter((ent) => ent.visited > ent.visitor).length ?? 0,
+    visitor: entries?.filter((ent) => ent.visited < ent.visitor).length ?? 0,
+    draw: entries?.filter((ent) => ent.visited === ent.visitor).length ?? 0,
+  };
+}
+
 export function teamsSearchFilter(teams) {
   return teams.map((team) => {
     return team.name;

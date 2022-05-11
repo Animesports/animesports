@@ -1,12 +1,22 @@
+import { useContext } from "react";
+import { soccerContext } from "../contexts/SoccerContext";
 import styles from "../styles/components/SoccerTable.module.css";
 import { getDisplayDate, organizeByDate, sortByDate } from "../utils/Date";
-import { getGameState } from "../utils/Soccer";
+import { computeEntries, getGameState } from "../utils/Soccer";
+import { Loading } from "./Loading";
+import { Empty } from "./Empty";
 
 export function SoccerTable({ disable, editable, customClass }) {
-  const groupGames = sortByDate(organizeByDate(games()));
+  const { fetching, games } = useContext(soccerContext);
 
+  if (fetching === true) return <Loading />;
+  if (games.length === 0)
+    return <Empty descrition="Nenhum jogo foi agendado ainda" />;
+
+  const groupGames = sortByDate(organizeByDate(games));
   disable = disable?.filter((item) => ["state"].includes(item)) ?? [];
 
+  console.info(games[0].entries, games[0].teams);
   return (
     <table className={[styles.container, customClass].join(" ")}>
       {groupGames.map(({ group, games }, index) => {
@@ -18,7 +28,7 @@ export function SoccerTable({ disable, editable, customClass }) {
               <tr className={styles.header}>
                 <th colSpan="2">
                   <span>
-                    {day}/{month}/{year} - Sexta
+                    {day}/{month}/{year} - Semana
                   </span>
                 </th>
 
@@ -79,7 +89,9 @@ export function SoccerTable({ disable, editable, customClass }) {
                     </td>
                     <td className="score">
                       {!["opened", "canceled"].includes(state) && (
-                        <span>{score.join(" - ")}</span>
+                        <span>
+                          {score.visited} - {score.visitor}
+                        </span>
                       )}
                       {["opened", "canceled"].includes(state) && <span>-</span>}
                     </td>
@@ -89,13 +101,13 @@ export function SoccerTable({ disable, editable, customClass }) {
                     {!disable.includes("state") && (
                       <>
                         <td className="visited">
-                          <span>{entries.visited}</span>
+                          <span>{computeEntries(entries).visited}</span>
                         </td>
                         <td className="draw">
-                          <span>{entries.draw}</span>
+                          <span>{computeEntries(entries).draw}</span>
                         </td>
                         <td className="visitor">
-                          <span>{entries.visitor}</span>
+                          <span>{computeEntries(entries).visitor}</span>
                         </td>
                       </>
                     )}
@@ -133,118 +145,7 @@ export function makeADate({ compense }) {
 }
 
 function games() {
-  // DEMO: Example of input element data
-  const runningGame = {
-    date: makeADate({ compense: 0 }),
-    score: [1, 4],
-    entries: {
-      visited: 2,
-      draw: 7,
-      visitor: 32,
-    },
-    teams: {
-      visited: {
-        id: 121,
-        name: "Palmeiras",
-        code: "PAL",
-        country: "Brazil",
-        logo: "https://media.api-sports.io/football/teams/121.png",
-      },
-      visitor: {
-        id: 126,
-        name: "Sao Paulo",
-        code: "PAU",
-        country: "Brazil",
-        logo: "https://media.api-sports.io/football/teams/126.png",
-      },
-    },
-  };
-
-  const OpenedGame = {
-    date: makeADate({ compense: 42 }),
-    score: [0, 0],
-    entries: {
-      visited: 7,
-      draw: 32,
-      visitor: 2,
-    },
-    teams: {
-      visited: {
-        id: 121,
-        name: "Flamengo",
-        code: "PAL",
-        country: "Brazil",
-        logo: "https://media.api-sports.io/football/teams/121.png",
-      },
-      visitor: {
-        id: 126,
-        name: "Grêmio",
-        code: "PAU",
-        country: "Brazil",
-        logo: "https://media.api-sports.io/football/teams/126.png",
-      },
-    },
-  };
-
-  const closedGame = {
-    date: makeADate({ compense: -12 }),
-    status: "closed",
-    score: [5, 1],
-    entries: {
-      visited: 7,
-      draw: 32,
-      visitor: 2,
-    },
-    teams: {
-      visited: {
-        id: 121,
-        name: "Inter",
-        code: "PAL",
-        country: "Brazil",
-        logo: "https://media.api-sports.io/football/teams/121.png",
-      },
-      visitor: {
-        id: 126,
-        name: "Sao Paulo",
-        code: "PAU",
-        country: "Brazil",
-        logo: "https://media.api-sports.io/football/teams/126.png",
-      },
-    },
-  };
-
-  const canceledGame = {
-    date: makeADate({ compense: +3 }),
-    status: "canceled",
-    score: [7, 1],
-    entries: {
-      visited: 7,
-      draw: 32,
-      visitor: 2,
-    },
-    teams: {
-      visited: {
-        id: 121,
-        name: "Alemanha",
-        code: "PAL",
-        country: "Brazil",
-        logo: "https://media.api-sports.io/football/teams/121.png",
-      },
-      visitor: {
-        id: 126,
-        name: "Brasil",
-        code: "PAU",
-        country: "Brazil",
-        logo: "https://media.api-sports.io/football/teams/126.png",
-      },
-    },
-  };
-
   return [
-    runningGame,
-    OpenedGame,
-    closedGame,
-    canceledGame,
     {
       date: makeADate({ compense: -19 }),
       status: "closed",
@@ -265,31 +166,6 @@ function games() {
         visitor: {
           id: 126,
           name: "Peru",
-          code: "PAU",
-          country: "Brazil",
-          logo: "https://media.api-sports.io/football/teams/126.png",
-        },
-      },
-    },
-    {
-      date: makeADate({ compense: +6 }),
-      score: [0, 0],
-      entries: {
-        visited: 7,
-        draw: 32,
-        visitor: 2,
-      },
-      teams: {
-        visited: {
-          id: 121,
-          name: "Tricolor",
-          code: "PAL",
-          country: "Brazil",
-          logo: "https://media.api-sports.io/football/teams/121.png",
-        },
-        visitor: {
-          id: 126,
-          name: "Paulista",
           code: "PAU",
           country: "Brazil",
           logo: "https://media.api-sports.io/football/teams/126.png",

@@ -1,5 +1,19 @@
 import { Fetch } from "../utils/Fetch";
 
+export function getAllSoccerGames() {
+  return new Promise((resolve, reject) => {
+    Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/app/soccer`, {
+      method: "GET",
+      headers: {
+        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${process.env.NEXT_PUBLIC_APP_ID}`,
+      },
+    }).then((games) => {
+      if (games) return resolve(games);
+      reject();
+    }, reject);
+  });
+}
+
 export function teamsSearcher(teamName) {
   return new Promise((accept, reject) => {
     Fetch(

@@ -42,9 +42,9 @@ export function sortByHours(array) {
   });
 }
 
-export function getDisplayDate(str) {
+export function getDisplayDate(str, options) {
   const d = typeof str === "string" ? new Date(str) : str;
-  return {
+  const display = {
     year: ("0000" + d.getFullYear()).slice(-4),
     month: ("00" + d.getMonth()).slice(-2),
     day: ("00" + d.getDate()).slice(-2),
@@ -53,6 +53,14 @@ export function getDisplayDate(str) {
     seconds: ("00" + d.getSeconds()).slice(-2),
     milliseconds: ("000" + d.getMilliseconds()).slice(-3),
   };
+
+  if (options?.numeric) {
+    for (const key in display) {
+      display[key] = Number(display[key]);
+    }
+  }
+
+  return display;
 }
 
 function dateWithoutTime(date) {

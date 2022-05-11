@@ -5,6 +5,7 @@ import { AuthProvider } from "../contexts/AuthContext";
 import { ConfigProvider } from "../contexts/ConfigContext";
 import { PaymentProvider } from "../contexts/PaymentContext";
 import { SeasonProvider } from "../contexts/SeasonContext";
+import { SoccerProvider } from "../contexts/SoccerContext";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
@@ -19,7 +20,9 @@ function MyApp({ Component, pageProps }) {
           <PaymentProvider>
             <ConfigProvider>
               <AdminProvider>
-                <Component {...pageProps} />
+                <SoccerProvider>
+                  <Component {...pageProps} />
+                </SoccerProvider>
               </AdminProvider>
               <BackgroundVideo />
             </ConfigProvider>
