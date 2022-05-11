@@ -29,7 +29,6 @@ export function Modal({ openRef, children, customStyle, openOn, functions }) {
     functions?.open?.() || setVisible(true);
   }
 
-  console.info("Aqui:", { visible, openOn });
   return (
     <>
       {(visible || openOn) && (
