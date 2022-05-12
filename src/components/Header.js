@@ -56,7 +56,7 @@ export default function Header({ use, parentNode }) {
           key={name + index}
           onClick={exec}
         >
-          <Link href={(!imCurrent && href) || "#"}>{name}</Link>
+          <Link href={href ?? "#"}>{name}</Link>
         </li>
       );
     return null;

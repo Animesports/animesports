@@ -7,14 +7,8 @@ export const soccerContext = createContext({
 });
 
 export function SoccerProvider({ children }) {
-  const [modalVisible, setModalVisible] = useState(true); // TODO: Isso não deve ficar aqui
-
   const [fetching, setFetching] = useState(false);
   const [games, setGames] = useState([]);
-
-  function changeModalState() {
-    setModalVisible(!modalVisible);
-  }
 
   async function importSoccerGames() {
     setFetching(true);
@@ -36,9 +30,6 @@ export function SoccerProvider({ children }) {
   return (
     <soccerContext.Provider
       value={{
-        changeModalState,
-        modalVisible,
-
         fetching,
         games,
       }}

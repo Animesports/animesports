@@ -6,7 +6,7 @@ import { computeEntries, getGameState } from "../utils/Soccer";
 import { Loading } from "./Loading";
 import { Empty } from "./Empty";
 
-export function SoccerTable({ disable, editable, customClass }) {
+export function SoccerTable({ disable, editable, customClass, onSelect }) {
   const { fetching, games } = useContext(soccerContext);
 
   if (fetching === true) return <Loading />;
@@ -60,71 +60,78 @@ export function SoccerTable({ disable, editable, customClass }) {
             </thead>
 
             <tbody key={"body-soccer-index-" + index + group.toString()}>
-              {games.map(({ date, entries, score, teams, status }, index) => {
-                const { hours, minutes } = getDisplayDate(date);
-                const { state, display } = getGameState({ date, status });
+              {games.map(
+                ({ date, entries, score, teams, status, id }, index) => {
+                  const { hours, minutes } = getDisplayDate(date);
+                  const { state, display } = getGameState({ date, status });
 
-                return (
-                  <tr
-                    key={
-                      "body-child-soccer-index" +
-                      index +
-                      teams.visited.name +
-                      teams.visitor.name
-                    }
-                    className={[styles.row, styles[`closure_${state}`]].join(
-                      " "
-                    )}
-                  >
-                    <td className="hour">
-                      <span>
-                        {hours}:{minutes}
-                      </span>
-                    </td>
-                    <td className="teams">
-                      <span>
-                        {teams.visited.name} - {teams.visitor.name}
-                      </span>
-                    </td>
-                    <td className="score">
-                      {!["opened", "canceled"].includes(state) && (
-                        <span>
-                          {score.visited} - {score.visitor}
-                        </span>
+                  return (
+                    <tr
+                      onClick={() => {
+                        onSelect(id);
+                      }}
+                      key={
+                        "body-child-soccer-index" +
+                        index +
+                        teams.visited.name +
+                        teams.visitor.name
+                      }
+                      className={[styles.row, styles[`closure_${state}`]].join(
+                        " "
                       )}
-                      {["opened", "canceled"].includes(state) && <span>-</span>}
-                    </td>
-                    <td className={styles.display}>
-                      <span>{display}</span>
-                    </td>
-                    {!disable.includes("state") && (
-                      <>
-                        <td className="visited">
-                          <span>{computeEntries(entries).visited}</span>
-                        </td>
-                        <td className="draw">
-                          <span>{computeEntries(entries).draw}</span>
-                        </td>
-                        <td className="visitor">
-                          <span>{computeEntries(entries).visitor}</span>
-                        </td>
-                      </>
-                    )}
-
-                    {editable && (
-                      <td>
-                        {["running"].includes(state) && (
-                          <button>Atualizar</button>
+                    >
+                      <td className="hour">
+                        <span>
+                          {hours}:{minutes}
+                        </span>
+                      </td>
+                      <td className="teams">
+                        <span>
+                          {teams.visited.name} - {teams.visitor.name}
+                        </span>
+                      </td>
+                      <td className="score">
+                        {!["opened", "canceled"].includes(state) && (
+                          <span>
+                            {score.visited} - {score.visitor}
+                          </span>
                         )}
-
-                        {!["running"].includes(state) && (
-                          <button>Editar</button>
+                        {["opened", "canceled"].includes(state) && (
+                          <span>-</span>
                         )}
                       </td>
-                    )}
-                  </tr>
-                );
-              })}
+                      <td className={styles.display}>
+                        <span>{display}</span>
+                      </td>
+                      {!disable.includes("state") && (
+                        <>
+                          <td className="visited">
+                            <span>{computeEntries(entries).visited}</span>
+                          </td>
+                          <td className="draw">
+                            <span>{computeEntries(entries).draw}</span>
+                          </td>
+                          <td className="visitor">
+                            <span>{computeEntries(entries).visitor}</span>
+                          </td>
+                        </>
+                      )}
+
+                      {editable && (
+                        <td>
+                          {["running"].includes(state) && (
+                            <button>Atualizar</button>
+                          )}
+
+                          {!["running"].includes(state) && (
+                            <button>Editar</button>
+                          )}
+                        </td>
+                      )}
+                    </tr>
+                  );
+                }
+              )}
             </tbody>
           </>
         );
