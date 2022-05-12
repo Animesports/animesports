@@ -16,6 +16,10 @@ export function getGameState({ date, status }) {
   const currentDate = new Date();
   const gameDate = new Date(date);
 
+  const diference = Math.abs(gameDate.getTime() - currentDate.getTime());
+  const hours = Math.ceil(diference / (1000 * 60 * 60));
+  const days = Math.ceil(hours / 24);
+
   const gameStates = {
     opened: currentDate < gameDate,
     running: currentDate >= gameDate,
@@ -24,7 +28,7 @@ export function getGameState({ date, status }) {
   };
 
   const displayGameState = {
-    opened: "2H",
+    opened: hours > 24 ? `${days}d` : `${hours}h`,
     running: "andamento",
     closed: "encerrado",
     canceled: "cancelado",
