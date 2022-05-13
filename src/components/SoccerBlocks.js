@@ -6,8 +6,11 @@ import { useNextOnEnter } from "../utils/Inputs";
 import { Input } from "./Input";
 import { HideContent } from "./HideContent";
 import { gameValidate } from "../utils/Yup";
+import { computeEntries, getEntWinner } from "../utils/Soccer";
 
-export function SoccerScore() {
+export function SoccerScore({ ["game"]: { teams, score }, myEntrie }) {
+  const myWinner = myEntrie && getEntWinner(myEntrie);
+
   return (
     <div className={styles.container}>
       <div>
@@ -15,25 +18,34 @@ export function SoccerScore() {
           {OnlyRegisteredUsers(
             () => {
               return (
-                <table>
-                  <thead>
-                    <tr>
-                      <th colSpan={2}>Meu Jogo</th>
-                    </tr>
-                  </thead>
+                <>
+                  {myEntrie && (
+                    <table>
+                      <thead>
+                        <tr>
+                          <th colSpan={2}>Meu Jogo</th>
+                        </tr>
+                      </thead>
 
-                  <tbody>
-                    <tr>
-                      <td>Vitória</td>
-                      <td>São Paulo</td>
-                    </tr>
+                      <tbody>
+                        <tr>
+                          <td>Vencedor</td>
+                          {["draw"].includes(myWinner) && <td>Empate</td>}
+                          {["visited, visitor"].includes(myWinner) && (
+                            <td>{teams[myWinner].name}</td>
+                          )}
+                        </tr>
 
-                    <tr>
-                      <td>Placar</td>
-                      <td>1 - 4</td>
-                    </tr>
-                  </tbody>
-                </table>
+                        <tr>
+                          <td>Placar</td>
+                          <td>
+                            {score.visited} - {score.visitor}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  )}
+                </>
               );
             },
             () => (
@@ -68,7 +80,9 @@ export function SoccerScore() {
   );
 }
 
-export function SoccerPlay() {
+export function SoccerPlay({ ["game"]: { teams, entries } }) {
+  entries = computeEntries(entries);
+
   const formRef = useRef(null);
   const [visible, setVisible] = useState(true);
 
@@ -109,7 +123,7 @@ export function SoccerPlay() {
               return (
                 <Form ref={formRef} onSubmit={handlePlaySubmit}>
                   <div>
-                    <span>Flamengo</span>
+                    <span>{teams.visited.name}</span>
                     <Input
                       name="visited"
                       placeholder="0"
@@ -122,7 +136,7 @@ export function SoccerPlay() {
                     <button>Jogar</button>
                   </div>
                   <div>
-                    <span>São Paulo</span>
+                    <span>{teams.visitor.name}</span>
                     <Input
                       name="visitor"
                       placeholder="0"
@@ -139,7 +153,6 @@ export function SoccerPlay() {
             )
           )}
         </div>
-
         <div className={styles.standBox}>
           <table>
             <thead>
@@ -150,16 +163,16 @@ export function SoccerPlay() {
 
             <tbody>
               <tr>
-                <td>Flamengo</td>
-                <td>19</td>
+                <td>{teams.visited.name}</td>
+                <td>{entries.visited}</td>
               </tr>
               <tr>
                 <td>Empate</td>
-                <td>8</td>
+                <td>{entries.draw}</td>
               </tr>
               <tr>
-                <td>São Paulo</td>
-                <td>12</td>
+                <td>{teams.visitor.name}</td>
+                <td>{entries.visitor}</td>
               </tr>
             </tbody>
           </table>

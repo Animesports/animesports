@@ -7,11 +7,10 @@ export const soccerContext = createContext({
 });
 
 export function SoccerProvider({ children }) {
-  const [fetching, setFetching] = useState(false);
+  const [fetching, setFetching] = useState(true);
   const [games, setGames] = useState([]);
 
   async function importSoccerGames() {
-    setFetching(true);
     await getAllSoccerGames().then((games) => {
       setGames(
         games.map((game) => {

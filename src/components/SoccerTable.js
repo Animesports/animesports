@@ -10,7 +10,7 @@ export function SoccerTable({ disable, editable, customClass, onSelect }) {
   const { fetching, games } = useContext(soccerContext);
 
   if (fetching === true) return <Loading />;
-  if (games.length === 0)
+  if (!fetching && games.length === 0)
     return <Empty descrition="Nenhum jogo foi agendado ainda" />;
 
   const groupGames = sortByDate(organizeByDate(games));

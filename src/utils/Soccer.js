@@ -1,9 +1,30 @@
+export function computePoints(entry, score) {
+  if (!entry?.visited || !entry?.visitor) return 0;
+
+  const myWinner = getWinner(entry);
+  const currentWinner = getWinner(score);
+
+  if (score.visited === entry.visited && score.visitor === entry.visitor) {
+    return 2; // two Points
+  }
+
+  return myWinner === currentWinner ? 1 : 0; // one point
+}
+
 export function computeEntries(entries) {
   return {
     visited: entries?.filter((ent) => ent.visited > ent.visitor).length ?? 0,
     visitor: entries?.filter((ent) => ent.visited < ent.visitor).length ?? 0,
     draw: entries?.filter((ent) => ent.visited === ent.visitor).length ?? 0,
   };
+}
+
+export function getWinner({ visited, visitor }) {
+  return Object.entries({
+    visited: () => visited > visitor,
+    visitor: () => visitor > visited,
+    draw: () => visited === visitor,
+  }).filter(([_winner, is]) => is)?.[0];
 }
 
 export function teamsSearchFilter(teams) {

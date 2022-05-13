@@ -1,13 +1,15 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
+import { authContext } from "../contexts/AuthContext";
 import { soccerContext } from "../contexts/SoccerContext";
 import styles from "../styles/components/SoccerDetail.module.css";
-import { getGameState } from "../utils/Soccer";
+import { computePoints, getGameState } from "../utils/Soccer";
 
 import { Loading } from "./Loading";
 import { SoccerPlay, SoccerScore } from "./SoccerBlocks";
 
 export function SoccerDetail({ select, onClose }) {
   const { fetching, games } = useContext(soccerContext);
+  const { user } = useContext(authContext);
 
   if (!select) return null;
 
@@ -40,6 +42,10 @@ export function SoccerDetail({ select, onClose }) {
   const { state, display } = getGameState(currentGame);
   const { teams } = currentGame;
 
+  const myEntrie = currentGame.entries.filter(
+    (entrie) => entrie.id === user.id
+  )?.[0];
+
   return (
     <div className={styles.container}>
       <div className={styles.teams}>
@@ -61,26 +67,34 @@ export function SoccerDetail({ select, onClose }) {
           <span>{gameStatusDisplay[state]}</span>
         </div>
         {state === "running" && (
-          <p className={[styles.statusDetail, styles.running].join(" ")}>2P</p>
+          <p className={[styles.statusDetail, styles.running].join(" ")}>
+            {computePoints(myEntrie, currentGame.score)}P
+          </p>
         )}
         {state === "opened" && (
           <p className={[styles.statusDetail, styles.opened].join(" ")}>
-            Fechamento em {display}
+            Termina em {display}
           </p>
         )}
 
         {state === "closed" && (
-          <p className={[styles.statusDetail, styles.closed].join(" ")}>5P</p>
+          <p className={[styles.statusDetail, styles.closed].join(" ")}>
+            {computePoints(myEntrie, currentGame.score)}P
+          </p>
         )}
 
         {state === "canceled" && (
-          <p className={[styles.statusDetail, styles.canceled].join(" ")}>0P</p>
+          <p className={[styles.statusDetail, styles.canceled].join(" ")}>
+            {computePoints(myEntrie, currentGame.score)}P
+          </p>
         )}
       </div>
 
-      {["closed", "running"].includes(state) && <SoccerScore />}
+      {["closed", "running"].includes(state) && (
+        <SoccerScore game={currentGame} myEntrie={myEntrie} />
+      )}
 
-      {["opened"].includes(state) && <SoccerPlay />}
+      {["opened"].includes(state) && <SoccerPlay game={currentGame} />}
 
       <span
         onClick={handleCloseModal}
