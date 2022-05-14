@@ -5,15 +5,26 @@ import { seasonContext } from "../contexts/SeasonContext";
 import { adminContext } from "../contexts/AdminContext";
 import { Loading } from "./Loading";
 import { currency, plural } from "../utils/Global";
+import { soccerContext } from "../contexts/SoccerContext";
+import { getGameState } from "../utils/Soccer";
 
 export function AdminBlocks() {
   const { season, fetched } = useContext(seasonContext);
+  const { games } = useContext(soccerContext);
   const { users } = useContext(adminContext);
   const blocks = [
     ["Usuário", users.length, "/icons/group.svg", "number", "/admin/users"],
     ["Montante", season.amount, "/icons/coins.svg", "cash", "/admin/payments"],
     ["Ingresso", season.ticket, "/icons/money.svg", "cash", "/admin/payments"],
-    ["Agendado", 0, "/icons/schedule.svg", "number", "/admin/calendar"],
+    [
+      "Agendado",
+      games.filter((game) => {
+        return getGameState(game).state === "opened";
+      }).length,
+      "/icons/schedule.svg",
+      "number",
+      "/admin/calendar",
+    ],
   ];
 
   function navigateTo(url) {

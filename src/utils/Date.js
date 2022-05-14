@@ -43,6 +43,29 @@ export function sortByHours(array) {
   });
 }
 
+export function localDate(str, opts) {
+  if (!str) return;
+  const d = typeof str === "string" ? new Date(str) : str;
+  const { day, month, year } = getDisplayDate(d, { numeric: true });
+  return new Date(
+    year,
+    month,
+    day + (opts?.increase ?? 0)
+  ).toLocaleDateString();
+}
+
+export function ISOdateFormat(str) {
+  if (!str) return;
+  const d = typeof str === "string" ? new Date(str) : str;
+  return d.toISOString().split("T")[0];
+}
+
+export function ISOtimeFormat(str) {
+  if (!str) return;
+  const d = typeof str === "string" ? new Date(str) : str;
+  return d.toLocaleTimeString().slice(0, 5);
+}
+
 export function getDisplayDate(str, options) {
   const d = typeof str === "string" ? new Date(str) : str;
 

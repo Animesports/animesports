@@ -1,4 +1,21 @@
 import { Fetch } from "../utils/Fetch";
+import { convertGameToFetch } from "../utils/Converter";
+
+export function updateSoccerGame(gameData, sessionId) {
+  return new Promise((resolve, reject) => {
+    Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/admin/soccer/${gameData.id}`, {
+      method: "PATCH",
+      headers: {
+        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${sessionId}`,
+      },
+      body: convertGameToFetch(gameData),
+    }).then((data) => {
+      if (data.statusCode) return reject(data);
+      if (data.acknowledged) return resolve(data);
+      reject(data);
+    }, reject);
+  });
+}
 
 export function scheduleSoccerGame({ visitor, visited, date }, sessionId) {
   return new Promise((resolve, reject) => {

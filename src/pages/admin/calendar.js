@@ -6,9 +6,11 @@ import styles from "../../styles/pages/Admin.module.css";
 import { Modal } from "../../components/Modal";
 import { SoccerScheduler } from "../../components/SoccerScheduler";
 import { useState } from "react";
+import { SoccerEditor } from "../../components/SoccerEditor";
 
 export default function Calendar() {
   const [openScheduler, setOpenScheduler] = useState(false);
+  const [selected, setSelected] = useState(null);
 
   return (
     <Structure contentClass={styles.container}>
@@ -22,6 +24,7 @@ export default function Calendar() {
                 <button onClick={() => setOpenScheduler(true)}>Novo</button>
               </div>
               <SoccerTable
+                onSelect={setSelected}
                 disable={["state"]}
                 customClass={styles.soccerTable}
                 editable
@@ -34,7 +37,24 @@ export default function Calendar() {
                 close: () => setOpenScheduler(false),
               }}
             >
-              <SoccerScheduler />
+              <SoccerScheduler
+                message={{
+                  title: "Agendado!",
+                  text: "O jogo foi agendado com sucesso.",
+                  close: () => {
+                    setOpenScheduler(false);
+                  },
+                }}
+              />
+            </Modal>
+
+            <Modal
+              openOn={selected}
+              functions={{
+                close: setSelected,
+              }}
+            >
+              <SoccerEditor gameId={selected} />
             </Modal>
           </>
         );

@@ -52,7 +52,7 @@ export function FetchSearcher(parameters) {
   async function requestFetch() {
     if (typeof fetch !== "function") return;
     setFetching(true);
-
+    console.info("Fetch: soccer team searcher");
     await searcher(value).then(
       (response) => {
         setSearch(response);

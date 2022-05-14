@@ -9,24 +9,35 @@ import { authContext } from "../contexts/AuthContext";
 import { low } from "../utils/Global";
 import { soccerSchedulerValidate } from "../utils/Yup";
 import { scheduleSoccerGame } from "../services/admin";
-import { getDisplayDate } from "../utils/Date";
-
-export function SoccerScheduler() {
+import { ISOdateFormat, ISOtimeFormat, localDate } from "../utils/Date";
+import { soccerContext } from "../contexts/SoccerContext";
+import { convertGameFromFetch } from "../utils/Converter";
+import { ModalCloseMessage } from "./ModalCloseMessage";
+export function SoccerScheduler({
+  initial,
+  onSubmit,
+  buttonText,
+  close,
+  message,
+}) {
   const formRef = useRef(null);
+
   const { sessionId } = useContext(authContext);
+  const { insertNewGame, updateGame } = useContext(soccerContext);
 
-  const [team1, setTeam1] = useState({});
-  const [team2, setTeam2] = useState({});
+  const [currentModal, setCurrentModal] = useState("initial");
 
-  const [time, setTime] = useState("--:--");
-  const [date, setDate] = useState("--/--/--");
+  const [team1, setTeam1] = useState(initial?.teams?.visited ?? {});
+  const [team2, setTeam2] = useState(initial?.teams?.visitor ?? {});
+
+  const [time, setTime] = useState(ISOtimeFormat(initial?.date) ?? "--:--");
+  const [date, setDate] = useState(localDate(initial?.date) ?? "--/--/--");
 
   function handleFormChange() {
     const { date, time } = formRef.current.getData();
 
     if (date && date !== "") {
-      const { day, month, year } = getDisplayDate(date, { numeric: true });
-      setDate(new Date(year, month, day + 1).toLocaleDateString());
+      setDate(localDate(date, { increase: 1 }));
     }
 
     if (time && time !== "") setTime(time);
@@ -41,16 +52,25 @@ export function SoccerScheduler() {
         time: values.time,
       },
       () => {
-        scheduleSoccerGame(
+        const func =
+          typeof onSubmit === "function" ? onSubmit : scheduleSoccerGame;
+        func(
           {
             visited: team1,
             visitor: team2,
             date: new Date(`${values.date}T${values.time}`),
+            id: initial?.id ?? null,
           },
           sessionId
         ).then(
           (result) => {
-            console.info("result", result);
+            setCurrentModal("close");
+            if (result.modified) {
+              console.info(convertGameFromFetch(result.modified, initial));
+              return updateGame(convertGameFromFetch(result.modified, initial));
+            }
+
+            insertNewGame(result.game);
           },
           (err) => {
             console.info("err", err);
@@ -58,6 +78,16 @@ export function SoccerScheduler() {
         );
       },
       formRef
+    );
+  }
+
+  if (currentModal === "close") {
+    return (
+      <ModalCloseMessage
+        title={message?.title}
+        text={message?.text}
+        close={close}
+      />
     );
   }
 
@@ -75,13 +105,15 @@ export function SoccerScheduler() {
               type="date"
               tag="Data"
               name="date"
-              min="2022-05-06"
+              defaultValue={ISOdateFormat(initial?.date)}
+              min={ISOdateFormat(new Date())}
               max="2022-05-27"
             />
             <Input
               tag="Hora"
               type="time"
               name="time"
+              defaultValue={ISOtimeFormat(initial?.date)}
               pattern="[0-9]{2}:[0-9]{2}"
             />
           </div>
@@ -98,6 +130,7 @@ export function SoccerScheduler() {
               name="visited"
               placeholder="Nome do visitado"
               autoComplete="off"
+              defaultValue={team1.name}
             />
           </FetchSearcher>
 
@@ -113,6 +146,7 @@ export function SoccerScheduler() {
               name="visitor"
               placeholder="Nome do visitante"
               autoComplete="off"
+              defaultValue={team2.name}
             />
           </FetchSearcher>
         </div>
@@ -144,7 +178,7 @@ export function SoccerScheduler() {
               </div>
             </div>
 
-            <button type="submit">Agendar</button>
+            <button type="submit">{buttonText ?? "Agendar"}</button>
           </div>
         </div>
       </Form>

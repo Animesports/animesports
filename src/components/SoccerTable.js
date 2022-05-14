@@ -6,7 +6,13 @@ import { computeEntries, getGameState } from "../utils/Soccer";
 import { Loading } from "./Loading";
 import { Empty } from "./Empty";
 
-export function SoccerTable({ disable, editable, customClass, onSelect }) {
+export function SoccerTable({
+  disable,
+  editable,
+  customClass,
+  onSelect,
+  onlyButtom,
+}) {
   const { fetching, games } = useContext(soccerContext);
 
   if (fetching === true) return <Loading />;
@@ -68,7 +74,7 @@ export function SoccerTable({ disable, editable, customClass, onSelect }) {
                   return (
                     <tr
                       onClick={() => {
-                        onSelect(id);
+                        !editable && onSelect(id);
                       }}
                       key={
                         "body-child-soccer-index" +
@@ -119,13 +125,15 @@ export function SoccerTable({ disable, editable, customClass, onSelect }) {
 
                       {editable && (
                         <td>
-                          {["running"].includes(state) && (
-                            <button>Atualizar</button>
-                          )}
-
-                          {!["running"].includes(state) && (
-                            <button>Editar</button>
-                          )}
+                          <button
+                            onClick={() => {
+                              onSelect(id);
+                            }}
+                          >
+                            {["running"].includes(state)
+                              ? "Atualizar"
+                              : "Editar"}
+                          </button>
                         </td>
                       )}
                     </tr>
@@ -138,45 +146,4 @@ export function SoccerTable({ disable, editable, customClass, onSelect }) {
       })}
     </table>
   );
-}
-
-//
-// DEMO: Change later
-//
-
-export function makeADate({ compense }) {
-  const date = new Date();
-  date.setHours(date.getHours() + compense);
-  return date;
-}
-
-function games() {
-  return [
-    {
-      date: makeADate({ compense: -19 }),
-      status: "closed",
-      score: [5, 1],
-      entries: {
-        visited: 7,
-        draw: 32,
-        visitor: 2,
-      },
-      teams: {
-        visited: {
-          id: 121,
-          name: "Bahia",
-          code: "PAL",
-          country: "Brazil",
-          logo: "https://media.api-sports.io/football/teams/121.png",
-        },
-        visitor: {
-          id: 126,
-          name: "Peru",
-          code: "PAU",
-          country: "Brazil",
-          logo: "https://media.api-sports.io/football/teams/126.png",
-        },
-      },
-    },
-  ];
 }

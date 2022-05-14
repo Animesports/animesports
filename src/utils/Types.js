@@ -61,3 +61,18 @@ export class UseNextOp {
 export class DefaultOp {
   ignoreEmpty = true;
 }
+
+export class GameDb {
+  visited = "teams.visited";
+  visitor = "teams.visitor";
+  date = "date";
+  state = "state";
+  score = "score";
+}
+
+export class GameFetch {
+  teams = ["visited", "visitor"];
+  date = "date";
+  state = "state";
+  score = "score";
+}

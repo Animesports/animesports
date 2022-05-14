@@ -27,6 +27,10 @@ export function getWinner({ visited, visitor }) {
   }).filter(([_winner, is]) => is)?.[0];
 }
 
+export function getSoccerGameById(games, filterId) {
+  return games?.filter?.((game) => game.id === filterId)[0] ?? null;
+}
+
 export function teamsSearchFilter(teams) {
   return teams.map((team) => {
     return team.name;
