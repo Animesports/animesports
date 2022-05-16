@@ -5,6 +5,7 @@ import { getDisplayDate, organizeByDate, sortByDate } from "../utils/Date";
 import { computeEntries, getGameState } from "../utils/Soccer";
 import { Loading } from "./Loading";
 import { Empty } from "./Empty";
+import { firstWord } from "../utils/Global";
 
 export function SoccerTable({
   disable,
@@ -74,7 +75,7 @@ export function SoccerTable({
                   return (
                     <tr
                       onClick={() => {
-                        !editable && onSelect(id);
+                        onSelect(id);
                       }}
                       key={
                         "body-child-soccer-index" +
@@ -93,7 +94,17 @@ export function SoccerTable({
                       </td>
                       <td className="teams">
                         <span>
-                          {teams.visited.name} - {teams.visitor.name}
+                          {firstWord(teams.visited.name, {
+                            min: 3,
+                            abb: true,
+                            max: 6,
+                          })}
+                          {" - "}
+                          {firstWord(teams.visitor.name, {
+                            min: 3,
+                            abb: true,
+                            max: 6,
+                          })}
                         </span>
                       </td>
                       <td className="score">

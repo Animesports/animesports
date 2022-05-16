@@ -24,9 +24,9 @@
 }
 
 .teamsBox {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 0.2fr 1fr;
   align-items: center;
-  gap: 3rem;
   margin-bottom: 1.2rem;
 }
 
@@ -35,13 +35,14 @@
 }
 
 .teamsBox > div {
-  flex: 1;
   overflow: hidden;
+  height: 100%;
 }
 
 .teamsBox strong {
   text-transform: capitalize;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .content {

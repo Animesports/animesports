@@ -1,3 +1,22 @@
+export function firstWord(text, opt) {
+  if (!text || typeof text !== "string") return text;
+  text = text.replaceAll("-", " ");
+
+  const splited = text.split(" ");
+  const second = splited[opt.s ? opt.s : 1];
+  const lsecond = second && second.length >= opt.min;
+
+  if (lsecond && opt.abb) {
+    return `${splited[0].slice(0, 1)}. ${second}`;
+  }
+
+  if (opt.max && opt.max < splited[0].length && lsecond) {
+    return `${splited[0].slice(0, 1)}. ${second}`;
+  }
+
+  return splited[0] ?? text;
+}
+
 export function low(text) {
   return text?.toLowerCase?.() ?? text;
 }

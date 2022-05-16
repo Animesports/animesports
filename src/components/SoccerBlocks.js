@@ -114,6 +114,11 @@ export function SoccerPlay({ ["game"]: { teams, entries } }) {
     );
   }
 
+  function handleChange({ target }) {
+    const max = target.value.length < 2 ? target.value.length : 2;
+    target.value = ("0".repeat(max) + target.value).slice(max * -1);
+  }
+
   return (
     <div className={styles.container}>
       <div>
@@ -130,6 +135,7 @@ export function SoccerPlay({ ["game"]: { teams, entries } }) {
                       min={0}
                       autoComplete="off"
                       type="number"
+                      onChange={handleChange}
                     />
                   </div>
                   <div className={styles.button}>
@@ -143,6 +149,7 @@ export function SoccerPlay({ ["game"]: { teams, entries } }) {
                       min={0}
                       autoComplete="off"
                       type="number"
+                      onChange={handleChange}
                     />
                   </div>
                 </Form>

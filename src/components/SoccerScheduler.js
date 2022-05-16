@@ -6,7 +6,7 @@ import { FetchSearcher } from "./FetchSearcher";
 import { teamsSearchFilter } from "../utils/Soccer";
 import { teamsSearcher } from "../services/soccer";
 import { authContext } from "../contexts/AuthContext";
-import { low } from "../utils/Global";
+import { firstWord, low } from "../utils/Global";
 import { soccerSchedulerValidate } from "../utils/Yup";
 import { scheduleSoccerGame } from "../services/admin";
 import { ISOdateFormat, ISOtimeFormat, localDate } from "../utils/Date";
@@ -164,7 +164,10 @@ export function SoccerScheduler({
                   src={team1.logo ?? "/icons/soccer-shield.svg"}
                   alt={team1.id}
                 />
-                <strong>{low(team1.name) ?? "Time"}</strong>
+                <strong>
+                  {firstWord(low(team1.name), { min: 3, abb: true, max: 6 }) ??
+                    "Time"}
+                </strong>
               </div>
 
               <span className={styles.separator}>X</span>
@@ -174,7 +177,10 @@ export function SoccerScheduler({
                   src={team2.logo ?? "/icons/soccer-shield.svg"}
                   alt={team2.id}
                 />
-                <strong>{low(team2.name) ?? "Time"}</strong>
+                <strong>
+                  {firstWord(low(team2.name), { min: 3, abb: true, max: 6 }) ??
+                    "Time"}
+                </strong>
               </div>
             </div>
 

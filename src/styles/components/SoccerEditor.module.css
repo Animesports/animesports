@@ -33,3 +33,8 @@ button.cancel {
 button.update {
   background: var(--gray);
 }
+
+.container .teamsBox {
+  gap: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+}

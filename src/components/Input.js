@@ -16,6 +16,7 @@ export function Input({
   min,
   max,
   list,
+
   ...rest
 }) {
   const InputRef = useRef(null);

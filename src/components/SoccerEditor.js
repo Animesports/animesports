@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { soccerContext } from "../contexts/SoccerContext";
 import { updateSoccerGame } from "../services/admin";
 import { getGameState, getSoccerGameById } from "../utils/Soccer";
@@ -38,22 +38,42 @@ export function SoccerEditor({ gameId, close }) {
 }
 
 import cStyles from "../styles/components/SoccerScheduler.module.css";
-import { low } from "../utils/Global";
+import { firstWord, low } from "../utils/Global";
 import { ISOtimeFormat, localDate } from "../utils/Date";
+import { gameValidate } from "../utils/Yup";
 
 function SoccerUpdater(game) {
   // Atualizar o placar, pode cancelar, pode encerrar
+  const formRef = useRef(null);
   const team1 = game.teams.visited;
   const team2 = game.teams.visitor;
 
   const time = ISOtimeFormat(game.date);
   const date = localDate(game.date);
 
-  function handleSubmit() {}
+  function handleChange({ target }) {
+    const max = target.value.length < 2 ? target.value.length : 2;
+    target.value = ("0".repeat(max) + target.value).slice(max * -1);
+  }
+
+  function handleSubmit(data) {
+    const replaceNum = {
+      visited: Number(data.visited),
+      visitor: Number(data.visitor),
+    };
+
+    gameValidate(
+      replaceNum,
+      () => {
+        console.info("game:", replaceNum);
+      },
+      formRef
+    );
+  }
 
   return (
     <div className={[cStyles.container, styles.container].join(" ")}>
-      <Form className={cStyles.content} onSubmit={handleSubmit}>
+      <Form ref={formRef} className={cStyles.content} onSubmit={handleSubmit}>
         <div className={cStyles.previewBox}>
           <div className={cStyles.previewContent}>
             <div className={cStyles.title}>
@@ -61,13 +81,16 @@ function SoccerUpdater(game) {
                 Começou {time} • {date}
               </strong>
             </div>
-            <div className={cStyles.teamsBox}>
+            <div className={[cStyles.teamsBox, styles.teamsBox].join(" ")}>
               <div>
                 <img
                   src={team1.logo ?? "/icons/soccer-shield.svg"}
                   alt={team1.id}
                 />
-                <strong>{low(team1.name) ?? "Time"}</strong>
+                <strong>
+                  {firstWord(low(team1.name), { min: 3, abb: true, max: 6 }) ??
+                    "Time"}
+                </strong>
 
                 <Input
                   name="visited"
@@ -76,17 +99,19 @@ function SoccerUpdater(game) {
                   min={0}
                   autoComplete="off"
                   type="number"
+                  onChange={handleChange}
                 />
               </div>
-
-              <span className={cStyles.separator}>X</span>
 
               <div>
                 <img
                   src={team2.logo ?? "/icons/soccer-shield.svg"}
                   alt={team2.id}
                 />
-                <strong>{low(team2.name) ?? "Time"}</strong>
+                <strong>
+                  {firstWord(low(team2.name), { min: 3, abb: true, max: 6 }) ??
+                    "Time"}
+                </strong>
 
                 <Input
                   name="visitor"
@@ -95,6 +120,7 @@ function SoccerUpdater(game) {
                   min={0}
                   autoComplete="off"
                   type="number"
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -103,11 +129,15 @@ function SoccerUpdater(game) {
 
         <div className={styles.buttonBox}>
           <div className={styles.dualButtonBox}>
-            <button className={styles.update}>Atualizar</button>
-            <button className={styles.cancel}>Excluir</button>
+            <button type="submit" className={styles.update}>
+              Atualizar
+            </button>
+            <button type="button" className={styles.cancel}>
+              Excluir
+            </button>
           </div>
 
-          <button>Encerrar Jogo</button>
+          <button type="button">Encerrar Jogo</button>
         </div>
       </Form>
     </div>
