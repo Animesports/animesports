@@ -75,7 +75,7 @@ export function SoccerTable({
                   return (
                     <tr
                       onClick={() => {
-                        onSelect(id);
+                        state !== "canceled" && onSelect(id);
                       }}
                       key={
                         "body-child-soccer-index" +
@@ -138,7 +138,7 @@ export function SoccerTable({
                         <td>
                           <button
                             onClick={() => {
-                              onSelect(id);
+                              state !== "canceled" && onSelect(id);
                             }}
                           >
                             {["running"].includes(state)
