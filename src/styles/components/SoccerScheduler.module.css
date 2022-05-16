@@ -108,3 +108,19 @@
   flex-direction: column;
   align-items: center;
 }
+
+.dualButtonBox {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 1.6rem;
+}
+
+.dualButtonBox button {
+  flex: 1;
+}
+
+.dualButtonBox .cancel {
+  flex: 1;
+  background-color: var(--red);
+}

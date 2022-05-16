@@ -184,7 +184,12 @@ export function SoccerScheduler({
               </div>
             </div>
 
-            <button type="submit">{buttonText ?? "Agendar"}</button>
+            <div className={styles.dualButtonBox}>
+              <button type="submit">Editar</button>
+              <button className={styles.cancel} type="buttom">
+                Excluir
+              </button>
+            </div>
           </div>
         </div>
       </Form>

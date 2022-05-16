@@ -128,16 +128,16 @@ function SoccerUpdater(game) {
         </div>
 
         <div className={styles.buttonBox}>
+          <button type="button">Atualizar Jogo</button>
+
           <div className={styles.dualButtonBox}>
             <button type="submit" className={styles.update}>
-              Atualizar
+              Encerrar
             </button>
             <button type="button" className={styles.cancel}>
               Excluir
             </button>
           </div>
-
-          <button type="button">Encerrar Jogo</button>
         </div>
       </Form>
     </div>
