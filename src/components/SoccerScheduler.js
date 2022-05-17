@@ -64,7 +64,7 @@ export function SoccerScheduler({
           sessionId
         ).then(
           (result) => {
-            if (result.acknowledged || result.modified) {
+            if (result.success || result.modified) {
               setCurrentModal("close");
 
               if (initial?.id && result.modified) {
