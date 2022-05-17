@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useEffect } from "react";
 import { BackgroundVideo } from "../components/BackgroundVideo";
 import { AdminProvider } from "../contexts/AdminContext";
 import { AuthProvider } from "../contexts/AuthContext";
@@ -7,8 +8,18 @@ import { PaymentProvider } from "../contexts/PaymentContext";
 import { SeasonProvider } from "../contexts/SeasonContext";
 import { SoccerProvider } from "../contexts/SoccerContext";
 import "../styles/globals.css";
+import socketIOClient from "socket.io-client";
 
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    const socket = socketIOClient("http://localhost:6060/", {
+      transports: ["websocket"],
+    });
+    socket.on("hello", (data) => {
+      console.info("hello:", data);
+    });
+  }, []);
+
   return (
     <>
       <Head>
