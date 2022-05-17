@@ -8,7 +8,7 @@ import { teamsSearcher } from "../services/soccer";
 import { authContext } from "../contexts/AuthContext";
 import { firstWord, low } from "../utils/Global";
 import { soccerSchedulerValidate } from "../utils/Yup";
-import { scheduleSoccerGame } from "../services/admin";
+import { deleteSoccerGame, scheduleSoccerGame } from "../services/admin";
 import { ISOdateFormat, ISOtimeFormat, localDate } from "../utils/Date";
 import { soccerContext } from "../contexts/SoccerContext";
 import { convertGameFromFetch } from "../utils/Converter";
@@ -23,7 +23,7 @@ export function SoccerScheduler({
   const formRef = useRef(null);
 
   const { sessionId } = useContext(authContext);
-  const { insertNewGame, updateGame } = useContext(soccerContext);
+  const { insertNewGame, updateGame, removeGame } = useContext(soccerContext);
 
   const [currentModal, setCurrentModal] = useState("initial");
 
@@ -64,13 +64,17 @@ export function SoccerScheduler({
           sessionId
         ).then(
           (result) => {
-            setCurrentModal("close");
-            if (result.modified) {
-              console.info(convertGameFromFetch(result.modified, initial));
-              return updateGame(convertGameFromFetch(result.modified, initial));
-            }
+            if (result.acknowledged || result.modified) {
+              setCurrentModal("close");
 
-            insertNewGame(result.game);
+              if (initial?.id && result.modified) {
+                return updateGame(
+                  convertGameFromFetch(result.modified, initial)
+                );
+              }
+
+              !initial?.id && insertNewGame(result.game);
+            }
           },
           (err) => {
             console.info("err", err);
@@ -81,11 +85,30 @@ export function SoccerScheduler({
     );
   }
 
+  function handleDelete() {
+    deleteSoccerGame(initial, sessionId).then((result) => {
+      if (result.deleted) {
+        setCurrentModal("close-delete");
+        removeGame(initial);
+      }
+    });
+  }
+
   if (currentModal === "close") {
     return (
       <ModalCloseMessage
         title={message?.title}
         text={message?.text}
+        close={close}
+      />
+    );
+  }
+
+  if (currentModal === "close-delete") {
+    return (
+      <ModalCloseMessage
+        title="Removido!"
+        text="O jogo foi removido com sucesso"
         close={close}
       />
     );
@@ -184,12 +207,19 @@ export function SoccerScheduler({
               </div>
             </div>
 
-            <div className={styles.dualButtonBox}>
-              <button type="submit">Editar</button>
-              <button className={styles.cancel} type="buttom">
-                Excluir
-              </button>
-            </div>
+            {!initial?.id && <button type="submit">Agendar</button>}
+            {initial?.id && (
+              <div className={styles.dualButtonBox}>
+                <button type="submit">Editar</button>
+                <button
+                  onClick={handleDelete}
+                  className={styles.cancel}
+                  type="buttom"
+                >
+                  Excluir
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </Form>

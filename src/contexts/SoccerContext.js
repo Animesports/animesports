@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { updateGameScore } from "../services/admin";
 import { getAllSoccerGames } from "../services/soccer";
 
 export const soccerContext = createContext({
@@ -6,11 +7,24 @@ export const soccerContext = createContext({
   games: Array,
   updateGame: Function,
   insertNewGame: Function,
+  removeGame: Function,
 });
 
 export function SoccerProvider({ children }) {
   const [fetching, setFetching] = useState(true);
   const [games, setGames] = useState([]);
+
+  function removeGame(game) {
+    console.info(
+      games,
+      game,
+      games.filter((g) => g.id === game.id)
+    );
+
+    const newGames = games.filter((g) => g.id !== game.id);
+
+    setGames(newGames);
+  }
 
   async function insertNewGame(game) {
     game.date = new Date(game.date);
@@ -55,6 +69,7 @@ export function SoccerProvider({ children }) {
         games,
         updateGame,
         insertNewGame,
+        removeGame,
       }}
     >
       {children}

@@ -1,6 +1,12 @@
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import { soccerContext } from "../contexts/SoccerContext";
-import { updateSoccerGame } from "../services/admin";
+import { authContext } from "../contexts/AuthContext";
+import {
+  closeSoccerGame,
+  deleteSoccerGame,
+  updateGameScore,
+  updateSoccerGame,
+} from "../services/admin";
 import { getGameState, getSoccerGameById } from "../utils/Soccer";
 import { Loading } from "./Loading";
 import { SoccerScheduler } from "./SoccerScheduler";
@@ -19,7 +25,7 @@ export function SoccerEditor({ gameId, close }) {
   }
 
   const gameState = getGameState(currentGame);
-  if (gameState.state === "running") return SoccerUpdater(currentGame);
+  if (gameState.state === "running") return SoccerUpdater(currentGame, close);
 
   // Editar a data, editar os times, editar a hora... O modal de criação, mas que atualizará.
   // Pode cancelar o jogo, mas não encerrá-lo
@@ -41,8 +47,10 @@ import cStyles from "../styles/components/SoccerScheduler.module.css";
 import { firstWord, low } from "../utils/Global";
 import { ISOtimeFormat, localDate } from "../utils/Date";
 import { gameValidate } from "../utils/Yup";
+import { ModalCloseMessage } from "./ModalCloseMessage";
+import { ModalConfirmation } from "./ModalConfirmation";
 
-function SoccerUpdater(game) {
+function SoccerUpdater(game, close) {
   // Atualizar o placar, pode cancelar, pode encerrar
   const formRef = useRef(null);
   const team1 = game.teams.visited;
@@ -51,9 +59,21 @@ function SoccerUpdater(game) {
   const time = ISOtimeFormat(game.date);
   const date = localDate(game.date);
 
+  const [currentModal, setCurrentModal] = useState("initial");
+  const { updateGame } = useContext(soccerContext);
+  const { sessionId } = useContext(authContext);
+
+  const [score, setScore] = useState({
+    visited: game.score.visited,
+    visitor: game.score.visitor,
+  });
+
   function handleChange({ target }) {
     const max = target.value.length < 2 ? target.value.length : 2;
     target.value = ("0".repeat(max) + target.value).slice(max * -1);
+
+    score[target.name] = Number(target.value);
+    setScore(score);
   }
 
   function handleSubmit(data) {
@@ -65,9 +85,101 @@ function SoccerUpdater(game) {
     gameValidate(
       replaceNum,
       () => {
-        console.info("game:", replaceNum);
+        updateGameScore({ id: game.id, score: replaceNum }, sessionId).then(
+          (result) => {
+            if (result.acknowledged) {
+              game.score = replaceNum;
+              updateGame(game);
+              setCurrentModal("close-update");
+            }
+          }
+        );
       },
       formRef
+    );
+  }
+
+  function handlePreClose() {
+    setCurrentModal("pre-close");
+  }
+
+  function handleCloseGame() {
+    closeSoccerGame({ id: game.id, score }, sessionId).then((result) => {
+      if (result.acknowledged) {
+        setCurrentModal("close");
+        game.status = "closed";
+        game.score = score;
+        updateGame(game);
+      }
+    });
+  }
+
+  function handleDelete() {
+    deleteSoccerGame(game, sessionId).then((result) => {
+      if (result.acknowledged) {
+        console.info("deleted");
+        setCurrentModal("close-delete");
+        game.status = "canceled";
+        updateGame(game);
+      }
+    });
+  }
+
+  if (currentModal === "close") {
+    return (
+      <ModalCloseMessage
+        title="Encerrado!"
+        text="O jogo foi encerrado com sucesso"
+        close={close}
+      />
+    );
+  }
+
+  if (currentModal === "close-update") {
+    return (
+      <ModalCloseMessage
+        title="Atualizado!"
+        text="O jogo foi atualizado com sucesso"
+        cancel={() => setCurrentModal("initial")}
+        close={close}
+      />
+    );
+  }
+
+  if (currentModal === "close-delete") {
+    return (
+      <ModalCloseMessage
+        title="Cancelado!"
+        text="O jogo foi cancelado com sucesso"
+        close={close}
+      />
+    );
+  }
+
+  if (currentModal === "pre-close") {
+    const name1 = firstWord(team1.name, { min: 3, abb: true, max: 6 });
+    const name2 = firstWord(team2.name, { min: 3, abb: true, max: 6 });
+
+    return (
+      <ModalConfirmation
+        title="Encerrar Jogo"
+        message={
+          <>
+            O jogo será encerrado permanentemente com o placar
+            <p className={styles.score}>
+              {name1}{" "}
+              <strong>
+                ({score.visited}) x ({score.visitor})
+              </strong>{" "}
+              {name2}
+            </p>
+          </>
+        }
+        close={() => {
+          setCurrentModal("initial");
+        }}
+        callBack={handleCloseGame}
+      />
     );
   }
 
@@ -128,13 +240,19 @@ function SoccerUpdater(game) {
         </div>
 
         <div className={styles.buttonBox}>
-          <button type="button">Atualizar Jogo</button>
+          <button onClick={handlePreClose} type="button">
+            Encerrar Jogo
+          </button>
 
           <div className={styles.dualButtonBox}>
             <button type="submit" className={styles.update}>
-              Encerrar
+              Atualizar
             </button>
-            <button type="button" className={styles.cancel}>
+            <button
+              onClick={handleDelete}
+              type="button"
+              className={styles.cancel}
+            >
               Excluir
             </button>
           </div>

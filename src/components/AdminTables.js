@@ -15,9 +15,7 @@ export function AdminTables() {
     users,
   } = useContext(adminContext);
 
-  const payments = admPayments
-    .filter((p) => p.verified === false)
-    .filter((p) => p.type === "send");
+  const payments = admPayments.filter((p) => p.verified === false);
 
   const { games, ["fetching"]: soccerFetching } = useContext(soccerContext);
   const filteredGames = games.filter(
@@ -49,7 +47,7 @@ export function AdminTables() {
         )}
         {fetched && payments.length > 0 && (
           <tbody>
-            {payments.map(({ reference, id }, index) => {
+            {payments.map(({ reference, id, type }, index) => {
               return (
                 <tr key={id + index}>
                   <td>
@@ -67,7 +65,10 @@ export function AdminTables() {
                         Router.push("/admin/payments");
                       }}
                     >
-                      Pagar
+                      {type === "send" ? "Pagar" : "Receber"}
+                      {
+                        //TODO: Adicionar função de pagar e receber
+                      }
                     </button>
                   </td>
                 </tr>
@@ -87,12 +88,12 @@ export function AdminTables() {
         </thead>
 
         {soccerFetching && <Loading />}
-        {soccerFetching && filteredGames.length === 0 && (
+        {!soccerFetching && filteredGames.length === 0 && (
           <tbody>
             <tr>
               <Empty
                 className={styles.emptyBox}
-                descrition="Nenhum pagamento pendente"
+                descrition="Nenhum jogo em andamento"
                 title=" "
               />
             </tr>

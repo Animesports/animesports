@@ -136,15 +136,17 @@ export function SoccerTable({
 
                       {editable && (
                         <td>
-                          <button
-                            onClick={() => {
-                              state !== "canceled" && onSelect(id);
-                            }}
-                          >
-                            {["running"].includes(state)
-                              ? "Atualizar"
-                              : "Editar"}
-                          </button>
+                          {state !== "canceled" && state !== "closed" && (
+                            <button
+                              onClick={() => {
+                                onSelect(id);
+                              }}
+                            >
+                              {["running"].includes(state)
+                                ? "Atualizar"
+                                : "Editar"}
+                            </button>
+                          )}
                         </td>
                       )}
                     </tr>

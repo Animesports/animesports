@@ -1,6 +1,38 @@
 import { Fetch } from "../utils/Fetch";
 import { convertGameToFetch } from "../utils/Converter";
 
+export function closeSoccerGame({ id, score }, sessionId) {
+  return new Promise((resolve, reject) => {
+    Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/admin/soccer/close/${id}`, {
+      method: "PATCH",
+      headers: {
+        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${sessionId}`,
+      },
+      body: {
+        score,
+      },
+    }).then((data) => {
+      if (data.acknowledged) return resolve(data);
+      reject(data);
+    }, reject);
+  });
+}
+
+export function updateGameScore({ id, score }, sessionId) {
+  return new Promise((resolve, reject) => {
+    Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/admin/soccer/score/${id}`, {
+      method: "PATCH",
+      headers: {
+        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${sessionId}`,
+      },
+      body: convertGameToFetch({ score }),
+    }).then((data) => {
+      if (data.acknowledged) return resolve(data);
+      reject(data);
+    }, reject);
+  });
+}
+
 export function updateSoccerGame(gameData, sessionId) {
   return new Promise((resolve, reject) => {
     Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/admin/soccer/${gameData.id}`, {
@@ -12,6 +44,20 @@ export function updateSoccerGame(gameData, sessionId) {
     }).then((data) => {
       if (data.statusCode) return reject(data);
       if (data.acknowledged) return resolve(data);
+      reject(data);
+    }, reject);
+  });
+}
+
+export function deleteSoccerGame(gameData, sessionId) {
+  return new Promise((resolve, reject) => {
+    Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/admin/soccer/${gameData.id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${sessionId}`,
+      },
+    }).then((data) => {
+      if (data.deleted || data.acknowledged) return resolve(data);
       reject(data);
     }, reject);
   });

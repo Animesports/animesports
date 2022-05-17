@@ -19,11 +19,11 @@ export function organizeByDate(array) {
 export function sortByDate(obj) {
   return Object.keys(obj)
     .sort((a, b) => {
-      function getData(str) {
-        return new Date(str);
+      function getDate(date) {
+        return new Date(date);
       }
 
-      return getData(b) - getData(a);
+      return getDate(b) - getDate(a);
     })
     .map((key) => {
       return {
@@ -35,17 +35,17 @@ export function sortByDate(obj) {
 
 export function sortByHours(array) {
   return array.sort((a, b) => {
-    function getData(str) {
-      return new Date(str);
+    function getData(date) {
+      return new Date(date);
     }
 
     return getData(a.date) - getData(b.date);
   });
 }
 
-export function localDate(str, opts) {
-  if (!str) return;
-  const d = typeof str === "string" ? new Date(str) : str;
+export function localDate(date, opts) {
+  if (!date) return;
+  const d = new Date(date);
   const { day, month, year } = getDisplayDate(d, { numeric: true });
   return new Date(
     year,
@@ -54,20 +54,21 @@ export function localDate(str, opts) {
   ).toLocaleDateString();
 }
 
-export function ISOdateFormat(str) {
-  if (!str) return;
-  const d = typeof str === "string" ? new Date(str) : str;
+export function ISOdateFormat(date) {
+  if (!date) return;
+
+  const d = new Date(date);
   return d.toISOString().split("T")[0];
 }
 
-export function ISOtimeFormat(str) {
-  if (!str) return;
-  const d = typeof str === "string" ? new Date(str) : str;
+export function ISOtimeFormat(date) {
+  if (!date) return;
+  const d = new Date(date);
   return d.toLocaleTimeString().slice(0, 5);
 }
 
-export function getDisplayDate(str, options) {
-  const d = typeof str === "string" ? new Date(str) : str;
+export function getDisplayDate(date, options) {
+  const d = new Date(date);
 
   const display = {
     year: ("0000" + d.getFullYear()).slice(-4),

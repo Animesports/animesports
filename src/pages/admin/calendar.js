@@ -40,7 +40,7 @@ export default function Calendar() {
               <SoccerScheduler
                 message={{
                   title: "Agendado!",
-                  text: "O jogo foi agendado com sucesso.",
+                  text: "O jogo foi agendado com sucesso",
                   close: () => {
                     setOpenScheduler(false);
                   },
