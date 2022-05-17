@@ -12,7 +12,7 @@ import socketIOClient from "socket.io-client";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
-    const socket = socketIOClient("http://localhost:6060/", {
+    const socket = socketIOClient(process.env.NEXT_PUBLIC_FETCH_URI, {
       transports: ["websocket"],
     });
     socket.on("hello", (data) => {
