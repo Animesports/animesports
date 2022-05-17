@@ -18,11 +18,14 @@
   width: 100%;
 }
 
+.dualButton > button {
+  flex: 1;
+}
+
 button.close,
 button.back {
-  flex: 1;
   background: var(--blue-1);
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1.6rem;
   border-radius: 3px;
 }
 

@@ -1,5 +1,20 @@
 import { Fetch } from "../utils/Fetch";
 
+export function updateSoccerEntry({ id, entry }, sessionId) {
+  return new Promise((resolve, reject) => {
+    Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/soccer/entry/${id}`, {
+      method: "POST",
+      headers: {
+        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${sessionId}`,
+      },
+      body: entry,
+    }).then((result) => {
+      if (result.acknowledged) return resolve(result);
+      reject();
+    }, reject);
+  });
+}
+
 export function getAllSoccerGames() {
   return new Promise((resolve, reject) => {
     Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/app/soccer`, {

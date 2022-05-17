@@ -1,5 +1,5 @@
 import { Form } from "@unform/web";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { OnlyRegisteredUsers } from "../services/auth";
 import styles from "../styles/components/SoccerBlocks.module.css";
 import { useNextOnEnter } from "../utils/Inputs";
@@ -80,13 +80,21 @@ export function SoccerScore({ ["game"]: { teams, score }, myEntrie }) {
   );
 }
 
-export function SoccerPlay({ ["game"]: { teams, entries } }) {
-  entries = computeEntries(entries);
+import { ModalCloseMessage } from "./ModalCloseMessage";
+import { updateSoccerEntry } from "../services/soccer";
+import { authContext } from "../contexts/AuthContext";
+import { soccerContext } from "../contexts/SoccerContext";
+
+export function SoccerPlay({ game }) {
+  const { teams, id } = game;
+  const entries = computeEntries(game.entries);
 
   const formRef = useRef(null);
-  const [visible, setVisible] = useState(true);
+  const [currentModal, setCurrentModal] = useState("initial");
+  const { sessionId, user } = useContext(authContext);
+  const { updateGame } = useContext(soccerContext);
 
-  if (!visible) return SoccerScore() ?? null;
+  const myEntry = game.entries.filter((e) => e.id === user.id).pop();
 
   function handlePlaySubmit(data) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -96,16 +104,28 @@ export function SoccerPlay({ ["game"]: { teams, entries } }) {
         formRef.current.getFieldRef("visitor"),
       ],
       () => {
-        const replaceNum = {
+        const entry = {
           visited: Number(data.visited),
           visitor: Number(data.visitor),
         };
 
         gameValidate(
-          replaceNum,
+          entry,
           () => {
-            console.info("game:", replaceNum);
-            setVisible(false);
+            updateSoccerEntry({ id, entry }, sessionId).then(() => {
+              setCurrentModal("close");
+
+              if (myEntry) {
+                const index = game.entries.map((e) => e.id).indexOf(user.id);
+                game.entries[index] = { id: user.id, ...entry };
+              } else {
+                game.entries.push({ id: user.id, ...entry });
+              }
+
+              console.info(game.entries);
+
+              updateGame(game);
+            });
           },
           formRef
         );
@@ -122,44 +142,62 @@ export function SoccerPlay({ ["game"]: { teams, entries } }) {
   return (
     <div className={styles.container}>
       <div>
-        <div className={styles.playBox}>
-          {OnlyRegisteredUsers(
-            () => {
-              return (
-                <Form ref={formRef} onSubmit={handlePlaySubmit}>
-                  <div>
-                    <span>{teams.visited.name}</span>
-                    <Input
-                      name="visited"
-                      placeholder="0"
-                      min={0}
-                      autoComplete="off"
-                      type="number"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className={styles.button}>
-                    <button>Jogar</button>
-                  </div>
-                  <div>
-                    <span>{teams.visitor.name}</span>
-                    <Input
-                      name="visitor"
-                      placeholder="0"
-                      min={0}
-                      autoComplete="off"
-                      type="number"
-                      onChange={handleChange}
-                    />
-                  </div>
-                </Form>
-              );
-            },
-            () => (
-              <HideContent vertical text="para fazer uma previsão" />
-            )
-          )}
-        </div>
+        {currentModal === "close" && (
+          <div className={styles.playBox}>
+            <ModalCloseMessage
+              className={styles.closeBox}
+              title="Feito!"
+              text="Seu palpite foi registrado com sucesso"
+              cancel={() => {
+                setCurrentModal("initial");
+              }}
+            />
+          </div>
+        )}
+
+        {currentModal === "initial" && (
+          <div className={styles.playBox}>
+            {OnlyRegisteredUsers(
+              () => {
+                return (
+                  <Form ref={formRef} onSubmit={handlePlaySubmit}>
+                    <div>
+                      <span>{teams.visited.name}</span>
+                      <Input
+                        name="visited"
+                        placeholder="0"
+                        defaultValue={myEntry?.visited ?? 0}
+                        min={0}
+                        autoComplete="off"
+                        type="number"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className={styles.button}>
+                      <button>{myEntry ? "Alterar" : "Jogar"}</button>
+                    </div>
+                    <div>
+                      <span>{teams.visitor.name}</span>
+                      <Input
+                        name="visitor"
+                        placeholder="0"
+                        defaultValue={myEntry?.visitor ?? 0}
+                        min={0}
+                        autoComplete="off"
+                        type="number"
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </Form>
+                );
+              },
+              () => (
+                <HideContent vertical text="para fazer uma previsão" />
+              )
+            )}
+          </div>
+        )}
+
         <div className={styles.standBox}>
           <table>
             <thead>
