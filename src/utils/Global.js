@@ -1,3 +1,8 @@
+export function slice(text, opt) {
+  if (typeof text !== "string") return text;
+  return text.slice(opt.init ?? 0, opt.max ?? text.length);
+}
+
 export function firstWord(text, opt) {
   if (!text || typeof text !== "string") return text;
   text = text.replaceAll("-", " ");

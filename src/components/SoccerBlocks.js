@@ -122,7 +122,7 @@ import { ModalCloseMessage } from "./ModalCloseMessage";
 import { updateSoccerEntry } from "../services/soccer";
 import { authContext } from "../contexts/AuthContext";
 import { soccerContext } from "../contexts/SoccerContext";
-import { firstWord } from "../utils/Global";
+import { firstWord, slice } from "../utils/Global";
 
 export function SoccerPlay({ game }) {
   const { teams, id } = game;
@@ -213,7 +213,7 @@ export function SoccerPlay({ game }) {
                 return (
                   <Form ref={formRef} onSubmit={handlePlaySubmit}>
                     <div>
-                      <span>{visitedName}</span>
+                      <span>{slice(visitedName, { max: 12 })}</span>
                       <Input
                         name="visited"
                         placeholder="0"
@@ -228,7 +228,7 @@ export function SoccerPlay({ game }) {
                       <button>{myEntry ? "Alterar" : "Jogar"}</button>
                     </div>
                     <div>
-                      <span>{visitorName}</span>
+                      <span>{slice(visitorName, { max: 12 })}</span>
                       <Input
                         name="visitor"
                         placeholder="0"
