@@ -11,7 +11,17 @@ import { computeEntries, getWinner } from "../utils/Soccer";
 export function SoccerScore({ ["game"]: { teams, score }, myEntrie }) {
   const myWinner = myEntrie && getWinner(myEntrie);
 
-  console.info(myEntrie, myWinner);
+  const visitedName = firstWord(teams.visited.name, {
+    min: 3,
+    abb: true,
+    max: 6,
+  });
+
+  const visitorName = firstWord(teams.visitor.name, {
+    min: 3,
+    abb: true,
+    max: 6,
+  });
 
   return (
     <div className={styles.container}>
@@ -21,6 +31,14 @@ export function SoccerScore({ ["game"]: { teams, score }, myEntrie }) {
             () => {
               return (
                 <>
+                  {!myEntrie && (
+                    <ModalCloseMessage
+                      title=" "
+                      text="Você não fez nenhum palpite"
+                      className={styles.message}
+                    />
+                  )}
+
                   {myEntrie && (
                     <table>
                       <thead>
@@ -34,7 +52,13 @@ export function SoccerScore({ ["game"]: { teams, score }, myEntrie }) {
                           <td>Vencedor</td>
                           {["draw"].includes(myWinner) && <td>Empate</td>}
                           {["visited", "visitor"].includes(myWinner) && (
-                            <td>{teams[myWinner].name}</td>
+                            <td>
+                              {firstWord(teams[myWinner].name, {
+                                min: 3,
+                                abb: true,
+                                max: 6,
+                              })}
+                            </td>
                           )}
                         </tr>
 
@@ -66,12 +90,24 @@ export function SoccerScore({ ["game"]: { teams, score }, myEntrie }) {
 
             <tbody>
               <tr>
-                <td>{teams.visited.name}</td>
+                <td>
+                  {firstWord(visitedName, {
+                    min: 3,
+                    abb: true,
+                    max: 6,
+                  })}
+                </td>
                 <td>{score.visited}</td>
               </tr>
 
               <tr>
-                <td>{teams.visitor.name}</td>
+                <td>
+                  {firstWord(visitorName, {
+                    min: 3,
+                    abb: true,
+                    max: 6,
+                  })}
+                </td>
                 <td>{score.visitor}</td>
               </tr>
             </tbody>
@@ -86,10 +122,23 @@ import { ModalCloseMessage } from "./ModalCloseMessage";
 import { updateSoccerEntry } from "../services/soccer";
 import { authContext } from "../contexts/AuthContext";
 import { soccerContext } from "../contexts/SoccerContext";
+import { firstWord } from "../utils/Global";
 
 export function SoccerPlay({ game }) {
   const { teams, id } = game;
   const entries = computeEntries(game.entries);
+
+  const visitedName = firstWord(teams.visited.name, {
+    min: 3,
+    abb: true,
+    max: 6,
+  });
+
+  const visitorName = firstWord(teams.visitor.name, {
+    min: 3,
+    abb: true,
+    max: 6,
+  });
 
   const formRef = useRef(null);
   const [currentModal, setCurrentModal] = useState("initial");
@@ -164,7 +213,7 @@ export function SoccerPlay({ game }) {
                 return (
                   <Form ref={formRef} onSubmit={handlePlaySubmit}>
                     <div>
-                      <span>{teams.visited.name}</span>
+                      <span>{visitedName}</span>
                       <Input
                         name="visited"
                         placeholder="0"
@@ -179,7 +228,7 @@ export function SoccerPlay({ game }) {
                       <button>{myEntry ? "Alterar" : "Jogar"}</button>
                     </div>
                     <div>
-                      <span>{teams.visitor.name}</span>
+                      <span>{visitorName}</span>
                       <Input
                         name="visitor"
                         placeholder="0"
@@ -210,7 +259,7 @@ export function SoccerPlay({ game }) {
 
             <tbody>
               <tr>
-                <td>{teams.visited.name}</td>
+                <td>{visitedName}</td>
                 <td>{entries.visited}</td>
               </tr>
               <tr>
@@ -218,7 +267,7 @@ export function SoccerPlay({ game }) {
                 <td>{entries.draw}</td>
               </tr>
               <tr>
-                <td>{teams.visitor.name}</td>
+                <td>{visitorName}</td>
                 <td>{entries.visitor}</td>
               </tr>
             </tbody>
