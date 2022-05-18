@@ -89,7 +89,7 @@ export function SoccerDetail({ select, onClose }) {
               )}
               {state === "opened" && (
                 <p className={[styles.statusDetail, styles.opened].join(" ")}>
-                  Termina em {display}
+                  Começa em {display}
                 </p>
               )}
 
