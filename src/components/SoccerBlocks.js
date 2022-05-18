@@ -6,10 +6,12 @@ import { useNextOnEnter } from "../utils/Inputs";
 import { Input } from "./Input";
 import { HideContent } from "./HideContent";
 import { gameValidate } from "../utils/Yup";
-import { computeEntries, getEntWinner } from "../utils/Soccer";
+import { computeEntries, getWinner } from "../utils/Soccer";
 
 export function SoccerScore({ ["game"]: { teams, score }, myEntrie }) {
-  const myWinner = myEntrie && getEntWinner(myEntrie);
+  const myWinner = myEntrie && getWinner(myEntrie);
+
+  console.info(myEntrie, myWinner);
 
   return (
     <div className={styles.container}>
@@ -31,15 +33,15 @@ export function SoccerScore({ ["game"]: { teams, score }, myEntrie }) {
                         <tr>
                           <td>Vencedor</td>
                           {["draw"].includes(myWinner) && <td>Empate</td>}
-                          {["visited, visitor"].includes(myWinner) && (
+                          {["visited", "visitor"].includes(myWinner) && (
                             <td>{teams[myWinner].name}</td>
                           )}
                         </tr>
 
                         <tr>
-                          <td>Placar</td>
+                          <td>Palpite</td>
                           <td>
-                            {score.visited} - {score.visitor}
+                            {myEntrie.visited} - {myEntrie.visitor}
                           </td>
                         </tr>
                       </tbody>
@@ -64,13 +66,13 @@ export function SoccerScore({ ["game"]: { teams, score }, myEntrie }) {
 
             <tbody>
               <tr>
-                <td>Flamengo</td>
-                <td>2</td>
+                <td>{teams.visited.name}</td>
+                <td>{score.visited}</td>
               </tr>
 
               <tr>
-                <td>São Paulo</td>
-                <td>4</td>
+                <td>{teams.visitor.name}</td>
+                <td>{score.visitor}</td>
               </tr>
             </tbody>
           </table>

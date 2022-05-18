@@ -24,7 +24,7 @@ export function getWinner({ visited, visitor }) {
     visited: () => visited > visitor,
     visitor: () => visitor > visited,
     draw: () => visited === visitor,
-  }).filter(([_winner, is]) => is)?.[0];
+  }).filter(([_winner, is]) => is())?.[0][0];
 }
 
 export function getSoccerGameById(games, filterId) {

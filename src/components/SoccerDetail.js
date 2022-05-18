@@ -68,7 +68,7 @@ export function SoccerDetail({ select, onClose }) {
         </div>
         {state === "running" && (
           <p className={[styles.statusDetail, styles.running].join(" ")}>
-            {computePoints(myEntrie, currentGame.score)}P
+            Pontos {computePoints(myEntrie, currentGame.score)}
           </p>
         )}
         {state === "opened" && (
