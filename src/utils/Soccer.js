@@ -42,8 +42,10 @@ export function getGameState({ date, status }) {
   const gameDate = new Date(date);
 
   const diference = Math.abs(gameDate.getTime() - currentDate.getTime());
-  const hours = Math.ceil(diference / (1000 * 60 * 60));
-  const days = Math.ceil(hours / 24);
+  const hours = Math.floor(diference / (1000 * 60 * 60));
+  const minutes = Math.floor(diference / (1000 * 60));
+  const seconds = Math.floor(diference / 1000);
+  const days = Math.floor(hours / 24);
 
   const gameStates = {
     opened: currentDate < gameDate,
@@ -52,8 +54,17 @@ export function getGameState({ date, status }) {
     canceled: status === "canceled",
   };
 
+  const useTime = [
+    [days, "d"],
+    [hours, "h"],
+    [minutes, "m"],
+    [seconds, "s"],
+  ]
+    .filter(([time, unit]) => time)
+    .shift();
+
   const displayGameState = {
-    opened: hours > 24 ? `${days}d` : `${hours}h`,
+    opened: `${useTime?.[0] ?? "0"}${useTime?.[1] ?? "s"}`,
     running: "andamento",
     closed: "encerrado",
     canceled: "cancelado",
