@@ -8,6 +8,14 @@ export class Team {
   logo = String;
 }
 
+export class LimitedUser {
+  id = String;
+  data = {
+    name: String,
+    picture: String,
+  };
+}
+
 export class User {
   id = String;
   data = {
@@ -16,6 +24,7 @@ export class User {
       address: String,
       verified: Boolean,
     },
+    picture: String,
     pix: String,
     password: String,
     admin: Boolean,
@@ -48,6 +57,7 @@ export class Payment {
 export class DbConfig {
   email = "data.email.address";
   pix = "data.pix";
+  picture = "data.picture";
   password = "data.password";
   twosteps = "config.twosteps";
   video = "config.video";
@@ -68,4 +78,10 @@ export class GameDb {
   date = "date";
   state = "state";
   score = "score";
+}
+
+export class Season {
+  running = Boolean;
+  id = String;
+  ticket = Number;
 }

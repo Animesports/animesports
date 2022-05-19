@@ -121,6 +121,10 @@ input::placeholder {
   color: var(--unluck);
 }
 
+.none {
+  color: var(--none);
+}
+
 .close-button {
   font-family: "Poppins", sans-serif;
   font-weight: bold;

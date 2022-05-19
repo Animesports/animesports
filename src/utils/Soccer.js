@@ -1,3 +1,41 @@
+export function sortUsersByPoints({ users, games, season }) {
+  if (!users || !games || !season) return;
+
+  games = games
+    .filter((g) => {
+      return g.status !== "canceled";
+    })
+    .filter((g) => {
+      return g.reference === season.id;
+    });
+
+  users = users.map((user) => {
+    const entriesLength = games.filter(
+      ({ entries }) => entries.map((e) => e.id).indexOf(user.id) !== -1
+    ).length;
+
+    const points = games.map(({ entries, score }) => {
+      const entry = entries[entries.map((e) => e.id).indexOf(user.id) ?? -1];
+      return computePoints(entry, score);
+    });
+
+    return {
+      ...user,
+      entries: entriesLength,
+      points: points.length !== 0 ? points.reduce((a, b) => a + b) : 0,
+    };
+  });
+
+  return users.sort((user1, user2) => {
+    if (user1.points === user2.points) {
+      // Trabalhar no que jogou mais vezes
+      return user1.entries > user2.entries;
+    }
+
+    return user1.points > user2.points;
+  });
+}
+
 export function computePoints(entry, score) {
   if (!entry?.visited || !entry?.visitor) return 0;
 

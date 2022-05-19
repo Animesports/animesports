@@ -1,19 +1,32 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import { seasonRequest } from "../services/season";
+import { seasonRequest, seasonUsersRequest } from "../services/season";
+import { LimitedUser, Season } from "../utils/Types";
 import { socketContext } from "./SocketContext";
 
-export const seasonContext = createContext({});
+export const seasonContext = createContext({
+  users: LimitedUser,
+  fetched: Boolean,
+  season: Season,
+});
 
 export function SeasonProvider({ children }) {
   const { Listen } = useContext(socketContext);
   const [fetched, setFetched] = useState(false);
   const [season, setSeason] = useState({});
+  const [users, setUsers] = useState([]);
 
   async function loadSeason() {
     await seasonRequest().then((season) => {
       setSeason(season);
     });
     setFetched(true);
+  }
+
+  async function loadSeasonUsers() {
+    await seasonUsersRequest().then((users) => {
+      console.info("season:", users);
+      setUsers(users);
+    });
   }
 
   function updateSeason(data) {
@@ -26,7 +39,10 @@ export function SeasonProvider({ children }) {
     setSeason(newSeason);
   }
 
-  useEffect(loadSeason, []);
+  useEffect(() => {
+    loadSeason();
+    loadSeasonUsers();
+  }, []);
 
   useEffect(() => {
     if (!season.id) return;
@@ -39,6 +55,7 @@ export function SeasonProvider({ children }) {
       value={{
         fetched,
         season,
+        users,
       }}
     >
       {children}

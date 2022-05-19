@@ -1,56 +1,23 @@
 import styles from "../styles/components/LeadboardTable.module.css";
+import { useContext } from "react";
+import { seasonContext } from "../contexts/SeasonContext";
+import { soccerContext } from "../contexts/SoccerContext";
+import { Loading } from "./Loading";
+import { sortUsersByPoints } from "../utils/Soccer";
 
 export function LeadboardTable({ editable, disable, customClass, title }) {
   disable =
     disable?.filter((item) => ["hits", "position"].includes(item)) ?? [];
 
-  const users = [
-    {
-      name: "Gabriel Bardasson",
-      position: 1,
-      image: "/icons/user.svg",
-      league: {
-        name: "teller",
-        display: "Vidente",
-        image: "/icons/teller.svg",
-      },
-      hits: 0.8,
-    },
-    {
-      name: "Michel Lopes",
-      position: 2,
-      image: "/icons/user.svg",
-      league: {
-        name: "expert",
-        display: "Perito",
-        image: "/icons/expert.svg",
-      },
-      hits: 0.74,
-    },
-    {
-      name: "Victor Pinto",
-      position: 3,
-      image: "/icons/user.svg",
-      league: {
-        name: "expert",
-        display: "Perito",
-        image: "/icons/expert.svg",
-      },
-      hits: 0.7,
-    },
+  const { users, season, fetched } = useContext(seasonContext);
+  const { games, fetching } = useContext(soccerContext);
 
-    {
-      name: "Maria Isabel",
-      position: 4,
-      image: "/icons/user.svg",
-      league: {
-        name: "reckoner",
-        display: "Pé Frio",
-        image: "/icons/reckoner.svg",
-      },
-      hits: 0.7,
-    },
-  ];
+  if (fetching || !fetched) {
+    return <Loading />;
+  }
+
+  const ordenedUsers = sortUsersByPoints({ users, games, season });
+
   return (
     <table className={[styles.container, customClass].join(" ")}>
       <thead>
@@ -69,7 +36,7 @@ export function LeadboardTable({ editable, disable, customClass, title }) {
           </th>
           {!disable.includes("hits") && (
             <th className={styles.hits}>
-              <span>Acertividade</span>
+              <span>Pontos</span>
             </th>
           )}
           {editable && (
@@ -83,59 +50,64 @@ export function LeadboardTable({ editable, disable, customClass, title }) {
       </thead>
 
       <tbody>
-        {users.map(({ name, position, league, image, hits }, index) => {
-          return (
-            <tr className={styles.row} key={name + index}>
-              {!disable.includes("position") && (
-                <td className={["position", styles.position].join(" ")}>
+        {ordenedUsers.map(
+          ({ ["data"]: { name }, picture, points }, position) => {
+            return (
+              <tr className={styles.row} key={name + position}>
+                {!disable.includes("position") && (
+                  <td className={["position", styles.position].join(" ")}>
+                    <div>
+                      {[0, 1, 2].includes(position) && (
+                        <img
+                          src={`/icons/award${position + 1}.svg`}
+                          alt={position}
+                        />
+                      )}
+                      {![0, 1, 2].includes(position) && <span>{position}</span>}
+                    </div>
+                  </td>
+                )}
+                <td className={["profile", styles.profile].join(" ")}>
                   <div>
-                    {[1, 2, 3].includes(position) && (
-                      <img src={`/icons/award${position}.svg`} alt={position} />
-                    )}
-                    {![1, 2, 3].includes(position) && <span>{position}</span>}
+                    <img src={picture ?? "/icons/user.svg"} alt="user" />
+                    <span>{name}</span>
                   </div>
                 </td>
-              )}
-              <td className={["profile", styles.profile].join(" ")}>
-                <div>
-                  <img src={image} alt="user" />
-                  <span>{name}</span>
-                </div>
-              </td>
-              <td className={["league", styles.league].join(" ")}>
-                <div>
-                  <img src={league.image} alt={league.name} />
-                </div>
-              </td>
-              <td className={styles.leagueName}>
-                <div>
-                  <span className={league.name}>{league.display}</span>
-                </div>
-              </td>
-              {!disable.includes("hits") && (
-                <td className={["hits", styles.hits].join(" ")}>
-                  <span>{hits * 100}%</span>
+                <td className={["league", styles.league].join(" ")}>
+                  <div>
+                    <img src="/icons/none.svg" alt={"Nenhuma"} />
+                  </div>
                 </td>
-              )}
-
-              {editable && (
-                <>
-                  <td className={styles.editable}>
-                    <img src="/icons/email.svg" alt="email" />
+                <td className={styles.leagueName}>
+                  <div>
+                    <span className="none">Nenhuma</span>
+                  </div>
+                </td>
+                {!disable.includes("hits") && (
+                  <td className={["hits", styles.hits].join(" ")}>
+                    <span>{points}</span>
                   </td>
+                )}
 
-                  <td className={styles.editable}>
-                    <img src="/icons/info.svg" alt="i" />
-                  </td>
+                {editable && (
+                  <>
+                    <td className={styles.editable}>
+                      <img src="/icons/email.svg" alt="email" />
+                    </td>
 
-                  <td className={[styles.editable, styles.trash].join(" ")}>
-                    <img src="/icons/delete.svg" alt="del" />
-                  </td>
-                </>
-              )}
-            </tr>
-          );
-        })}
+                    <td className={styles.editable}>
+                      <img src="/icons/info.svg" alt="i" />
+                    </td>
+
+                    <td className={[styles.editable, styles.trash].join(" ")}>
+                      <img src="/icons/delete.svg" alt="del" />
+                    </td>
+                  </>
+                )}
+              </tr>
+            );
+          }
+        )}
       </tbody>
     </table>
   );
