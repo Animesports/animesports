@@ -8,38 +8,32 @@ import { PaymentProvider } from "../contexts/PaymentContext";
 import { SeasonProvider } from "../contexts/SeasonContext";
 import { SoccerProvider } from "../contexts/SoccerContext";
 import "../styles/globals.css";
-import socketIOClient from "socket.io-client";
+
+import { SocketProvider } from "../contexts/SocketContext";
 
 function MyApp({ Component, pageProps }) {
-  useEffect(() => {
-    const socket = socketIOClient(process.env.NEXT_PUBLIC_FETCH_URI, {
-      transports: ["websocket"],
-    });
-    socket.on("hello", (data) => {
-      console.info("hello:", data);
-    });
-  }, []);
-
   return (
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <SeasonProvider>
-        <AuthProvider>
-          <PaymentProvider>
-            <ConfigProvider>
-              <AdminProvider>
-                <SoccerProvider>
-                  <Component {...pageProps} />
-                </SoccerProvider>
-              </AdminProvider>
-              <BackgroundVideo />
-            </ConfigProvider>
-          </PaymentProvider>
-        </AuthProvider>
-      </SeasonProvider>
+      <SocketProvider>
+        <SeasonProvider>
+          <AuthProvider>
+            <PaymentProvider>
+              <ConfigProvider>
+                <AdminProvider>
+                  <SoccerProvider>
+                    <Component {...pageProps} />
+                  </SoccerProvider>
+                </AdminProvider>
+                <BackgroundVideo />
+              </ConfigProvider>
+            </PaymentProvider>
+          </AuthProvider>
+        </SeasonProvider>
+      </SocketProvider>
     </>
   );
 }

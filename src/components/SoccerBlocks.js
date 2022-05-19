@@ -143,7 +143,6 @@ export function SoccerPlay({ game }) {
   const formRef = useRef(null);
   const [currentModal, setCurrentModal] = useState("initial");
   const { sessionId, user } = useContext(authContext);
-  const { updateGame } = useContext(soccerContext);
 
   const myEntry = game.entries.filter((e) => e.id === user.id).pop();
 
@@ -174,8 +173,6 @@ export function SoccerPlay({ game }) {
               }
 
               console.info(game.entries);
-
-              updateGame(game);
             });
           },
           formRef

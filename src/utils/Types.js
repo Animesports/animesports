@@ -69,10 +69,3 @@ export class GameDb {
   state = "state";
   score = "score";
 }
-
-export class GameFetch {
-  teams = ["visited", "visitor"];
-  date = "date";
-  state = "state";
-  score = "score";
-}

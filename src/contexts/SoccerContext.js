@@ -1,49 +1,58 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { updateGameScore } from "../services/admin";
 import { getAllSoccerGames } from "../services/soccer";
+import { socketContext } from "./SocketContext";
 
 export const soccerContext = createContext({
   fetching: Boolean,
   games: Array,
-  updateGame: Function,
-  insertNewGame: Function,
-  removeGame: Function,
 });
 
 export function SoccerProvider({ children }) {
+  const { Listen } = useContext(socketContext);
+
   const [fetching, setFetching] = useState(true);
   const [games, setGames] = useState([]);
 
   function removeGame(game) {
-    console.info(
-      games,
-      game,
-      games.filter((g) => g.id === game.id)
-    );
-
-    const newGames = games.filter((g) => g.id !== game.id);
-
-    setGames(newGames);
+    setGames([...games.filter((g) => g.id !== game.id)]);
   }
 
   async function insertNewGame(game) {
     game.date = new Date(game.date);
-    games.push(game);
+    setGames([...games, game]);
+  }
 
-    setGames(games);
+  async function updateEntry(data) {
+    const index = games.map((g) => g.id).indexOf(data.id);
+    if (!index) return;
+
+    const newGames = [...games];
+    const entryIndex = games[index].entries
+      .map((e) => e.id)
+      .indexOf(data.entry.id);
+
+    if (entryIndex !== -1) {
+      newGames[index].entries[entryIndex] = data.entry;
+    } else {
+      newGames[index].entries.push(data.entry);
+    }
+
+    setGames(newGames);
   }
 
   async function updateGame(game) {
-    const index = games
-      .map((g, i) => {
-        return { g, i };
-      })
-      .filter(({ g }) => g.id === game.id)[0]?.i;
-    if (index) return;
+    game.date = new Date(game.date);
+    const index = games.map((g) => g.id).indexOf(game.id);
+    if (!index) return;
+
+    const newGames = [...games];
+
     for (const key in game) {
-      games[index][key] = game[key];
+      newGames[index][key] = game[key];
     }
-    setGames(games);
+
+    setGames(newGames);
   }
 
   async function importSoccerGames() {
@@ -62,14 +71,20 @@ export function SoccerProvider({ children }) {
     importSoccerGames();
   }, []);
 
+  useEffect(() => {
+    Listen("insert-game", insertNewGame);
+
+    if (games.length === 0) return;
+    Listen("update-game", updateGame);
+    Listen("update-entry", updateEntry);
+    Listen("delete-game", removeGame);
+  }, [games]);
+
   return (
     <soccerContext.Provider
       value={{
         fetching,
         games,
-        updateGame,
-        insertNewGame,
-        removeGame,
       }}
     >
       {children}

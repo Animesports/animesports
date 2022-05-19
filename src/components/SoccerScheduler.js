@@ -10,20 +10,17 @@ import { firstWord, low } from "../utils/Global";
 import { soccerSchedulerValidate } from "../utils/Yup";
 import { deleteSoccerGame, scheduleSoccerGame } from "../services/admin";
 import { ISOdateFormat, ISOtimeFormat, localDate } from "../utils/Date";
-import { soccerContext } from "../contexts/SoccerContext";
-import { convertGameFromFetch } from "../utils/Converter";
 import { ModalCloseMessage } from "./ModalCloseMessage";
 export function SoccerScheduler({
   initial,
   onSubmit,
-  buttonText,
+
   close,
   message,
 }) {
   const formRef = useRef(null);
 
   const { sessionId } = useContext(authContext);
-  const { insertNewGame, updateGame, removeGame } = useContext(soccerContext);
 
   const [currentModal, setCurrentModal] = useState("initial");
 
@@ -44,6 +41,7 @@ export function SoccerScheduler({
   }
 
   function handleSubmit(values) {
+    console.info("submit form");
     soccerSchedulerValidate(
       {
         visited: team1.name,
@@ -66,14 +64,6 @@ export function SoccerScheduler({
           (result) => {
             if (result.success || result.modified) {
               setCurrentModal("close");
-
-              if (initial?.id && result.modified) {
-                return updateGame(
-                  convertGameFromFetch(result.modified, initial)
-                );
-              }
-
-              !initial?.id && insertNewGame(result.game);
             }
           },
           (err) => {
@@ -86,10 +76,10 @@ export function SoccerScheduler({
   }
 
   function handleDelete() {
+    console.info("delete click");
     deleteSoccerGame(initial, sessionId).then((result) => {
       if (result.deleted) {
         setCurrentModal("close-delete");
-        removeGame(initial);
       }
     });
   }
@@ -214,7 +204,7 @@ export function SoccerScheduler({
                 <button
                   onClick={handleDelete}
                   className={styles.cancel}
-                  type="buttom"
+                  type="button"
                 >
                   Excluir
                 </button>

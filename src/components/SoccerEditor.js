@@ -27,8 +27,26 @@ export function SoccerEditor({ gameId, close }) {
   const gameState = getGameState(currentGame);
   if (gameState.state === "running") return SoccerUpdater(currentGame, close);
 
-  // Editar a data, editar os times, editar a hora... O modal de criação, mas que atualizará.
-  // Pode cancelar o jogo, mas não encerrá-lo
+  if (["canceled"].includes(gameState.state)) {
+    return (
+      <ModalCloseMessage
+        title="Cancelado!"
+        text="Este jogo foi cancelado e não pode ser editado."
+        close={close}
+      />
+    );
+  }
+
+  if (["closed"].includes(gameState.state)) {
+    return (
+      <ModalCloseMessage
+        title="Encerrado!"
+        text="Este jogo foi encerrado e não pode ser editado."
+        close={close}
+      />
+    );
+  }
+
   return (
     <SoccerScheduler
       message={{
@@ -52,6 +70,7 @@ import { ModalConfirmation } from "./ModalConfirmation";
 
 function SoccerUpdater(game, close) {
   // Atualizar o placar, pode cancelar, pode encerrar
+
   const formRef = useRef(null);
   const team1 = game.teams.visited;
   const team2 = game.teams.visitor;
@@ -60,7 +79,7 @@ function SoccerUpdater(game, close) {
   const date = localDate(game.date);
 
   const [currentModal, setCurrentModal] = useState("initial");
-  const { updateGame } = useContext(soccerContext);
+
   const { sessionId } = useContext(authContext);
 
   const [score, setScore] = useState({
@@ -89,7 +108,7 @@ function SoccerUpdater(game, close) {
           (result) => {
             if (result.acknowledged) {
               game.score = replaceNum;
-              updateGame(game);
+
               setCurrentModal("close-update");
             }
           }
@@ -104,14 +123,7 @@ function SoccerUpdater(game, close) {
   }
 
   function handleCloseGame() {
-    closeSoccerGame({ id: game.id, score }, sessionId).then((result) => {
-      if (result.acknowledged) {
-        setCurrentModal("close");
-        game.status = "closed";
-        game.score = score;
-        updateGame(game);
-      }
-    });
+    closeSoccerGame({ id: game.id, score }, sessionId);
   }
 
   function handleDelete() {
@@ -120,7 +132,6 @@ function SoccerUpdater(game, close) {
         console.info("deleted");
         setCurrentModal("close-delete");
         game.status = "canceled";
-        updateGame(game);
       }
     });
   }
