@@ -3,7 +3,7 @@ import styles from "../styles/pages/Leagues.module.css";
 import leagues from "../../leagues.json";
 
 export function MyLeague() {
-  const score = 72;
+  const score = 0;
 
   const [offset, setOffset] = useState(null);
 

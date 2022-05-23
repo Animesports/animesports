@@ -11,6 +11,9 @@ import { useContext } from "react";
 import { adminContext } from "../contexts/AdminContext";
 import { currency } from "../utils/Global";
 
+import copy from "copy-to-clipboard";
+import { Copy } from "./Copy";
+
 export function PendingPayments({
   type,
   ["values"]: payments,
@@ -46,7 +49,7 @@ export function PendingPayments({
               <span>Usuário</span>
             </th>
 
-            <th className={styles.identification}>Referência</th>
+            <th className={styles.identification}>Chave</th>
 
             <th className={styles.amount}>Quantia</th>
 
@@ -76,13 +79,15 @@ export function PendingPayments({
 
                 <td className={styles.identification}>
                   <div>
-                    <span>{id}</span>
+                    <Copy value={user.data.pix ?? "-"}>
+                      <span>{user.data.pix ?? "-"}</span>
+                    </Copy>
                   </div>
                 </td>
 
                 <td className={styles.amount}>
                   <div>
-                    <span>{currency().get(value)}</span>
+                    <span>{currency().get(value * -1)}</span>
                   </div>
                 </td>
 

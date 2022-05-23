@@ -21,7 +21,7 @@ export default function Payments() {
             <div className={styles.content}>
               <div className={styles.header}>
                 <h2>Pagamentos Pendentes</h2>
-                <h2>{currency().get(sendSum)}</h2>
+                <h2>{currency().get(sendSum * -1)}</h2>
               </div>
 
               <PendingPayments type="send" values={sendPay} ft={fetched} />

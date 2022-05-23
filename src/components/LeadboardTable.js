@@ -4,6 +4,7 @@ import { seasonContext } from "../contexts/SeasonContext";
 import { soccerContext } from "../contexts/SoccerContext";
 import { Loading } from "./Loading";
 import { sortUsersByPoints } from "../utils/Soccer";
+import { Empty } from "./Empty";
 
 export function LeadboardTable({ editable, disable, customClass, title }) {
   disable =
@@ -14,6 +15,16 @@ export function LeadboardTable({ editable, disable, customClass, title }) {
 
   if (fetching || !fetched) {
     return <Loading />;
+  }
+
+  if (fetched && users.length === 0) {
+    return (
+      <Empty
+        className={styles.empty}
+        title="Nada para exibir"
+        descrition="Nenhum jogador está participando ainda"
+      />
+    );
   }
 
   const ordenedUsers = sortUsersByPoints({ users, games, season });

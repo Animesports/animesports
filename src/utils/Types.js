@@ -85,3 +85,5 @@ export class Season {
   id = String;
   ticket = Number;
 }
+
+export class Notify {}

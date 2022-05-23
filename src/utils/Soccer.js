@@ -37,7 +37,8 @@ export function sortUsersByPoints({ users, games, season }) {
 }
 
 export function computePoints(entry, score) {
-  if (!entry?.visited || !entry?.visitor) return 0;
+  if (!entry) return 0;
+  if (![entry.visited, entry.visitor].every((e) => !Number.isNaN(e))) return 0;
 
   const myWinner = getWinner(entry);
   const currentWinner = getWinner(score);

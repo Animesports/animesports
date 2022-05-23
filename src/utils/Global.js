@@ -32,8 +32,9 @@ export function aLow(array) {
 
 export function plural(number) {
   return {
-    convert: (text) => {
-      return number === 1 ? text : text + "s";
+    is: () => number !== 1,
+    convert: (text, pl) => {
+      return number === 1 ? text : text + (pl ?? "s");
     },
   };
 }

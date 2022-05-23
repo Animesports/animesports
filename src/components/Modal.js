@@ -1,7 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "../styles/components/Modal.module.css";
 
-export function Modal({ openRef, children, customStyle, openOn, functions }) {
+export function Modal({
+  openRef,
+  children,
+  customStyle,
+  openOn,
+  functions,
+  className,
+  disableOverlay,
+}) {
   const [visible, setVisible] = useState(false);
   const [modalRef, overlayRef] = [useRef(null), useRef(null)];
 
@@ -33,12 +41,17 @@ export function Modal({ openRef, children, customStyle, openOn, functions }) {
     <>
       {(visible || openOn) && (
         <>
+          {!disableOverlay && (
+            <div
+              className={!customStyle && [styles.overlay]}
+              ref={overlayRef}
+              onClick={close}
+            />
+          )}
           <div
-            className={!customStyle && styles.overlay}
-            ref={overlayRef}
-            onClick={close}
-          />
-          <div className={!customStyle && styles.container} ref={modalRef}>
+            className={!customStyle && [styles.container, className].join(" ")}
+            ref={modalRef}
+          >
             {React.cloneElement(children, { close, open })}
           </div>
         </>

@@ -1,0 +1,36 @@
+.container {
+  display: inline;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+.container.copied::after {
+  content: "copiado!";
+  background: var(--gray);
+  padding: 0.2rem 2.2rem;
+  color: var(--white);
+  border-radius: 3px;
+  font-weight: 200 !important;
+  position: absolute;
+  top: 0;
+  left: 50%;
+
+  animation: 0.3s appear ease-in-out forwards;
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -70%);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -160%);
+  }
+}

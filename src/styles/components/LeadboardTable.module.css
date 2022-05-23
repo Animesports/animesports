@@ -101,6 +101,11 @@
   justify-content: left;
 }
 
+.empty {
+  height: 100%;
+  border: 0;
+}
+
 .header th.position,
 .header th.leagueName,
 .row td.profile {

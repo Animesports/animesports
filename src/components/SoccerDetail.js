@@ -43,8 +43,8 @@ export function SoccerDetail({ select, onClose }) {
   const { state, display } = getGameState(currentGame);
   const { teams } = currentGame;
 
-  const myEntrie = currentGame.entries.filter(
-    (entrie) => entrie.id === user.id
+  const myEntry = currentGame.entries.filter(
+    (entry) => entry.id === entry.id
   )?.[0];
 
   return (
@@ -84,7 +84,7 @@ export function SoccerDetail({ select, onClose }) {
               </div>
               {state === "running" && (
                 <p className={[styles.statusDetail, styles.running].join(" ")}>
-                  Pontos {computePoints(myEntrie, currentGame.score)}
+                  Pontos {computePoints(myEntry, currentGame.score)}
                 </p>
               )}
               {state === "opened" && (
@@ -95,19 +95,19 @@ export function SoccerDetail({ select, onClose }) {
 
               {state === "closed" && (
                 <p className={[styles.statusDetail, styles.closed].join(" ")}>
-                  {computePoints(myEntrie, currentGame.score)}P
+                  Pontos {computePoints(myEntry, currentGame.score)}
                 </p>
               )}
 
               {state === "canceled" && (
                 <p className={[styles.statusDetail, styles.canceled].join(" ")}>
-                  {computePoints(myEntrie, currentGame.score)}P
+                  Pontos {computePoints(myEntry, currentGame.score)}
                 </p>
               )}
             </div>
 
             {["closed", "running"].includes(state) && (
-              <SoccerScore game={currentGame} myEntrie={myEntrie} />
+              <SoccerScore game={currentGame} entry={myEntry} />
             )}
 
             {["opened"].includes(state) && <SoccerPlay game={currentGame} />}

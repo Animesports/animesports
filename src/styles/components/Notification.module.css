@@ -1,0 +1,52 @@
+.container {
+  color: var(--gray);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+
+  max-width: 500px;
+  padding: 2rem;
+}
+
+.container button {
+  padding: 0.2rem 1.4rem;
+  border-radius: 3px;
+  background-color: var(--blue);
+}
+
+.container > img {
+  max-width: 100%;
+  max-height: 25rem;
+  background-position: center center;
+  object-fit: cover;
+}
+
+.winners {
+  display: flex;
+  flex-direction: column;
+  gap: 2.1rem;
+}
+
+.winners img:not(.award) {
+  background: var(--gray-2);
+  border-radius: 50%;
+  padding: 0.6rem;
+  width: 8rem;
+}
+
+.winners .award {
+  position: absolute;
+  width: 4.6rem;
+  left: 0;
+  top: 0;
+  filter: drop-shadow(0 0 0.8rem rgba(0, 0, 0, 0.6));
+  transform: translate(-25%, -25%);
+}
+
+.winners > div {
+  display: flex;
+  position: relative;
+  align-items: center;
+  gap: 1rem;
+}

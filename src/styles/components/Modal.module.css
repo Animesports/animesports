@@ -17,6 +17,7 @@
   justify-content: flex-start;
   min-width: 300px;
   overflow-y: scroll;
+  animation: 0.3s appear-up ease-out;
 }
 
 .container::-webkit-scrollbar {
@@ -40,4 +41,16 @@
   right: 0;
   background: rgba(0, 0, 0, 0.37);
   z-index: 99998;
+}
+
+@keyframes appear-up {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 6rem));
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }

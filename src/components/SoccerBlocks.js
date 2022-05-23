@@ -8,8 +8,8 @@ import { HideContent } from "./HideContent";
 import { gameValidate } from "../utils/Yup";
 import { computeEntries, getWinner } from "../utils/Soccer";
 
-export function SoccerScore({ ["game"]: { teams, score }, myEntrie }) {
-  const myWinner = myEntrie && getWinner(myEntrie);
+export function SoccerScore({ ["game"]: { teams, score }, entry }) {
+  const myWinner = entry && getWinner(entry);
 
   const visitedName = firstWord(teams.visited.name, {
     min: 3,
@@ -31,7 +31,7 @@ export function SoccerScore({ ["game"]: { teams, score }, myEntrie }) {
             () => {
               return (
                 <>
-                  {!myEntrie && (
+                  {!entry && (
                     <ModalCloseMessage
                       title=" "
                       text="Você não fez nenhum palpite"
@@ -39,7 +39,7 @@ export function SoccerScore({ ["game"]: { teams, score }, myEntrie }) {
                     />
                   )}
 
-                  {myEntrie && (
+                  {entry && (
                     <table>
                       <thead>
                         <tr>
@@ -65,7 +65,7 @@ export function SoccerScore({ ["game"]: { teams, score }, myEntrie }) {
                         <tr>
                           <td>Palpite</td>
                           <td>
-                            {myEntrie.visited} - {myEntrie.visitor}
+                            {entry.visited} - {entry.visitor}
                           </td>
                         </tr>
                       </tbody>

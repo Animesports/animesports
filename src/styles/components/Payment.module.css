@@ -18,6 +18,7 @@
   max-height: 90vh;
   justify-content: space-between;
   min-width: 300px;
+  animation: 0.15s appear-up ease-in-out;
 }
 
 .container::-webkit-scrollbar {
@@ -109,4 +110,16 @@
 .container button img {
   padding-right: 0.5rem;
   filter: invert(1);
+}
+
+@keyframes appear-up {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 2rem));
+  }
+
+  to {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
 }

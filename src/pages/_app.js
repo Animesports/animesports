@@ -10,6 +10,9 @@ import { SoccerProvider } from "../contexts/SoccerContext";
 import "../styles/globals.css";
 
 import { SocketProvider } from "../contexts/SocketContext";
+import { Notification } from "../components/Notification";
+import { Modal } from "../components/Modal";
+import { NotificationProvider } from "../contexts/NotificationContext";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -25,7 +28,9 @@ function MyApp({ Component, pageProps }) {
               <ConfigProvider>
                 <AdminProvider>
                   <SoccerProvider>
-                    <Component {...pageProps} />
+                    <NotificationProvider>
+                      <Component {...pageProps} />
+                    </NotificationProvider>
                   </SoccerProvider>
                 </AdminProvider>
                 <BackgroundVideo />

@@ -24,7 +24,6 @@ export function SeasonProvider({ children }) {
 
   async function loadSeasonUsers() {
     await seasonUsersRequest().then((users) => {
-      console.info("season:", users);
       setUsers(users);
     });
   }
