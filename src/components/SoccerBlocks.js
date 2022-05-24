@@ -121,8 +121,9 @@ export function SoccerScore({ ["game"]: { teams, score }, entry }) {
 import { ModalCloseMessage } from "./ModalCloseMessage";
 import { updateSoccerEntry } from "../services/soccer";
 import { authContext } from "../contexts/AuthContext";
-import { soccerContext } from "../contexts/SoccerContext";
+
 import { firstWord, slice } from "../utils/Global";
+import { paymentContext } from "../contexts/PaymentContext";
 
 export function SoccerPlay({ game }) {
   const { teams, id } = game;
@@ -143,10 +144,13 @@ export function SoccerPlay({ game }) {
   const formRef = useRef(null);
   const [currentModal, setCurrentModal] = useState("initial");
   const { sessionId, user } = useContext(authContext);
+  const { paid, requirePayment } = useContext(paymentContext);
 
   const myEntry = game.entries.filter((e) => e.id === user.id).pop();
 
   function handlePlaySubmit(data) {
+    if (!paid) return requirePayment();
+
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useNextOnEnter(
       [
@@ -203,7 +207,7 @@ export function SoccerPlay({ game }) {
           </div>
         )}
 
-        {currentModal === "initial" && (
+        {["payment-required", "initial"].includes(currentModal) && (
           <div className={styles.playBox}>
             {OnlyRegisteredUsers(
               () => {

@@ -62,7 +62,7 @@ export function LeadboardTable({ editable, disable, customClass, title }) {
 
       <tbody>
         {ordenedUsers.map(
-          ({ ["data"]: { name }, picture, points }, position) => {
+          ({ ["data"]: { name, picture }, points }, position) => {
             return (
               <tr className={styles.row} key={name + position}>
                 {!disable.includes("position") && (

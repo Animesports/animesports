@@ -47,7 +47,6 @@
 }
 
 .teams .teamBox {
-  user-select: none;
   flex: 0 1;
   display: flex;
   flex-direction: column;
@@ -61,11 +60,13 @@
 
 .teamBox img {
   max-width: 12rem;
+  user-select: none;
 }
 
 .separator {
   font-weight: 700;
   font-size: 3.5rem;
+  user-select: none;
 }
 
 .separator::before {
@@ -81,6 +82,11 @@
 }
 
 .statusBox .statusName {
+  display: inline-flex;
+  gap: 0.8rem;
+}
+
+.statusBox .statusName .name {
   background: var(--blue);
   padding: 0.4rem 4rem;
 }
@@ -91,4 +97,62 @@
 
 .statusBox .statusDetail.opened {
   color: var(--red-2);
+}
+
+.search {
+  cursor: pointer;
+  position: relative;
+  width: 5rem;
+
+  transition: 0.25s;
+  display: inline-flex;
+  text-decoration: none;
+  align-items: center;
+  color: var(--white);
+}
+
+.search img {
+  position: absolute;
+  padding: 0.6rem;
+  transition: 0.25s;
+}
+
+.search:hover img {
+  filter: grayscale(1) brightness(1.8);
+}
+
+.search span {
+  font-weight: 500;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 5rem;
+  padding: 0.1rem 1.2rem;
+  transition: 0.25s;
+}
+
+.search:hover {
+  background: var(--gray-1);
+}
+
+.search:hover span {
+  opacity: 1;
+  color: var(--gray-1);
+}
+
+@media screen and (max-width: 434px) {
+  .search span,
+  .search:hover span {
+    display: none;
+
+    opacity: 0;
+  }
+
+  .search:hover {
+    background: transparent;
+  }
 }

@@ -4,9 +4,16 @@ import { Search } from "./Search";
 import Link from "next/link";
 import { useContext } from "react";
 import { authContext } from "../contexts/AuthContext";
+import { soccerContext } from "../contexts/SoccerContext";
+import { seasonContext } from "../contexts/SeasonContext";
+import { sortUsersByPoints } from "../utils/Soccer";
 
 export default function Header({ use, parentNode }) {
-  const { isAdmin, isAuthenticated, isFetched } = useContext(authContext);
+  const { isAdmin, isAuthenticated, isFetched, user } = useContext(authContext);
+  const { games, fetching } = useContext(soccerContext);
+  const { season, fetched } = useContext(seasonContext);
+
+  const allFetch = isFetched && fetched && !fetching;
 
   const [current, setCurrent] = useState(null);
   const [activeMenu, setActiveMenu] = useState(false);
@@ -62,12 +69,15 @@ export default function Header({ use, parentNode }) {
     return null;
   });
 
+  const points =
+    allFetch && sortUsersByPoints({ users: [user], games, season })[0]?.points;
+
   return (
     <header className={styles.container}>
       <div className={styles.headerContent}>
         <div className={styles.userProfile}>
           <img src="/icons/user.svg" alt="user-profile" />
-          <span>36 PONTOS</span>
+          <span>{points} PONTOS</span>
         </div>
         <span className={styles.separator} />
         <div ref={menuRef} className={styles.itemsList}>

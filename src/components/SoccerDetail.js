@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { authContext } from "../contexts/AuthContext";
+
 import { soccerContext } from "../contexts/SoccerContext";
 import styles from "../styles/components/SoccerDetail.module.css";
 import { firstWord } from "../utils/Global";
@@ -10,7 +10,6 @@ import { SoccerPlay, SoccerScore } from "./SoccerBlocks";
 
 export function SoccerDetail({ select, onClose }) {
   const { fetching, games } = useContext(soccerContext);
-  const { user } = useContext(authContext);
 
   if (!select) return null;
 
@@ -80,8 +79,18 @@ export function SoccerDetail({ select, onClose }) {
 
             <div className={styles.statusBox}>
               <div className={styles.statusName}>
-                <span>{gameStatusDisplay[state]}</span>
+                <span className={styles.name}>{gameStatusDisplay[state]}</span>
+                <a
+                  href={`https://www.google.com/search?q=${teams.visited.name}+${teams.visitor.name}`}
+                  target="_blank"
+                  className={[styles.search, styles.large].join(" ")}
+                  rel="noreferrer"
+                >
+                  <img src="/icons/google.svg" alt="Google" />
+                  <span>Google</span>
+                </a>
               </div>
+
               {state === "running" && (
                 <p className={[styles.statusDetail, styles.running].join(" ")}>
                   Pontos {computePoints(myEntry, currentGame.score)}
