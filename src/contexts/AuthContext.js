@@ -90,6 +90,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    console.info("Changes in the user", user);
     setIsAuthenticated(user.id !== String);
     setIsAdmin(user?.data?.admin || false);
   }, [user]);

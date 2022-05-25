@@ -5,6 +5,7 @@ import styles from "../styles/components/Payment.module.css";
 import { Loading } from "./Loading";
 import { QrCodePix } from "qrcode-pix";
 import copy from "copy-to-clipboard";
+import { plural } from "../utils/Global";
 
 export function Payment({ close }) {
   const { payments, payFetched, newPayment } = useContext(paymentContext);
@@ -139,11 +140,8 @@ export function Payment({ close }) {
             {nonVerifiedPayments[0] && (
               <>
                 {" "}
-                <strong>{nonVerifiedPayments.length}</strong> recarga
-                {nonVerifiedPayments.length > 1 ||
-                nonVerifiedPayments.length === 0
-                  ? "s"
-                  : ""}{" "}
+                <strong>{nonVerifiedPayments.length}</strong>{" "}
+                {plural(nonVerifiedPayments.length).convert("recarga")}{" "}
                 aguardando aprovação
               </>
             )}
@@ -153,20 +151,9 @@ export function Payment({ close }) {
                 {nonVerifiedPayments[0] && "e "}
                 <strong>{verifiedPayments.length}</strong>{" "}
                 {!nonVerifiedPayments[0] && (
-                  <>
-                    recarga
-                    {nonVerifiedPayments.length > 1 ||
-                    nonVerifiedPayments.length === 0
-                      ? "s"
-                      : ""}{" "}
-                  </>
+                  <>{plural(nonVerifiedPayments.length).convert("recarga")}</>
                 )}{" "}
-                aprovada
-                {nonVerifiedPayments.length > 1 ||
-                nonVerifiedPayments.length === 0
-                  ? "s"
-                  : ""}
-                .
+                {plural(verifiedPayments.length).convert("ativa")}.
               </>
             )}
           </span>

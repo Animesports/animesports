@@ -21,8 +21,7 @@ export function PaymentProvider({ children }) {
   const [require, setRequire] = useState(false);
 
   const { season, fetched } = useContext(seasonContext);
-  const { isAuthenticated, isFetched, sessionId, user } =
-    useContext(authContext);
+  const { isAuthenticated, sessionId, user } = useContext(authContext);
 
   async function importPayments() {
     await getAllPayments({ sessionId }).then((payments) => {
@@ -58,10 +57,10 @@ export function PaymentProvider({ children }) {
   }
 
   useEffect(() => {
-    if (!isFetched || !fetched) return;
-    if (!isAuthenticated) return;
+    if (!isAuthenticated || !fetched) return;
+
     importPayments();
-  }, [isFetched, fetched]);
+  }, [isAuthenticated, fetched]);
 
   return (
     <paymentContext.Provider

@@ -24,7 +24,7 @@ export const adminContext = createContext({
 });
 
 export function AdminProvider({ children }) {
-  const { sessionId, isFetched, isAdmin, user } = useContext(authContext);
+  const { sessionId, isAuthenticated, isAdmin, user } = useContext(authContext);
   const [fetched, setFetched] = useState(false);
   const [users, setUsers] = useState([]);
 
@@ -111,7 +111,7 @@ export function AdminProvider({ children }) {
   useEffect(() => {
     if (!isAdmin) return;
     importInitialData();
-  }, [isFetched]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     setPayReceive(
