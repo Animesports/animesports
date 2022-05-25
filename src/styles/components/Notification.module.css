@@ -50,3 +50,13 @@
   align-items: center;
   gap: 1rem;
 }
+
+.buttons {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 1.2rem;
+}
+
+.buttons button:first-child:not(:only-child) {
+  background-color: var(--gray);
+}

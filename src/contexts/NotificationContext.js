@@ -22,7 +22,8 @@ export function NotificationProvider({ children }) {
 
   const [current, setCurrent] = useState(null);
 
-  const { isFetched, sessionId, isAuthenticated } = useContext(authContext);
+  const { isFetched, sessionId, isAuthenticated, user } =
+    useContext(authContext);
   const { Listen } = useContext(socketContext);
 
   function importNotifications() {
@@ -70,6 +71,7 @@ export function NotificationProvider({ children }) {
       setCurrent(
         notifications
           .filter((n) => {
+            if (n.readlist.includes(user.id)) return false;
             if (n.onlyLogged && !isAuthenticated) return false;
             return !block.includes(n.id);
           })

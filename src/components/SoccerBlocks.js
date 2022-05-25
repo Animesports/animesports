@@ -124,6 +124,8 @@ import { authContext } from "../contexts/AuthContext";
 
 import { firstWord, slice } from "../utils/Global";
 import { paymentContext } from "../contexts/PaymentContext";
+import { Modal } from "./Modal";
+import { VerifyEmail } from "./VerifyEmail";
 
 export function SoccerPlay({ game }) {
   const { teams, id } = game;
@@ -143,14 +145,14 @@ export function SoccerPlay({ game }) {
 
   const formRef = useRef(null);
   const [currentModal, setCurrentModal] = useState("initial");
-  const { sessionId, user } = useContext(authContext);
+  const { sessionId, user, requireEmailConfirm } = useContext(authContext);
   const { paid, requirePayment } = useContext(paymentContext);
 
   const myEntry = game.entries.filter((e) => e.id === user.id).pop();
 
   function handlePlaySubmit(data) {
     if (!paid) return requirePayment();
-
+    if (!user.data?.email?.verified) return requireEmailConfirm();
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useNextOnEnter(
       [
@@ -207,7 +209,7 @@ export function SoccerPlay({ game }) {
           </div>
         )}
 
-        {["payment-required", "initial"].includes(currentModal) && (
+        {["email-c", "initial"].includes(currentModal) && (
           <div className={styles.playBox}>
             {OnlyRegisteredUsers(
               () => {

@@ -9,21 +9,21 @@ import { Structure } from "../components/Structure";
 import { OnlyRegisteredUsers } from "../services/auth";
 import { configContext } from "../contexts/ConfigContext";
 import { Config } from "../utils/Types";
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import { configValidation } from "../utils/Yup";
 import { paymentContext } from "../contexts/PaymentContext";
 import { Loading } from "../components/Loading";
 import { plural } from "../utils/Global";
+import { authContext } from "../contexts/AuthContext";
 
 export default function Account() {
-  const [formref, openPaymentRef, openEmailVerify] = [
-    useRef(null),
-    useRef(null),
-    useRef(null),
-  ];
+  const formref = useRef(null);
+
+  const [openPayment, setOpenPayment] = useState(false);
 
   const { config, save, apply, saved, processing } = useContext(configContext);
   const { payments, payFetched } = useContext(paymentContext);
+  const { requireEmailConfirm } = useContext(authContext);
 
   const verifiedCount = payments.filter((pay) => pay?.verified).length;
 
@@ -80,7 +80,7 @@ export default function Account() {
                           tag="Email"
                         />
                         {!user.data.email.verified && (
-                          <button type="button" ref={openEmailVerify}>
+                          <button type="button" onClick={requireEmailConfirm}>
                             verificar
                           </button>
                         )}
@@ -106,7 +106,14 @@ export default function Account() {
                     </div>
                   </div>
                   <div className={styles.rightBox}>
-                    <div className={styles.paymentBox} ref={openPaymentRef}>
+                    <div
+                      className={styles.paymentBox}
+                      onClick={() => {
+                        user.data.email.verified
+                          ? setOpenPayment(true)
+                          : requireEmailConfirm();
+                      }}
+                    >
                       <div>
                         <span>Pagamento</span>
                       </div>
@@ -168,12 +175,12 @@ export default function Account() {
         })}
       </Structure>
 
-      <Modal openRef={openPaymentRef} customStyle>
+      <Modal
+        openOn={openPayment}
+        functions={{ close: setOpenPayment }}
+        customStyle
+      >
         <Payment />
-      </Modal>
-
-      <Modal openRef={openEmailVerify} customStyle>
-        <VerifyEmail />
       </Modal>
     </>
   );

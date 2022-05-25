@@ -1,6 +1,8 @@
 import Router from "next/router";
 import { destroyCookie, setCookie, parseCookies } from "nookies";
 import { createContext, useState, useEffect } from "react";
+import { Modal } from "../components/Modal";
+import { VerifyEmail } from "../components/VerifyEmail";
 import {
   recoveryUserData,
   signInRequest,
@@ -26,6 +28,12 @@ export function AuthProvider({ children }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState(new User());
   const [sessionId, setSessionId] = useState(null);
+
+  const [openEmail, setOpenEmail] = useState(false);
+
+  function requireEmailConfirm() {
+    setOpenEmail(true);
+  }
 
   function signIn({ email, password }) {
     return new Promise(async (resolve, reject) => {
@@ -98,8 +106,12 @@ export function AuthProvider({ children }) {
         signOut,
         setUser,
         sessionId,
+        requireEmailConfirm,
       }}
     >
+      <Modal openOn={openEmail} functions={{ close: setOpenEmail }} customStyle>
+        <VerifyEmail />
+      </Modal>
       {children}
     </authContext.Provider>
   );

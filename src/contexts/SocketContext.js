@@ -8,7 +8,6 @@ export function SocketProvider({ children }) {
   const [schedule, setSchedule] = useState([]);
 
   function Listen(event, callback) {
-    console.info("new:", event);
     if (!socket) return setSchedule([{ event, callback }, ...schedule]);
     socket.off(event);
     socket.on(event, callback);

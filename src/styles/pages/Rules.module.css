@@ -1,0 +1,94 @@
+.container {
+  color: var(--gray);
+  padding: 4.8rem 12rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.mainTitle {
+  font-size: 3.3rem;
+  font-weight: 500;
+  margin-bottom: 1.3rem;
+}
+
+.container > div {
+  margin-bottom: 1.8rem;
+}
+
+.container > div p {
+  margin-bottom: 0.9rem;
+}
+
+.container > div b {
+  font-weight: 500;
+  color: var(--gray);
+}
+
+.container > div .title {
+  font-weight: 500;
+  font-size: 3rem;
+}
+
+.imageTL,
+.imageTR {
+  max-width: 32rem;
+  max-height: 20rem;
+  padding: 2rem;
+}
+
+.imageTL {
+  float: left;
+}
+
+.imageTR {
+  float: right;
+}
+
+.container table {
+  margin: 3rem auto;
+  max-width: 500px;
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.container table td {
+  background: var(--gray-2);
+  border: 2px solid var(--white);
+  border-left: 0;
+  border-right: 0;
+  padding: 0.2rem 1.2rem;
+}
+
+.container table td:nth-child(2) {
+  text-align: right;
+}
+
+.container a {
+  text-decoration: none;
+  color: var(--blue-4);
+  font-weight: 500;
+}
+
+.container .red {
+  color: var(--red);
+}
+
+@media screen and (max-width: 496px) {
+  .container > div {
+    text-align: justify;
+  }
+
+  .mainTitle {
+    margin-top: 1.4rem;
+    text-align: center;
+  }
+
+  .imageTL {
+    float: none;
+    display: block;
+    margin: 0 auto;
+  }
+}

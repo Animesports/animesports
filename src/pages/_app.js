@@ -10,9 +10,9 @@ import { SoccerProvider } from "../contexts/SoccerContext";
 import "../styles/globals.css";
 
 import { SocketProvider } from "../contexts/SocketContext";
-import { Notification } from "../components/Notification";
-import { Modal } from "../components/Modal";
 import { NotificationProvider } from "../contexts/NotificationContext";
+
+import pack from "../../package.json";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -20,6 +20,8 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
+
+      <span className="version">v{pack.version}</span>
 
       <SocketProvider>
         <SeasonProvider>
