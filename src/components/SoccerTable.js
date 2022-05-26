@@ -28,13 +28,17 @@ export function SoccerTable({
   return (
     <table className={[styles.container, customClass].join(" ")}>
       {groupGames
-        .filter(({ games }) => {
-          return (
-            games.filter((game) => {
+        .map((group) => {
+          return {
+            ...group,
+            games: group.games.filter((game) => {
               if (!filter || filter.length === 0) return true;
               return filter.map((f) => f.id).includes(game.id);
-            }).length !== 0
-          );
+            }),
+          };
+        })
+        .filter(({ games }) => {
+          return games.length !== 0;
         })
         .map(({ group, games }, index) => {
           const { day, month, year, week } = getDisplayDate(group);
