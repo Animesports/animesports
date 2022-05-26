@@ -2,6 +2,7 @@ import { useContext } from "react";
 
 import { soccerContext } from "../contexts/SoccerContext";
 import styles from "../styles/components/SoccerDetail.module.css";
+import { localDate } from "../utils/Date";
 import { firstWord } from "../utils/Global";
 import { computePoints, getGameState } from "../utils/Soccer";
 
@@ -81,7 +82,11 @@ export function SoccerDetail({ select, onClose }) {
               <div className={styles.statusName}>
                 <span className={styles.name}>{gameStatusDisplay[state]}</span>
                 <a
-                  href={`https://www.google.com/search?q=${teams.visited.name}+${teams.visitor.name}`}
+                  href={`https://www.google.com/search?q=${
+                    teams.visited.name
+                  }+${
+                    teams.visitor.name
+                  }+${currentGame.date.toLocaleDateString()}`}
                   target="_blank"
                   className={[styles.search, styles.large].join(" ")}
                   rel="noreferrer"
