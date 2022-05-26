@@ -11,6 +11,7 @@ export function Structure({
   contentStyle,
   onSearch,
   searchList,
+  initialSearch,
 }) {
   const ref = useRef(null);
 
@@ -26,6 +27,7 @@ export function Structure({
         parentNode={customRef ?? ref}
         onSearch={onSearch}
         searchList={searchList}
+        initialSearch={initialSearch}
       />
       <div
         style={contentStyle}

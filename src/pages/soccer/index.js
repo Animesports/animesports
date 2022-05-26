@@ -30,6 +30,7 @@ export default function Soccer() {
 
   const soccerQuery =
     !fetching &&
+    games.length &&
     games.map((game) => {
       return {
         id: game.id,
@@ -37,11 +38,15 @@ export default function Soccer() {
       };
     });
 
+  const initialSearch =
+    !fetching && games.length && gameQuery(games[games.length - 1], { max: 5 });
+
   return (
     <Structure
       onSearch={setFilter}
       searchList={soccerQuery}
       contentStyle={{ position: "relative" }}
+      initialSearch={initialSearch}
     >
       <SoccerTable onSelect={setSelected} filter={filter} />
       <SoccerDetail

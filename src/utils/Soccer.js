@@ -1,9 +1,26 @@
 import { getDisplayDate } from "./Date";
+import { firstWord } from "./Global";
 
-export function gameQuery({ ["teams"]: { visited, visitor }, date }) {
-  return `${visitor.name} ${visited.name}  ${
+export function gameQuery({ ["teams"]: { visited, visitor }, date }, opt) {
+  const query = `${firstWord(visited.name, {
+    min: 3,
+    abb: true,
+    max: 6,
+  })} vs ${firstWord(visitor.name, {
+    min: 3,
+    abb: true,
+    max: 6,
+  })}  ${
     getDisplayDate(date).week
-  } ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`.toLowerCase();
+  } ${date.toLocaleDateString()} ${date.toLocaleTimeString()} ${visitor.name} ${
+    visited.name
+  }`.toLowerCase();
+
+  if (opt?.max) {
+    return query.split(" ").slice(0, opt.max).join(" ");
+  }
+
+  return query;
 }
 
 export function sortUsersByPoints({ users, games, season }) {

@@ -8,7 +8,13 @@ import { soccerContext } from "../contexts/SoccerContext";
 import { seasonContext } from "../contexts/SeasonContext";
 import { sortUsersByPoints } from "../utils/Soccer";
 
-export default function Header({ use, parentNode, onSearch, searchList }) {
+export default function Header({
+  use,
+  parentNode,
+  onSearch,
+  searchList,
+  initialSearch,
+}) {
   const { isAdmin, isAuthenticated, isFetched, user } = useContext(authContext);
   const { games, fetching } = useContext(soccerContext);
   const { season, fetched } = useContext(seasonContext);
@@ -103,6 +109,7 @@ export default function Header({ use, parentNode, onSearch, searchList }) {
 
       {onSearch && searchList && (
         <Search
+          initial={initialSearch}
           onSearch={onSearch}
           list={searchList}
           searchRef={searchRef}

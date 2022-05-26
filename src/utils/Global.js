@@ -8,7 +8,7 @@ export function firstWord(text, opt) {
   text = text.replaceAll("-", " ");
 
   const splited = text.split(" ");
-  const second = splited[opt.s ? opt.s : 1];
+  const second = splited[opt?.s ? opt.s : 1];
   const lsecond = second && second.length >= opt.min;
 
   if (lsecond && opt.abb) {

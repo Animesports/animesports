@@ -1,7 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "../styles/components/Search.module.css";
 
-export function Search({ searchRef, onChange, onSearch, parentNode, list }) {
+export function Search({
+  searchRef,
+  onChange,
+  onSearch,
+  parentNode,
+  list,
+  initial,
+}) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const inputRef = useRef(null);
@@ -78,7 +85,7 @@ export function Search({ searchRef, onChange, onSearch, parentNode, list }) {
   }, [parentNode]);
 
   useEffect(() => {
-    if (query.length === 0) setQuery("flamengo vasco sexta feira");
+    if (query.length === 0) setQuery(initial ?? "Pesquisar...");
   }, [query]);
 
   return (
