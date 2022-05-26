@@ -1,3 +1,11 @@
+import { getDisplayDate } from "./Date";
+
+export function gameQuery({ ["teams"]: { visited, visitor }, date }) {
+  return `${visitor.name} ${visited.name}  ${
+    getDisplayDate(date).week
+  } ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`.toLowerCase();
+}
+
 export function sortUsersByPoints({ users, games, season }) {
   if (!users || !games || !season) return;
 

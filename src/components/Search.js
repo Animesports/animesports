@@ -1,13 +1,33 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "../styles/components/Search.module.css";
 
-export function Search({ searchRef, onChange, parentNode }) {
+export function Search({ searchRef, onChange, onSearch, parentNode, list }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const inputRef = useRef(null);
 
+  const [timer, setTimer] = useState(null);
+
+  list = Array.isArray(list) ? list : [];
+
   function updateQuery({ target }) {
+    clearTimeout(timer);
     setQuery(target.value);
+    setTimer(
+      setTimeout(() => {
+        const s = inputRef.current.placeholder.split(" ");
+
+        onSearch &&
+          onSearch(
+            list.filter(
+              (item) =>
+                !s
+                  .map((se) => item?.query?.indexOf?.(se.toLowerCase()) !== -1)
+                  .includes(false)
+            )
+          );
+      }, 1200)
+    );
   }
 
   function openSearch() {
@@ -31,12 +51,19 @@ export function Search({ searchRef, onChange, parentNode }) {
 
   function handleSubmit() {
     closeSearch();
-    console.info("search:", inputRef.current.placeholder);
+    const s = inputRef.current.placeholder.split(" ");
+
+    onSearch &&
+      onSearch(
+        list.filter(
+          (item) =>
+            !s.map((se) => item?.query?.indexOf?.(se) !== -1).includes(false)
+        )
+      );
   }
 
   function checkClicks({ target }) {
     if (!searchRef.current.contains(target)) {
-      setQuery("");
       closeSearch();
     }
   }

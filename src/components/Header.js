@@ -8,7 +8,7 @@ import { soccerContext } from "../contexts/SoccerContext";
 import { seasonContext } from "../contexts/SeasonContext";
 import { sortUsersByPoints } from "../utils/Soccer";
 
-export default function Header({ use, parentNode }) {
+export default function Header({ use, parentNode, onSearch, searchList }) {
   const { isAdmin, isAuthenticated, isFetched, user } = useContext(authContext);
   const { games, fetching } = useContext(soccerContext);
   const { season, fetched } = useContext(seasonContext);
@@ -101,18 +101,24 @@ export default function Header({ use, parentNode }) {
         </div>
       </div>
 
-      <Search
-        searchRef={searchRef}
-        onChange={() => {
-          updateDynamicMenu({
-            menu: menuRef.current,
-            search: searchRef.current,
-            dropdown: dropDownRef.current,
-            setShowButton,
-          });
-        }}
-        parentNode={parentNode}
-      />
+      {onSearch && searchList && (
+        <Search
+          onSearch={onSearch}
+          list={searchList}
+          searchRef={searchRef}
+          onChange={() => {
+            updateDynamicMenu({
+              menu: menuRef.current,
+              search: searchRef.current,
+              dropdown: dropDownRef.current,
+              setShowButton,
+            });
+          }}
+          parentNode={parentNode}
+        />
+      )}
+
+      {(!onSearch || !searchList) && <span ref={searchRef} />}
     </header>
   );
 }

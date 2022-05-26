@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SoccerDetail } from "../../components/SoccerDetail";
 import { SoccerTable } from "../../components/SoccerTable";
 import { Structure } from "../../components/Structure";
+import { soccerContext } from "../../contexts/SoccerContext";
+import { getDisplayDate } from "../../utils/Date";
+import { gameQuery } from "../../utils/Soccer";
 
 export default function Soccer() {
   const [selected, setSelected] = useState(null);
+  const [filter, setFilter] = useState([]);
 
   useEffect(() => {
     if (!window) return;
@@ -18,9 +22,28 @@ export default function Soccer() {
     window.history.replaceState(null, null, url);
   }, [selected]);
 
+  const { games, fetching } = useContext(soccerContext);
+
+  useEffect(() => {
+    console.info("New soccer Filter:", filter);
+  }, [filter]);
+
+  const soccerQuery =
+    !fetching &&
+    games.map((game) => {
+      return {
+        id: game.id,
+        query: gameQuery(game),
+      };
+    });
+
   return (
-    <Structure contentStyle={{ position: "relative" }}>
-      <SoccerTable onSelect={setSelected} />
+    <Structure
+      onSearch={setFilter}
+      searchList={soccerQuery}
+      contentStyle={{ position: "relative" }}
+    >
+      <SoccerTable onSelect={setSelected} filter={filter} />
       <SoccerDetail
         select={selected}
         onClose={() => {

@@ -9,6 +9,8 @@ export function Structure({
   containerClass,
   contentClass,
   contentStyle,
+  onSearch,
+  searchList,
 }) {
   const ref = useRef(null);
 
@@ -19,7 +21,12 @@ export function Structure({
         " "
       )}
     >
-      <Header use={headerUse ?? "all"} parentNode={customRef ?? ref} />
+      <Header
+        use={headerUse ?? "all"}
+        parentNode={customRef ?? ref}
+        onSearch={onSearch}
+        searchList={searchList}
+      />
       <div
         style={contentStyle}
         className={[soccerStyle.content, contentClass].join(" ")}
