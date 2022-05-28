@@ -5,6 +5,7 @@ import { soccerContext } from "../contexts/SoccerContext";
 import { Loading } from "./Loading";
 import { sortUsersByPoints } from "../utils/Soccer";
 import { Empty } from "./Empty";
+import { UserProfile } from "./UserProfile";
 
 export function LeadboardTable({ editable, disable, customClass, title }) {
   disable =
@@ -61,64 +62,62 @@ export function LeadboardTable({ editable, disable, customClass, title }) {
       </thead>
 
       <tbody>
-        {ordenedUsers.map(
-          ({ ["data"]: { name, picture }, points }, position) => {
-            return (
-              <tr className={styles.row} key={name + position}>
-                {!disable.includes("position") && (
-                  <td className={["position", styles.position].join(" ")}>
-                    <div>
-                      {[0, 1, 2].includes(position) && (
-                        <img
-                          src={`/icons/award${position + 1}.svg`}
-                          alt={position}
-                        />
-                      )}
-                      {![0, 1, 2].includes(position) && <span>{position}</span>}
-                    </div>
+        {ordenedUsers.map(({ id, ["data"]: { name }, points }, position) => {
+          return (
+            <tr className={styles.row} key={name + position}>
+              {!disable.includes("position") && (
+                <td className={["position", styles.position].join(" ")}>
+                  <div>
+                    {[0, 1, 2].includes(position) && (
+                      <img
+                        src={`/icons/award${position + 1}.svg`}
+                        alt={position}
+                      />
+                    )}
+                    {![0, 1, 2].includes(position) && <span>{position}</span>}
+                  </div>
+                </td>
+              )}
+              <td className={["profile", styles.profile].join(" ")}>
+                <div>
+                  <UserProfile userId={id} />
+                  <span>{name}</span>
+                </div>
+              </td>
+              <td className={["league", styles.league].join(" ")}>
+                <div>
+                  <img src="/icons/none.svg" alt={"Nenhuma"} />
+                </div>
+              </td>
+              <td className={styles.leagueName}>
+                <div>
+                  <span className="none">Nenhuma</span>
+                </div>
+              </td>
+              {!disable.includes("hits") && (
+                <td className={["hits", styles.hits].join(" ")}>
+                  <span>{points}</span>
+                </td>
+              )}
+
+              {editable && (
+                <>
+                  <td className={styles.editable}>
+                    <img src="/icons/email.svg" alt="email" />
                   </td>
-                )}
-                <td className={["profile", styles.profile].join(" ")}>
-                  <div>
-                    <img src={picture ?? "/icons/user.svg"} alt="user" />
-                    <span>{name}</span>
-                  </div>
-                </td>
-                <td className={["league", styles.league].join(" ")}>
-                  <div>
-                    <img src="/icons/none.svg" alt={"Nenhuma"} />
-                  </div>
-                </td>
-                <td className={styles.leagueName}>
-                  <div>
-                    <span className="none">Nenhuma</span>
-                  </div>
-                </td>
-                {!disable.includes("hits") && (
-                  <td className={["hits", styles.hits].join(" ")}>
-                    <span>{points}</span>
+
+                  <td className={styles.editable}>
+                    <img src="/icons/info.svg" alt="i" />
                   </td>
-                )}
 
-                {editable && (
-                  <>
-                    <td className={styles.editable}>
-                      <img src="/icons/email.svg" alt="email" />
-                    </td>
-
-                    <td className={styles.editable}>
-                      <img src="/icons/info.svg" alt="i" />
-                    </td>
-
-                    <td className={[styles.editable, styles.trash].join(" ")}>
-                      <img src="/icons/delete.svg" alt="del" />
-                    </td>
-                  </>
-                )}
-              </tr>
-            );
-          }
-        )}
+                  <td className={[styles.editable, styles.trash].join(" ")}>
+                    <img src="/icons/delete.svg" alt="del" />
+                  </td>
+                </>
+              )}
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

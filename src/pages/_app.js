@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useEffect } from "react";
+
 import { BackgroundVideo } from "../components/BackgroundVideo";
 import { AdminProvider } from "../contexts/AdminContext";
 import { AuthProvider } from "../contexts/AuthContext";
@@ -13,6 +13,7 @@ import { SocketProvider } from "../contexts/SocketContext";
 import { NotificationProvider } from "../contexts/NotificationContext";
 
 import pack from "../../package.json";
+import { CloudinaryContext } from "cloudinary-react";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -23,24 +24,26 @@ function MyApp({ Component, pageProps }) {
 
       <span className="version">v{pack.version}</span>
 
-      <SocketProvider>
-        <SeasonProvider>
-          <AuthProvider>
-            <PaymentProvider>
-              <ConfigProvider>
-                <AdminProvider>
-                  <SoccerProvider>
-                    <NotificationProvider>
-                      <Component {...pageProps} />
-                    </NotificationProvider>
-                  </SoccerProvider>
-                </AdminProvider>
-                <BackgroundVideo />
-              </ConfigProvider>
-            </PaymentProvider>
-          </AuthProvider>
-        </SeasonProvider>
-      </SocketProvider>
+      <CloudinaryContext cloudName="hugorodriguesqw">
+        <SocketProvider>
+          <SeasonProvider>
+            <AuthProvider>
+              <PaymentProvider>
+                <ConfigProvider>
+                  <AdminProvider>
+                    <SoccerProvider>
+                      <NotificationProvider>
+                        <Component {...pageProps} />
+                      </NotificationProvider>
+                    </SoccerProvider>
+                  </AdminProvider>
+                  <BackgroundVideo />
+                </ConfigProvider>
+              </PaymentProvider>
+            </AuthProvider>
+          </SeasonProvider>
+        </SocketProvider>
+      </CloudinaryContext>
     </>
   );
 }

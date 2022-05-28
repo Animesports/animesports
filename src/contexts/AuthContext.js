@@ -1,7 +1,8 @@
 import Router from "next/router";
 import { destroyCookie, setCookie, parseCookies } from "nookies";
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { Modal } from "../components/Modal";
+import { UserProfile } from "../components/UserProfile";
 import { VerifyEmail } from "../components/VerifyEmail";
 import {
   recoveryUserData,
@@ -9,6 +10,7 @@ import {
   signUpRequest,
 } from "../services/auth";
 import { User } from "../utils/Types";
+import { seasonContext } from "./SeasonContext";
 
 export const authContext = createContext({
   isFetched: Boolean,
@@ -23,6 +25,7 @@ export const authContext = createContext({
 });
 
 export function AuthProvider({ children }) {
+  const { fetched } = useContext(seasonContext);
   const [isFetched, setIsFetched] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -44,7 +47,7 @@ export function AuthProvider({ children }) {
           });
 
           setSessionId(sessionId);
-          setUser(user);
+          setUser({ ...user, profile: () => <UserProfile userId={user.id} /> });
           resolve();
         },
         (err) => {
@@ -70,14 +73,15 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(async () => {
+    if (!fetched) return;
+
     const { ["animesports.session"]: sessionId } = parseCookies();
 
     if (sessionId) {
       await recoveryUserData({ sessionId }).then(
         (user) => {
-          console.info("SignIn:", user.id);
           setSessionId(sessionId);
-          setUser(user);
+          setUser({ ...user, profile: () => <UserProfile userId={user.id} /> });
         },
         (err) => {
           console.info("SignOut by error:", err);
@@ -87,10 +91,9 @@ export function AuthProvider({ children }) {
     }
 
     setIsFetched(true);
-  }, []);
+  }, [fetched]);
 
   useEffect(() => {
-    console.info("Changes in the user", user);
     setIsAuthenticated(user.id !== String);
     setIsAdmin(user?.data?.admin || false);
   }, [user]);

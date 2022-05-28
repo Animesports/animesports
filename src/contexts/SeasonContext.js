@@ -16,14 +16,13 @@ export function SeasonProvider({ children }) {
   const [users, setUsers] = useState([]);
 
   async function loadSeason() {
-    await seasonRequest().then((season) => {
+    return seasonRequest().then((season) => {
       setSeason(season);
     });
-    setFetched(true);
   }
 
   async function loadSeasonUsers() {
-    await seasonUsersRequest().then((users) => {
+    return seasonUsersRequest().then((users) => {
       setUsers(users);
     });
   }
@@ -38,9 +37,10 @@ export function SeasonProvider({ children }) {
     setSeason(newSeason);
   }
 
-  useEffect(() => {
-    loadSeason();
-    loadSeasonUsers();
+  useEffect(async () => {
+    await loadSeason();
+    await loadSeasonUsers();
+    setFetched(true);
   }, []);
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { adminContext } from "../contexts/AdminContext";
 import styles from "../styles/components/DeleteUser.module.css";
+import { UserProfile } from "./UserProfile";
 
 export function DeleteUser({ user, close }) {
   const { removeUser } = useContext(adminContext);
@@ -23,7 +24,7 @@ export function DeleteUser({ user, close }) {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <img src="/icons/user.svg" alt="user" />
+        <UserProfile userId={user.id} />
         <div className={styles.rightBox}>
           <strong>{user?.data?.name ?? "Desconhecido"}</strong>
 

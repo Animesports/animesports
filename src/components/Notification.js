@@ -1,5 +1,6 @@
 import Router from "next/router";
 import styles from "../styles/components/Notification.module.css";
+import { UserProfile } from "./UserProfile";
 
 export function Notification({
   id,
@@ -31,10 +32,7 @@ export function Notification({
           {winners.map((winner, index) => {
             return (
               <div key={winner.id + index}>
-                <img
-                  src={winner.picture ?? "/icons/user.svg"}
-                  alt={winner.name}
-                />
+                <UserProfile userId={winner.id} />
 
                 <img
                   className={styles.award}

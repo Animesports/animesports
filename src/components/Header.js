@@ -82,7 +82,8 @@ export default function Header({
     <header className={styles.container}>
       <div className={styles.headerContent}>
         <div className={styles.userProfile}>
-          <img src="/icons/user.svg" alt="user-profile" />
+          {!isAuthenticated && <img src="/icons/user.svg" alt="user-profile" />}
+          {isAuthenticated && <user.profile />}
           <span>{points} PONTOS</span>
         </div>
         <span className={styles.separator} />

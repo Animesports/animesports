@@ -13,7 +13,7 @@ import {
 } from "../services/email";
 import styles from "../styles/pages/UserAuth.module.css";
 import { useNextOnEnter } from "../utils/Inputs";
-import * as Yup from "yup";
+
 import { codeValidation, registerValidation } from "../utils/Yup";
 
 export default function Register() {

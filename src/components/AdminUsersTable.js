@@ -9,6 +9,7 @@ import { DeleteUser } from "./DeleteUser";
 import { Loading } from "./Loading";
 import { Modal } from "./Modal";
 import { UserDetail } from "./UserDetail";
+import { UserProfile } from "./UserProfile";
 
 export function AdminUsersTable({ customClass, title }) {
   const { user } = useContext(authContext);
@@ -54,7 +55,7 @@ export function AdminUsersTable({ customClass, title }) {
               <tr className={styles.row} key={id + index}>
                 <td className={["profile", styles.profile].join(" ")}>
                   <div>
-                    <img src="/icons/user.svg" alt="user" />
+                    <UserProfile userId={id} />
                     <span>{data.name}</span>
                   </div>
                 </td>

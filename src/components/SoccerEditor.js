@@ -129,7 +129,6 @@ function SoccerUpdater(game, close) {
   function handleDelete() {
     deleteSoccerGame(game, sessionId).then((result) => {
       if (result.acknowledged) {
-        console.info("deleted");
         setCurrentModal("close-delete");
         game.status = "canceled";
       }

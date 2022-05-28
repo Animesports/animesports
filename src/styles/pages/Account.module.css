@@ -68,9 +68,12 @@
   align-items: center;
 }
 
-.userImageBox .image {
+.userImageBox > img {
   width: 100%;
-  padding: 2rem;
+  height: 100%;
+  padding: 0.4rem;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .userImageBox .imageOverlay {

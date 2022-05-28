@@ -29,7 +29,8 @@
 .userProfile img {
   position: relative;
   width: calc(2.9rem + 0.8rem);
-  padding: 0.4rem;
+  height: calc(2.9rem + 0.8rem);
+  object-fit: cover;
   border-radius: 50%;
   background: var(--white);
 }

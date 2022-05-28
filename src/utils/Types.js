@@ -24,10 +24,11 @@ export class User {
       address: String,
       verified: Boolean,
     },
-    picture: String,
+
     pix: String,
     password: String,
     admin: Boolean,
+    picture: String,
   };
   config = {
     twosteps: Boolean,

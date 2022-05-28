@@ -20,7 +20,7 @@ export function ConfigProvider({ children }) {
   const [config, setConfig] = useState(new Config());
   const [saved, setSaved] = useState(true);
   const [processing, setProcessing] = useState(false);
-  const { user, setUser, sessionId, signOut } = useContext(authContext);
+  const { user, setUser, sessionId } = useContext(authContext);
 
   function apply(data) {
     setConfig(data);
@@ -28,19 +28,15 @@ export function ConfigProvider({ children }) {
 
   async function save() {
     setProcessing(true);
-    await updateUserConfig(config, { sessionId }).then(
-      () => {
-        setUser(updateObject(user, convertConfigToUser(config)));
-      },
-      () => {
-        signOut({ reload: true });
-      }
-    );
+    await updateUserConfig(config, { sessionId }).then(() => {
+      setUser(updateObject(user, convertConfigToUser(config)));
+    });
     setProcessing(false);
   }
 
   function checkIfSaved() {
     const userConfigs = getConfigFromUser(user);
+
     setSaved(
       Object.keys(userConfigs).filter((name) => {
         return userConfigs[name] !== config[name];
@@ -53,7 +49,9 @@ export function ConfigProvider({ children }) {
     apply(getConfigFromUser(user));
   }, [user]);
 
-  useEffect(checkIfSaved, [config, user]);
+  useEffect(() => {
+    checkIfSaved();
+  }, [config, user]);
 
   return (
     <configContext.Provider

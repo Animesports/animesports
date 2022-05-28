@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { updateGameScore } from "../services/admin";
 import { getAllSoccerGames } from "../services/soccer";
 import { socketContext } from "./SocketContext";
 
@@ -13,8 +12,6 @@ export function SoccerProvider({ children }) {
 
   const [fetching, setFetching] = useState(true);
   const [games, setGames] = useState([]);
-
-  const [force, setForce] = useState(null);
 
   function removeGame(game) {
     setGames([...games.filter((g) => g.id !== game.id)]);
@@ -74,16 +71,9 @@ export function SoccerProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    clearInterval(force);
     Listen("insert-game", insertNewGame);
 
     if (games.length === 0) return;
-
-    setForce(
-      setInterval(() => {
-        setGames([...games]);
-      }, 1000)
-    );
 
     Listen("update-game", updateGame);
     Listen("update-entry", updateEntry);

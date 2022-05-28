@@ -4,7 +4,7 @@ import { Input } from "../components/Input";
 import { Checkbox } from "../components/Checkbox";
 import { Payment } from "../components/Payment";
 import { Modal } from "../components/Modal";
-import { VerifyEmail } from "../components/VerifyEmail";
+
 import { Structure } from "../components/Structure";
 import { OnlyRegisteredUsers } from "../services/auth";
 import { configContext } from "../contexts/ConfigContext";
@@ -15,15 +15,18 @@ import { paymentContext } from "../contexts/PaymentContext";
 import { Loading } from "../components/Loading";
 import { plural } from "../utils/Global";
 import { authContext } from "../contexts/AuthContext";
+import { ImageUpload } from "../components/ImageUpload";
 
 export default function Account() {
   const formref = useRef(null);
 
+  const { requireEmailConfirm } = useContext(authContext);
+
   const [openPayment, setOpenPayment] = useState(false);
+  const [openImageUpload, setOpenUpload] = useState(false);
 
   const { config, save, apply, saved, processing } = useContext(configContext);
   const { payments, payFetched } = useContext(paymentContext);
-  const { requireEmailConfirm } = useContext(authContext);
 
   const verifiedCount = payments.filter((pay) => pay?.verified).length;
 
@@ -32,14 +35,19 @@ export default function Account() {
   }
 
   function handleChange() {
+    if (!formref.current) return;
     const newConfigs = new Config();
 
     for (const option in newConfigs) {
       newConfigs[option] = formref.current.getFieldValue(option);
-      if (typeof newConfigs[option] === "string")
+
+      if (typeof newConfigs[option] === "string") {
         newConfigs[option] = newConfigs[option].trim();
-      if (newConfigs[option].length === 0) newConfigs[option] = null;
+      }
+
+      if (newConfigs[option]?.length === 0) newConfigs[option] = null;
     }
+
     configValidation(newConfigs, () => apply(newConfigs), formref);
   }
 
@@ -58,12 +66,13 @@ export default function Account() {
                   <div className={styles.leftBox}>
                     <div className={styles.profileBox}>
                       <div className={styles.userImageBox}>
-                        <img
-                          className={styles.image}
-                          src="/icons/user.svg"
-                          alt="user"
-                        />
-                        <div className={styles.imageOverlay}>
+                        <user.profile />
+                        <div
+                          onClick={() => {
+                            setOpenUpload(true);
+                          }}
+                          className={styles.imageOverlay}
+                        >
                           <img src="/icons/camera.svg" alt="Change" />
                         </div>
                       </div>
@@ -181,6 +190,14 @@ export default function Account() {
         customStyle
       >
         <Payment />
+      </Modal>
+
+      <Modal
+        openOn={openImageUpload}
+        functions={{ close: setOpenUpload }}
+        customStyle
+      >
+        <ImageUpload />
       </Modal>
     </>
   );

@@ -2,7 +2,6 @@ import { useContext } from "react";
 
 import { soccerContext } from "../contexts/SoccerContext";
 import styles from "../styles/components/SoccerDetail.module.css";
-import { localDate } from "../utils/Date";
 import { firstWord } from "../utils/Global";
 import { computePoints, getGameState } from "../utils/Soccer";
 

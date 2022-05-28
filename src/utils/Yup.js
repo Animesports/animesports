@@ -1,5 +1,4 @@
 import * as Yup from "yup";
-import { Team } from "./Types";
 
 export function soccerSchedulerValidate(data, onValidate, formRef) {
   const fields = Yup.object().shape({

@@ -3,7 +3,6 @@ import { SoccerDetail } from "../../components/SoccerDetail";
 import { SoccerTable } from "../../components/SoccerTable";
 import { Structure } from "../../components/Structure";
 import { soccerContext } from "../../contexts/SoccerContext";
-import { getDisplayDate } from "../../utils/Date";
 import { gameQuery } from "../../utils/Soccer";
 
 export default function Soccer() {
@@ -23,10 +22,6 @@ export default function Soccer() {
   }, [selected]);
 
   const { games, fetching } = useContext(soccerContext);
-
-  useEffect(() => {
-    console.info("New soccer Filter:", filter);
-  }, [filter]);
 
   const soccerQuery =
     !fetching &&

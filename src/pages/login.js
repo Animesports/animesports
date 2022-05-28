@@ -8,7 +8,7 @@ import { Loading } from "../components/Loading";
 import { authContext } from "../contexts/AuthContext";
 import styles from "../styles/pages/UserAuth.module.css";
 import { useNextOnEnter } from "../utils/Inputs";
-import * as Yup from "yup";
+
 import { loginValidation } from "../utils/Yup";
 
 export default function Login() {

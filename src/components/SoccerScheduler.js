@@ -41,7 +41,6 @@ export function SoccerScheduler({
   }
 
   function handleSubmit(values) {
-    console.info("submit form");
     soccerSchedulerValidate(
       {
         visited: team1.name,
@@ -76,7 +75,6 @@ export function SoccerScheduler({
   }
 
   function handleDelete() {
-    console.info("delete click");
     deleteSoccerGame(initial, sessionId).then((result) => {
       if (result.deleted) {
         setCurrentModal("close-delete");

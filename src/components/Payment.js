@@ -23,7 +23,7 @@ export function Payment({ close }) {
   }
 
   function handleNewPayment() {
-    if (!seasonFetched || !season.ticket) return console.info(season);
+    if (!seasonFetched || !season.ticket) return;
     newPayment().then(async (payment) => {
       const pix = QrCodePix({
         version: "01",

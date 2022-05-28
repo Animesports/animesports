@@ -1,10 +1,11 @@
 import styles from "../styles/components/UserDetail.module.css";
+import { UserProfile } from "./UserProfile";
 
 export function UserDetail({ user, close }) {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <img src="/icons/user.svg" alt="user" />
+        <UserProfile userId={user.id} />
         <div className={styles.rightBox}>
           <strong>{user?.data?.name ?? "Desconhecido"}</strong>
 

@@ -124,8 +124,6 @@ import { authContext } from "../contexts/AuthContext";
 
 import { firstWord, slice } from "../utils/Global";
 import { paymentContext } from "../contexts/PaymentContext";
-import { Modal } from "./Modal";
-import { VerifyEmail } from "./VerifyEmail";
 
 export function SoccerPlay({ game }) {
   const { teams, id } = game;

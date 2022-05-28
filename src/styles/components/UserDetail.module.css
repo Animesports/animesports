@@ -32,9 +32,11 @@
 
 .content > img {
   width: 10rem;
+  height: 10rem;
+  object-fit: cover;
   border-radius: 50%;
   background: var(--gray-2);
-  padding: 1rem;
+  padding: 0.4rem;
 }
 
 .rightBox > strong {

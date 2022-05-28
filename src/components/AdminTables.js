@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { adminContext } from "../contexts/AdminContext";
 import { soccerContext } from "../contexts/SoccerContext";
 import styles from "../styles/components/AdminTables.module.css";
-import { getDisplayDate, organizeByDate } from "../utils/Date";
+import { getDisplayDate } from "../utils/Date";
 import { getGameState } from "../utils/Soccer";
 import { Empty } from "./Empty";
 import { Loading } from "./Loading";
