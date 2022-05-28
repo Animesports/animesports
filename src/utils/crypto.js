@@ -76,7 +76,7 @@ export class ServerRSA {
 
 export function clientEncoder(serverKey, callback) {
   return callback(
-    new ClientRSA({ bits: 1024 }),
+    new ClientRSA({ bits: 512 }),
     new ServerRSA(serverKey),
     tools
   );

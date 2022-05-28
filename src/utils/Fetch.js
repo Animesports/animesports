@@ -6,28 +6,35 @@ import { clientEncoder } from "../utils/crypto";
  * @param {RequestInit} params
  * @returns {Promise<(string|Array| typeObj>}
  */
+
+let encoder = null;
+
 export async function Fetch(url, params, options) {
-  return clientEncoder(process.env.NEXT_PUBLIC_KEY, async (client, server) => {
-    return new Promise((resolve, reject) => {
-      if (options?.encrypt) params.headers["x-api-key"] = client.export();
+  console.info("PRE FETCH:", params);
+
+  if (!encoder) {
+    clientEncoder(process.env.NEXT_PUBLIC_KEY, async (client, server) => {
+      encoder = { client, server };
+    });
+  }
+
+  return new Promise(
+    (resolve, reject) => {
+      if (options?.encrypt)
+        params.headers["x-api-key"] = encoder.client.export();
 
       if (params.body && typeof params.body !== "string")
         params.body = JSON.stringify(params.body);
 
       if (params.body)
         params.body = JSON.stringify({
-          encrypted: server.encrypt(params.body),
+          encrypted: encoder.server.encrypt(params.body),
         });
 
+      console.info("FETCHING:", params);
       fetch(url, params).then(async (response) => {
         const t = await response.text();
-        const text = options?.encrypt ? client.decrypt(t) : t;
-
-        console.info("New Fetch:", {
-          url,
-          receive: t,
-          result: text,
-        });
+        const text = options?.encrypt ? encoder.client.decrypt(t) : t;
 
         try {
           const data = JSON.parse(text);
@@ -36,6 +43,9 @@ export async function Fetch(url, params, options) {
           resolve(text);
         }
       }, reject);
-    });
-  });
+    },
+    (aa) => {
+      console.info("error", aa);
+    }
+  );
 }
