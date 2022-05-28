@@ -6,17 +6,21 @@ import { Fetch } from "../utils/Fetch";
 
 export function signUpRequest({ email, name, password }) {
   return new Promise((resolve, reject) => {
-    Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/app/clients`, {
-      method: "POST",
-      headers: {
-        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${process.env.NEXT_PUBLIC_APP_ID}`,
+    Fetch(
+      `${process.env.NEXT_PUBLIC_FETCH_URI}/app/clients`,
+      {
+        method: "POST",
+        headers: {
+          authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${process.env.NEXT_PUBLIC_APP_ID}`,
+        },
+        body: {
+          email,
+          password,
+          name,
+        },
       },
-      body: {
-        email,
-        password,
-        name,
-      },
-    }).then((data) => {
+      { encrypt: true }
+    ).then((data) => {
       if (data.statusCode) return reject(data);
       if (data.success) return resolve(data);
       reject(data);
@@ -26,16 +30,20 @@ export function signUpRequest({ email, name, password }) {
 
 export function signInRequest({ email, password }) {
   return new Promise((resolve, reject) => {
-    Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/app/clients/validate`, {
-      method: "POST",
-      headers: {
-        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${process.env.NEXT_PUBLIC_APP_ID}`,
+    Fetch(
+      `${process.env.NEXT_PUBLIC_FETCH_URI}/app/clients/validate`,
+      {
+        method: "POST",
+        headers: {
+          authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${process.env.NEXT_PUBLIC_APP_ID}`,
+        },
+        body: {
+          email,
+          password,
+        },
       },
-      body: {
-        email,
-        password,
-      },
-    }).then(({ valid, sessionId, client }) => {
+      { encrypt: true }
+    ).then(({ valid, sessionId, client }) => {
       if (valid) return resolve({ sessionId, user: client });
       reject({ valid });
     }, reject);
@@ -44,12 +52,16 @@ export function signInRequest({ email, password }) {
 
 export function recoveryUserData({ sessionId }) {
   return new Promise((resolve, reject) => {
-    Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/clients`, {
-      method: "GET",
-      headers: {
-        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${sessionId}`,
+    Fetch(
+      `${process.env.NEXT_PUBLIC_FETCH_URI}/clients`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${sessionId}`,
+        },
       },
-    }).then((data) => {
+      { encrypt: true }
+    ).then((data) => {
       if (data.statusCode) return reject(data);
       if (data.id) return resolve(data);
       return reject({ error: "unknown" });

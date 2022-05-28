@@ -20,13 +20,17 @@ export function updateProfileImage(image64, sessionId) {
 
 export function updateUserConfig(config, { sessionId }) {
   return new Promise((resolve, reject) => {
-    Fetch(`${process.env.NEXT_PUBLIC_FETCH_URI}/clients`, {
-      method: "PATCH",
-      headers: {
-        authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${sessionId}`,
+    Fetch(
+      `${process.env.NEXT_PUBLIC_FETCH_URI}/clients`,
+      {
+        method: "PATCH",
+        headers: {
+          authorization: `${process.env.NEXT_PUBLIC_APP_TOKEN}@${sessionId}`,
+        },
+        body: convertToFetch(config),
       },
-      body: convertToFetch(config),
-    }).then(({ acknowledged }) => {
+      { encrypt: true }
+    ).then(({ acknowledged }) => {
       if (!acknowledged) return reject();
       resolve();
     }, reject);
