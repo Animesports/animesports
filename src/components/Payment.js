@@ -5,7 +5,7 @@ import styles from "../styles/components/Payment.module.css";
 import { Loading } from "./Loading";
 import { QrCodePix } from "qrcode-pix";
 import copy from "copy-to-clipboard";
-import { plural } from "../utils/Global";
+import { plural, useAnimate } from "../utils/Global";
 
 export function Payment({ close }) {
   const { payments, payFetched, newPayment } = useContext(paymentContext);
@@ -17,32 +17,38 @@ export function Payment({ close }) {
   const [current, setCurrent] = useState("initial");
   const [qrcode, setQrcode] = useState(null);
   const [reference, setReference] = useState(null);
+  const [animation, setAnimationState] = useAnimate("three-dots processing");
 
   function copyPayload() {
     copy(qrcode.payload);
   }
 
   function handleNewPayment() {
-    if (!seasonFetched || !season.ticket) return;
-    newPayment().then(async (payment) => {
-      const pix = QrCodePix({
-        version: "01",
-        key: process.env.NEXT_PUBLIC_PIX_KEY,
-        name: "Animesports",
-        city: "SAO PAULO",
-        cep: "01153000",
-        transactionId: payment.id,
-        message: "Recarregue e continue jogando",
-        value: season.ticket,
-      });
-      setQrcode({
-        base64: await pix.base64(),
-        payload: pix.payload(),
-      });
+    setAnimationState(true);
+    setTimeout(() => {
+      if (!seasonFetched || !season.ticket) return;
+      newPayment()
+        .then(async (payment) => {
+          const pix = QrCodePix({
+            version: "01",
+            key: process.env.NEXT_PUBLIC_PIX_KEY,
+            name: "Animesports",
+            city: "SAO PAULO",
+            cep: "01153000",
+            transactionId: payment.id,
+            message: "Recarregue e continue jogando",
+            value: season.ticket,
+          });
+          setQrcode({
+            base64: await pix.base64(),
+            payload: pix.payload(),
+          });
 
-      setReference(payment.id);
-      setCurrent("new-payment");
-    });
+          setReference(payment.id);
+          setCurrent("new-payment");
+        })
+        .finally(() => setAnimationState(false));
+    }, 100);
   }
 
   if (!payFetched) {
@@ -159,17 +165,22 @@ export function Payment({ close }) {
           </span>
 
           <div className={styles.buttonDiv}>
-            <button onClick={handleNewPayment} type="button">
-              Recarregar
-            </button>
+            {animation && <button className={animation} type="button" />}
+            {!animation && (
+              <>
+                <button onClick={handleNewPayment} type="button">
+                  Recarregar
+                </button>
 
-            <button
-              className={styles.cancelButton}
-              onClick={close}
-              type="button"
-            >
-              Voltar
-            </button>
+                <button
+                  className={styles.cancelButton}
+                  onClick={close}
+                  type="button"
+                >
+                  Voltar
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}

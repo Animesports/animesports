@@ -7,6 +7,7 @@ import { Input } from "../components/Input";
 import { Loading } from "../components/Loading";
 import { authContext } from "../contexts/AuthContext";
 import styles from "../styles/pages/UserAuth.module.css";
+import { useAnimate } from "../utils/Global";
 import { useNextOnEnter } from "../utils/Inputs";
 
 import { loginValidation } from "../utils/Yup";
@@ -14,6 +15,7 @@ import { loginValidation } from "../utils/Yup";
 export default function Login() {
   const formRef = useRef(null);
   const { signIn, isAuthenticated, isFetched } = useContext(authContext);
+  const [animate, setAnimate] = useAnimate("three-dots accessing");
 
   if (!isFetched)
     return (
@@ -32,7 +34,8 @@ export default function Login() {
 
   if (isAuthenticated) return Router.push("/soccer") && null;
 
-  function handleSubmit({ email, password }, { reset }) {
+  async function handleSubmit({ email, password }, { reset }) {
+    setAnimate(true);
     loginValidation(
       { email, password },
       () => {
@@ -42,22 +45,24 @@ export default function Login() {
             formRef.current.getFieldRef(name)
           ),
           async () => {
-            signIn({ email, password }).then(
-              () => {
-                Router.push("/soccer");
-                reset();
-              },
-              (error) => {
-                if (error?.valid === false) {
-                  return formRef.current.setErrors({
-                    password: "Credenciais inválidas",
+            signIn({ email, password })
+              .then(
+                () => {
+                  Router.push("/soccer");
+                  reset();
+                },
+                (error) => {
+                  if (error?.valid === false) {
+                    return formRef.current.setErrors({
+                      password: "Credenciais inválidas",
+                    });
+                  }
+                  formRef.current.setErrors({
+                    password: "Não foi possível concluir o login",
                   });
                 }
-                formRef.current.setErrors({
-                  password: "Não foi possível concluir o login",
-                });
-              }
-            );
+              )
+              .finally(() => setAnimate(false));
           }
         );
       },
@@ -88,7 +93,9 @@ export default function Login() {
             placeholder="Insira sua senha"
             tag="senha"
           ></Input>
-          <button type="submit">Acessar</button>
+          <button className={animate} type="submit">
+            {!animate && "Acessar"}
+          </button>
         </Form>
       </div>
     </div>

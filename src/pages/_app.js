@@ -8,7 +8,7 @@ import { PaymentProvider } from "../contexts/PaymentContext";
 import { SeasonProvider } from "../contexts/SeasonContext";
 import { SoccerProvider } from "../contexts/SoccerContext";
 import "../styles/globals.css";
-
+import "../styles/animations.css";
 import { SocketProvider } from "../contexts/SocketContext";
 import { NotificationProvider } from "../contexts/NotificationContext";
 

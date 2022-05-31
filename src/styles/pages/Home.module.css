@@ -35,3 +35,31 @@
   background: var(--blue);
   border-color: var(--blue);
 }
+
+.loading::after {
+  content: " ";
+  display: block;
+  animation: 1.8s wow infinite ease-in-out;
+}
+
+@keyframes wow {
+  0%,
+  100% {
+    opacity: 0;
+    content: ".";
+  }
+
+  18%,
+  89% {
+    opacity: 1;
+  }
+
+  40% {
+    content: "..";
+  }
+
+  70% {
+    opacity: 1;
+    content: "...";
+  }
+}

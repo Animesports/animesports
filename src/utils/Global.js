@@ -1,3 +1,20 @@
+import { useState } from "react";
+
+/**
+ *
+ * @param {String} name
+ * @returns {[Boolean, ]} animator
+ */
+export function useAnimate(name) {
+  const [running, setRunning] = useState(false);
+  return [
+    running ? name ?? "animate" : null,
+    (vaue) => {
+      setRunning(vaue ?? !running);
+    },
+  ];
+}
+
 export function slice(text, opt) {
   if (typeof text !== "string") return text;
   return text.slice(opt.init ?? 0, opt.max ?? text.length);

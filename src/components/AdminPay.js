@@ -12,6 +12,7 @@ import { adminContext } from "../contexts/AdminContext";
 import { currency } from "../utils/Global";
 
 import { Copy } from "./Copy";
+import { UserProfile } from "./UserProfile";
 
 export function PendingPayments({
   type,
@@ -34,6 +35,8 @@ export function PendingPayments({
 
     return <Empty descrition={desc} />;
   }
+
+  console.info("Pending:", payments);
 
   return (
     <>
@@ -74,7 +77,7 @@ export function PendingPayments({
                   ].join(" ")}
                 >
                   <div>
-                    <img src="/icons/user.svg" alt="user" />
+                    <UserProfile userId={user.id} />
                     <span>{user.data.name}</span>
                   </div>
                 </td>
@@ -153,6 +156,8 @@ export function PendingPayments({
 }
 
 export function History({ ["values"]: history, ["ft"]: fetched }) {
+  console.info("History:", history);
+
   if (history.length === 0) {
     const desc = "O histórico de transações está vazio";
 
@@ -182,7 +187,7 @@ export function History({ ["values"]: history, ["ft"]: fetched }) {
       </thead>
 
       <tbody>
-        {history.map(({ id, value, user, reference, type }, index) => {
+        {history.map(({ id, value, user, type }, index) => {
           return (
             <tr className={leadStyle.row} key={id + index + "history"}>
               <td
@@ -191,7 +196,7 @@ export function History({ ["values"]: history, ["ft"]: fetched }) {
                 )}
               >
                 <div>
-                  <img src="/icons/user.svg" alt="user" />
+                  <UserProfile userId={user.id} />
                   <span>{user.data.name}</span>
                 </div>
               </td>

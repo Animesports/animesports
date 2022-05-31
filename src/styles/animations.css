@@ -1,0 +1,71 @@
+@keyframes three-dots {
+  0%,
+  100% {
+    content: ".";
+  }
+
+  35% {
+    content: "..";
+  }
+
+  75% {
+    content: "...";
+  }
+}
+
+@keyframes wooa {
+  0%,
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.8;
+  }
+}
+
+.three-dots {
+  pointer-events: none;
+  user-select: none;
+  animation: 0.7s wooa infinite alternate ease-in-out;
+}
+
+.three-dots.accessing::before {
+  content: "Acessando";
+}
+
+.three-dots.sending::before {
+  content: "Enviando";
+}
+
+.three-dots.processing::before {
+  content: "Processando";
+}
+
+.three-dots::after {
+  content: " ";
+  animation: 1.5s three-dots infinite alternate;
+}
+
+@keyframes heights {
+  0% {
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+  }
+
+  100% {
+    clip-path: polygon(0 100%, 100% 100%, 100% 0, 0 0);
+  }
+}
+
+.heights {
+  height: 100%;
+  min-width: 4rem;
+  animation: 0.5s heights ease-in-out;
+  pointer-events: none;
+  user-select: none;
+}
+
+.heights::before {
+  content: "...";
+  animation: 1.5s three-dots infinite alternate;
+}

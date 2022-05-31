@@ -6,7 +6,13 @@ import { aLow, low } from "../utils/Global";
  * @property {React.Component} children - React children element
  * @property {searcherCallBack} searcher - Performs the search with the value entered by the user
  * @property {effectCallBack} effect - Called whenever the search is done
+ * @property {onFetchCallBack} onFetch - Called whenever the search is done
  * @property {filterCallBack=} filter - Function responsible for converting a list of strings
+ */
+
+/**
+ * @typedef {Object} onFetchCallBack
+ * @property {Boolean} state - Fetch current state
  */
 
 /**
@@ -37,7 +43,7 @@ import { aLow, low } from "../utils/Global";
  * @param {FetchSearchType} parameters - {@link FetchSearchType} FetchSearcher parameters and definitions
  */
 export function FetchSearcher(parameters) {
-  const { children, effect, searcher, filter } = parameters;
+  const { children, effect, searcher, filter, onFetch } = parameters;
 
   const [timeOut, setOut] = useState(setTimeout(() => {}, 0));
   const [fetching, setFetching] = useState(false);
@@ -52,14 +58,20 @@ export function FetchSearcher(parameters) {
   async function requestFetch() {
     if (typeof fetch !== "function") return;
     setFetching(true);
-    await searcher(value).then(
-      (response) => {
-        setSearch(response);
-      },
-      (err) => {
-        console.info("FetchSearcher: error", err);
-      }
-    );
+    typeof onFetch === "function" && onFetch(true);
+
+    setTimeout(async () => {
+      await searcher(value)
+        .then(
+          (response) => {
+            setSearch(response);
+          },
+          (err) => {
+            console.info("FetchSearcher: error", err);
+          }
+        )
+        .finally(() => onFetch(false));
+    }, 100);
 
     setFetching(false);
   }

@@ -6,6 +6,7 @@ import { updateProfileImage } from "../services/config";
 import { authContext } from "../contexts/AuthContext";
 
 import { Image as CloudImage, Transformation } from "cloudinary-react";
+import { useAnimate } from "../utils/Global";
 
 export function ImageUpload({ close }) {
   const { user, sessionId, setUser } = useContext(authContext);
@@ -13,34 +14,43 @@ export function ImageUpload({ close }) {
   const [finish, setFinish] = useState(false);
 
   const [reference, setReference] = useState(useRef(null));
+  const [animate, setAnimate] = useAnimate("three-dots");
 
   function saveImage() {
-    // Validar imagem como base64
+    setAnimate(true);
 
-    const image = new Image();
+    setTimeout(() => {
+      const image = new Image();
 
-    image.onload = () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
+      image.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
 
-      const percent = 160 / image.width;
+        const percent = 160 / image.width;
 
-      (canvas.width = image.width * percent),
-        (canvas.height = image.height * percent);
+        (canvas.width = image.width * percent),
+          (canvas.height = image.height * percent);
 
-      ctx.drawImage(image, 0, 0, image.width * percent, image.height * percent);
+        ctx.drawImage(
+          image,
+          0,
+          0,
+          image.width * percent,
+          image.height * percent
+        );
 
-      const newImageUri = canvas.toDataURL();
+        const newImageUri = canvas.toDataURL();
 
-      updateProfileImage(newImageUri, sessionId).then(apply);
-    };
+        updateProfileImage(newImageUri, sessionId)
+          .then(apply)
+          .finally(() => setAnimate(false));
+      };
 
-    image.src = selected;
+      image.src = selected;
+    }, 100);
   }
 
   function apply(data) {
-    setFinish(true);
-
     setUser({
       ...user,
       profile: () => (
@@ -107,8 +117,9 @@ export function ImageUpload({ close }) {
             name="picture"
             accept="image/jpeg, image/png, image/jpg"
           />
+          {animate && <button className={animate} type="button" />}
 
-          {selected && (
+          {!animate && selected && (
             <div className={styles.buttons}>
               <button type="submit">Salvar</button>
 

@@ -6,7 +6,7 @@ import { FetchSearcher } from "./FetchSearcher";
 import { teamsSearchFilter } from "../utils/Soccer";
 import { teamsSearcher } from "../services/soccer";
 import { authContext } from "../contexts/AuthContext";
-import { firstWord, low } from "../utils/Global";
+import { firstWord, low, useAnimate } from "../utils/Global";
 import { soccerSchedulerValidate } from "../utils/Yup";
 import { deleteSoccerGame, scheduleSoccerGame } from "../services/admin";
 import { ISOdateFormat, ISOtimeFormat, localDate } from "../utils/Date";
@@ -23,6 +23,7 @@ export function SoccerScheduler({
   const { sessionId } = useContext(authContext);
 
   const [currentModal, setCurrentModal] = useState("initial");
+  const [animation, setAnimation] = useAnimate("three-dots");
 
   const [team1, setTeam1] = useState(initial?.teams?.visited ?? {});
   const [team2, setTeam2] = useState(initial?.teams?.visitor ?? {});
@@ -49,37 +50,48 @@ export function SoccerScheduler({
         time: values.time,
       },
       () => {
-        const func =
-          typeof onSubmit === "function" ? onSubmit : scheduleSoccerGame;
-        func(
-          {
-            visited: team1,
-            visitor: team2,
-            date: new Date(`${values.date}T${values.time}`),
-            id: initial?.id ?? null,
-          },
-          sessionId
-        ).then(
-          (result) => {
-            if (result.success || result.modified) {
-              setCurrentModal("close");
-            }
-          },
-          (err) => {
-            console.info("err", err);
-          }
-        );
+        setAnimation(true);
+
+        setTimeout(() => {
+          const func =
+            typeof onSubmit === "function" ? onSubmit : scheduleSoccerGame;
+          func(
+            {
+              visited: team1,
+              visitor: team2,
+              date: new Date(`${values.date}T${values.time}`),
+              id: initial?.id ?? null,
+            },
+            sessionId
+          )
+            .then(
+              (result) => {
+                if (result.success || result.modified) {
+                  setCurrentModal("close");
+                }
+              },
+              (err) => {
+                console.info("err", err);
+              }
+            )
+            .finally(() => setAnimation(false));
+        }, 100);
       },
       formRef
     );
   }
 
   function handleDelete() {
-    deleteSoccerGame(initial, sessionId).then((result) => {
-      if (result.deleted) {
-        setCurrentModal("close-delete");
-      }
-    });
+    setAnimation(true);
+    setTimeout(() => {
+      deleteSoccerGame(initial, sessionId)
+        .then((result) => {
+          if (result.deleted) {
+            setCurrentModal("close-delete");
+          }
+        })
+        .finally(() => setAnimation(false));
+    }, 100);
   }
 
   if (currentModal === "close") {
@@ -118,7 +130,6 @@ export function SoccerScheduler({
               name="date"
               defaultValue={ISOdateFormat(initial?.date)}
               min={ISOdateFormat(new Date())}
-              max="2022-05-27"
             />
             <Input
               tag="Hora"
@@ -132,6 +143,9 @@ export function SoccerScheduler({
           <FetchSearcher
             searcher={teamsSearcher}
             filter={teamsSearchFilter}
+            onFetch={(state) => {
+              setAnimation(state);
+            }}
             effect={(result) => {
               if (result.selected) setTeam1(result.selected);
             }}
@@ -148,6 +162,9 @@ export function SoccerScheduler({
           <FetchSearcher
             searcher={teamsSearcher}
             filter={teamsSearchFilter}
+            onFetch={(state) => {
+              setAnimation(state);
+            }}
             effect={(result) => {
               if (result.selected) setTeam2(result.selected);
             }}
@@ -195,18 +212,24 @@ export function SoccerScheduler({
               </div>
             </div>
 
-            {!initial?.id && <button type="submit">Agendar</button>}
-            {initial?.id && (
-              <div className={styles.dualButtonBox}>
-                <button type="submit">Editar</button>
-                <button
-                  onClick={handleDelete}
-                  className={styles.cancel}
-                  type="button"
-                >
-                  Excluir
-                </button>
-              </div>
+            {animation && <button className={animation} type="button" />}
+
+            {!animation && (
+              <>
+                {!initial?.id && <button type="submit">Agendar</button>}
+                {initial?.id && (
+                  <div className={styles.dualButtonBox}>
+                    <button type="submit">Editar</button>
+                    <button
+                      onClick={handleDelete}
+                      className={styles.cancel}
+                      type="button"
+                    >
+                      Excluir
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

@@ -1,13 +1,14 @@
 const typeObj = typeof { aaa: "aa" };
 import { clientEncoder } from "../utils/crypto";
+
+let encoder = null;
+
 /**
  *
  * @param {RequestInfo} url
  * @param {RequestInit} params
  * @returns {Promise<(string|Array| typeObj>}
  */
-
-let encoder = null;
 
 export async function Fetch(url, params, options) {
   console.info("PRE FETCH:", params);

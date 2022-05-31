@@ -35,7 +35,7 @@ export default function Header({
     ["/leadboard", "LEADBOARD"],
     ["/soccer", "JOGOS"],
     ["/leagues", "LIGAS"],
-    ["/rules", "REGRAS"],
+    ["/about", "SOBRE"],
     isFetched && isAuthenticated && ["/account", "CONTA"],
     isFetched && isAdmin && ["/admin", "ADM"],
     isFetched && !isAuthenticated && ["/login", "ENTRAR"],

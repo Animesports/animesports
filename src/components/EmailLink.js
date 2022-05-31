@@ -6,8 +6,9 @@ export function EmailLink({ to, name, children }) {
   return (
     <a
       href={`mailto:${to}?subject=${
-        user.data.name.split(" ")[0]
-      }%2C%20do%20Animesports`}
+        name?.split(" ")?.[0] ??
+        user.data.name.split(" ")[0] + "%2C%20do%20Animesports"
+      }`}
     >
       {children}
     </a>

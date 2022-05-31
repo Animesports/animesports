@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { authContext } from "../contexts/AuthContext";
 import styles from "../styles/pages/Home.module.css";
 export default function Home() {
-  const { isAuthenticated } = useContext(authContext);
+  const { isAuthenticated, isFetched } = useContext(authContext);
 
   function handleStart() {
     if (!isAuthenticated) return Router.push("/login");
@@ -14,8 +14,11 @@ export default function Home() {
     <div className={styles.container}>
       <div className={styles.content}>
         <h1>Animesports</h1>
-        <button onClick={handleStart}>
-          {isAuthenticated ? "Jogar" : "Entrar"}
+        <button
+          className={(!isFetched && styles.loading) || null}
+          onClick={handleStart}
+        >
+          {isFetched && (isAuthenticated ? "Jogar" : "Entrar")}
         </button>
       </div>
     </div>

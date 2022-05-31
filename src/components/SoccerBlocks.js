@@ -122,7 +122,7 @@ import { ModalCloseMessage } from "./ModalCloseMessage";
 import { updateSoccerEntry } from "../services/soccer";
 import { authContext } from "../contexts/AuthContext";
 
-import { firstWord, slice } from "../utils/Global";
+import { firstWord, slice, useAnimate } from "../utils/Global";
 import { paymentContext } from "../contexts/PaymentContext";
 
 export function SoccerPlay({ game }) {
@@ -143,6 +143,8 @@ export function SoccerPlay({ game }) {
 
   const formRef = useRef(null);
   const [currentModal, setCurrentModal] = useState("initial");
+  const [animation, setAnimation] = useAnimate("heights");
+
   const { sessionId, user, requireEmailConfirm } = useContext(authContext);
   const { paid, requirePayment } = useContext(paymentContext);
 
@@ -166,18 +168,26 @@ export function SoccerPlay({ game }) {
         gameValidate(
           entry,
           () => {
-            updateSoccerEntry({ id, entry }, sessionId).then(() => {
-              setCurrentModal("close");
+            setAnimation(true);
 
-              if (myEntry) {
-                const index = game.entries.map((e) => e.id).indexOf(user.id);
-                game.entries[index] = { id: user.id, ...entry };
-              } else {
-                game.entries.push({ id: user.id, ...entry });
-              }
+            setTimeout(() => {
+              updateSoccerEntry({ id, entry }, sessionId)
+                .then(() => {
+                  setCurrentModal("close");
 
-              console.info(game.entries);
-            });
+                  if (myEntry) {
+                    const index = game.entries
+                      .map((e) => e.id)
+                      .indexOf(user.id);
+                    game.entries[index] = { id: user.id, ...entry };
+                  } else {
+                    game.entries.push({ id: user.id, ...entry });
+                  }
+
+                  console.info(game.entries);
+                })
+                .finally(() => setAnimation(false));
+            }, 100);
           },
           formRef
         );
@@ -226,7 +236,12 @@ export function SoccerPlay({ game }) {
                       />
                     </div>
                     <div className={styles.button}>
-                      <button>{myEntry ? "Alterar" : "Jogar"}</button>
+                      {!animation && (
+                        <button>{myEntry ? "Alterar" : "Jogar"}</button>
+                      )}
+                      {animation && (
+                        <button type="button" className={animation} />
+                      )}
                     </div>
                     <div>
                       <span>{slice(visitorName, { max: 12 })}</span>

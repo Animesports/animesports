@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Structure } from "../components/Structure";
 import styles from "../styles/pages/Rules.module.css";
 
-export default function Rules() {
+export default function About() {
   return (
     <Structure contentClass={styles.container}>
       <h1 className={styles.mainTitle}>Tudo o que você precisa saber</h1>
