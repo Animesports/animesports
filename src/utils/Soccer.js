@@ -28,8 +28,9 @@ export function sortUsersByPoints({ users, games, season }) {
 
   games = games
     .filter((g) => {
-      return g.status !== "canceled";
+      return ["closed", "running"].includes(g.status);
     })
+
     .filter((g) => {
       return g.reference === season.id;
     });
