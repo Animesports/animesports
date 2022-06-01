@@ -13,9 +13,13 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <h1>Animesports</h1>
+        <h1 className="appear">Animesports</h1>
         <button
-          className={(!isFetched && styles.loading) || null}
+          className={[
+            "appear",
+            "delay100",
+            (!isFetched && styles.loading) || null,
+          ].join(" ")}
           onClick={handleStart}
         >
           {isFetched && (isAuthenticated ? "Jogar" : "Entrar")}

@@ -25,7 +25,11 @@ export function AdminUsersTable({ customClass, title }) {
 
   return (
     <>
-      <table className={[styles.container, customClass].join(" ")}>
+      <table
+        className={[styles.container, customClass, "opacity", "delay100"].join(
+          " "
+        )}
+      >
         <thead>
           <tr className={styles.header}>
             <th

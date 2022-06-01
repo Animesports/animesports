@@ -13,7 +13,7 @@ export default function Users() {
           <>
             <AdminSidebar current="/admin/users" />
             <div className={styles.content}>
-              <div className={styles.header}>
+              <div className={[styles.header, "opacity"].join(" ")}>
                 <h1>Usuários Cadastrados</h1>
               </div>
               <AdminUsersTable

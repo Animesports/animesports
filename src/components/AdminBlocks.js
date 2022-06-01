@@ -32,7 +32,7 @@ export function AdminBlocks() {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={[styles.container, "opacity"].join(" ")}>
       {blocks.map(([name, value, icon, type, redirect], index) => {
         if (!fetched)
           return (

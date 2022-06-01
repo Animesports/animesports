@@ -19,14 +19,16 @@ export default function Calendar() {
           <>
             <AdminSidebar current="/admin/calendar" />
             <div className={styles.content}>
-              <div className={styles.header}>
+              <div className={[styles.header, "opacity"].join(" ")}>
                 <h1>Jogos Agendados</h1>
                 <button onClick={() => setOpenScheduler(true)}>Novo</button>
               </div>
               <SoccerTable
                 onSelect={setSelected}
                 disable={["state"]}
-                customClass={styles.soccerTable}
+                customClass={[styles.soccerTable, "opacity", "delay100"].join(
+                  " "
+                )}
                 editable
               />
             </div>

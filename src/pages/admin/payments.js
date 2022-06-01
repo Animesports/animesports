@@ -19,14 +19,14 @@ export default function Payments() {
           <>
             <AdminSidebar current="/admin/payments" />
             <div className={styles.content}>
-              <div className={styles.header}>
+              <div className={[styles.header, "opacity"].join(" ")}>
                 <h2>Pagamentos Pendentes</h2>
                 <h2>{currency().get(sendSum * -1)}</h2>
               </div>
 
               <PendingPayments type="send" values={sendPay} ft={fetched} />
 
-              <div className={styles.header}>
+              <div className={[styles.header, "opacity", "delay100"].join(" ")}>
                 <h2>Entrada de Pagamentos</h2>
                 <h2>{currency().get(receiveSum)}</h2>
               </div>
@@ -37,7 +37,7 @@ export default function Payments() {
                 ft={fetched}
               />
 
-              <div className={styles.header}>
+              <div className={[styles.header, "opacity", "delay200"].join(" ")}>
                 <h2>Histórico de Transações</h2>
                 <ExcelButton buttonText="Exportar" name="Histórico" />
               </div>

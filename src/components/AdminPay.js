@@ -33,7 +33,7 @@ export function PendingPayments({
       send: "Nenhum pagamento pendente para exibir aqui",
     }[type];
 
-    return <Empty descrition={desc} />;
+    return <Empty className="opacity delay200" descrition={desc} />;
   }
 
   console.info("Pending:", payments);
@@ -41,9 +41,13 @@ export function PendingPayments({
   return (
     <>
       <table
-        className={[leadStyle.container, styles.container, styles.pending].join(
-          " "
-        )}
+        className={[
+          leadStyle.container,
+          styles.container,
+          styles.pending,
+          "appear",
+          "delay200",
+        ].join(" ")}
       >
         <thead>
           <tr className={leadStyle.header}>
@@ -161,16 +165,20 @@ export function History({ ["values"]: history, ["ft"]: fetched }) {
   if (history.length === 0) {
     const desc = "O histórico de transações está vazio";
 
-    return <Empty descrition={desc} />;
+    return <Empty className="opacity delay200" descrition={desc} />;
   }
 
   if (!fetched) return <Loading />;
 
   return (
     <table
-      className={[leadStyle.container, styles.container, styles.history].join(
-        " "
-      )}
+      className={[
+        leadStyle.container,
+        styles.container,
+        styles.history,
+        "opacity",
+        "delay200",
+      ].join(" ")}
     >
       <thead>
         <tr className={leadStyle.header}>

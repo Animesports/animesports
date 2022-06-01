@@ -24,7 +24,7 @@ export function AdminTables() {
 
   return (
     <div className={styles.container}>
-      <table className={styles.paymentTable}>
+      <table className={[styles.paymentTable, "appear"].join(" ")}>
         <thead>
           <tr>
             <th colSpan="2">
@@ -78,7 +78,7 @@ export function AdminTables() {
         )}
       </table>
 
-      <table className={styles.soccerTable}>
+      <table className={[styles.soccerTable, "appear", "delay100"].join(" ")}>
         <thead>
           <tr>
             <th colSpan="3">
