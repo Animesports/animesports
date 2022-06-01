@@ -12,6 +12,12 @@ export function Notification({
   close,
 }) {
   const actions = {
+    "redirect-soccer": [
+      "Jogar",
+      () => {
+        Router.push("/soccer");
+      },
+    ],
     "redirect-account": [
       "Atualizar",
       () => {
