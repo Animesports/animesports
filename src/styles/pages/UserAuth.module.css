@@ -50,12 +50,36 @@
   background: var(--blue-2);
 }
 
+.confirmationBox {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.4rem;
+}
+
+.confirmationBox > span {
+  color: var(--gray);
+  font-size: 2rem;
+  line-height: 1;
+}
+
 @media screen and (max-width: 900px) {
   .content {
     padding: 8rem 6rem;
     max-width: 100vw;
     clip-path: none;
     animation-name: appear;
+  }
+
+  .confirmationBox {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .confirmationBox button {
+    width: 100%;
+    margin-bottom: 0.4rem;
   }
 }
 

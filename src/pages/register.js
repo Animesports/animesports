@@ -1,7 +1,7 @@
 import { Form } from "@unform/web";
 import Link from "next/link";
 import Router from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRef } from "react";
 import { useContext } from "react";
 import { Input } from "../components/Input";
@@ -12,14 +12,22 @@ import {
   requestCodeValidation,
 } from "../services/email";
 import styles from "../styles/pages/UserAuth.module.css";
+import { replaceUrlParameter, useAnimate } from "../utils/Global";
 import { useNextOnEnter } from "../utils/Inputs";
 
 import { codeValidation, registerValidation } from "../utils/Yup";
 
 export default function Register() {
   const [currentStep, setCurrentStep] = useState("initial");
-  const { signUp, isFetched, isAuthenticated } = useContext(authContext);
+  const [animation, setAnimation] = useAnimate("three-dots");
+  const { signUp, isFetched, isAuthenticated, user } = useContext(authContext);
   const formRef = useRef(null);
+
+  useEffect(() => {
+    if (!window) return;
+    const step = new URLSearchParams(window.location.search).get("s");
+    if (step === "email-validation") setCurrentStep("email-validation");
+  }, []);
 
   if (!isFetched)
     return (
@@ -36,7 +44,10 @@ export default function Register() {
       </div>
     );
 
-  if (isAuthenticated) return Router.push("/soccer") && null;
+  if (isAuthenticated) {
+    if (user.data.email.verified) return Router.push("/soccer") && null;
+    currentStep !== "email-validation" && setCurrentStep("email-validation");
+  }
 
   function handleNextStep({ name, email, password }, { reset }) {
     registerValidation(
@@ -48,26 +59,37 @@ export default function Register() {
             formRef.current.getFieldRef(name)
           ),
           () => {
-            signUp({ name, email, password }).then(
-              () => {
-                requestCodeValidation({ email }).then((success) => {
-                  if (!success) throw "fetch-error";
-                  setCurrentStep("email-validation");
-                  reset();
-                });
-              },
-              (error) => {
-                if (error?.message === "invalid email address") {
-                  return formRef.current.setErrors({
-                    email: "Já existe uma conta com este email",
+            setAnimation(true);
+            setTimeout(() => {
+              signUp({ name, email, password }).then(
+                async () => {
+                  await requestCodeValidation({ email }).then((success) => {
+                    if (!success) throw "fetch-error";
+                    setCurrentStep("email-validation");
+                    replaceUrlParameter(
+                      new URL(window.location.href),
+                      "s",
+                      "email-validation"
+                    );
+                    reset();
+                  });
+
+                  setAnimation(false);
+                },
+                (error) => {
+                  setAnimation(false);
+                  if (error?.statusText === "invalid email address") {
+                    return formRef.current.setErrors({
+                      email: "Já existe uma conta com este email",
+                    });
+                  }
+
+                  formRef.current.setErrors({
+                    password: "Não foi possível criar uma conta",
                   });
                 }
-
-                formRef.current.setErrors({
-                  password: "Não foi possível criar uma conta",
-                });
-              }
-            );
+              );
+            }, 100);
           }
         );
       },
@@ -79,21 +101,30 @@ export default function Register() {
     codeValidation(
       { code },
       () => {
-        requestCodeConfirmation({ code }).then(
-          (success) => {
-            if (!success) {
-              formRef.current.setErrors({ code: "O código não corresponde" });
-              throw "invalid-code";
-            }
-            Router.push("/soccer");
-            reset();
-          },
-          () => {
-            formRef.current.setErrors({
-              code: "Ocorreu um erro",
+        setAnimation(true);
+        setTimeout(() => {
+          requestCodeConfirmation({ code })
+            .then(
+              (success) => {
+                if (!success) {
+                  formRef.current.setErrors({
+                    code: "O código não corresponde",
+                  });
+                  throw "invalid-code";
+                }
+                Router.push("/soccer");
+                reset();
+              },
+              () => {
+                formRef.current.setErrors({
+                  code: "Ocorreu um erro",
+                });
+              }
+            )
+            .finally(() => {
+              setAnimation(false);
             });
-          }
-        );
+        }, 100);
       },
       formRef
     );
@@ -127,7 +158,9 @@ export default function Register() {
               placeholder="Crie uma senha"
               tag="senha"
             ></Input>
-            <button type="submit">Próximo</button>
+
+            {animation && <button type="button" className={animation}></button>}
+            {!animation && <button type="submit">Próximo</button>}
           </Form>
         )}
 
@@ -138,7 +171,24 @@ export default function Register() {
               placeholder="Código de 6 dígitos enviado por email"
               tag="código"
             ></Input>
-            <button type="submit">Confirmar</button>
+
+            {animation && <button className={animation} type="button" />}
+            {!animation && (
+              <>
+                <div className={styles.confirmationBox}>
+                  <button className="opacity" type="submit">
+                    Confirmar
+                  </button>
+                  <span
+                    onClick={() => {
+                      Router.push("/soccer");
+                    }}
+                  >
+                    Confirmar depois
+                  </span>
+                </div>
+              </>
+            )}
           </Form>
         )}
       </div>

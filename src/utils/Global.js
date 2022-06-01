@@ -1,5 +1,11 @@
 import { useState } from "react";
 
+export function replaceUrlParameter(url, parameter, value) {
+  value == null && url.searchParams.delete(parameter);
+  value != null && url.searchParams.set(parameter, value);
+  window.history.replaceState(null, null, url);
+}
+
 /**
  *
  * @param {String} name

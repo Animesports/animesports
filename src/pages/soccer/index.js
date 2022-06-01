@@ -3,6 +3,7 @@ import { SoccerDetail } from "../../components/SoccerDetail";
 import { SoccerTable } from "../../components/SoccerTable";
 import { Structure } from "../../components/Structure";
 import { soccerContext } from "../../contexts/SoccerContext";
+import { replaceUrlParameter } from "../../utils/Global";
 import { gameQuery } from "../../utils/Soccer";
 
 export default function Soccer() {
@@ -15,10 +16,7 @@ export default function Soccer() {
   }, []);
 
   useEffect(() => {
-    const url = new URL(window.location.href);
-    !selected && url.searchParams.delete("p");
-    selected && url.searchParams.set("p", selected);
-    window.history.replaceState(null, null, url);
+    replaceUrlParameter(new URL(window.location.href), "p", selected);
   }, [selected]);
 
   const { games, fetching } = useContext(soccerContext);

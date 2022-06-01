@@ -11,6 +11,7 @@ import { soccerSchedulerValidate } from "../utils/Yup";
 import { deleteSoccerGame, scheduleSoccerGame } from "../services/admin";
 import { ISOdateFormat, ISOtimeFormat, localDate } from "../utils/Date";
 import { ModalCloseMessage } from "./ModalCloseMessage";
+import { seasonContext } from "../contexts/SeasonContext";
 export function SoccerScheduler({
   initial,
   onSubmit,
@@ -21,6 +22,7 @@ export function SoccerScheduler({
   const formRef = useRef(null);
 
   const { sessionId } = useContext(authContext);
+  const { season } = useContext(seasonContext);
 
   const [currentModal, setCurrentModal] = useState("initial");
   const [animation, setAnimation] = useAnimate("three-dots");
@@ -94,6 +96,16 @@ export function SoccerScheduler({
     }, 100);
   }
 
+  if (season?.running === false) {
+    return (
+      <ModalCloseMessage
+        title="Temporada Encerrada!"
+        text="Não é possível adicionar ou editar jogos."
+        close={close}
+      />
+    );
+  }
+
   if (currentModal === "close") {
     return (
       <ModalCloseMessage
@@ -114,6 +126,8 @@ export function SoccerScheduler({
     );
   }
 
+  const [month, year] = season?.id?.split("/");
+
   return (
     <div className={styles.container}>
       <Form
@@ -130,6 +144,7 @@ export function SoccerScheduler({
               name="date"
               defaultValue={ISOdateFormat(initial?.date)}
               min={ISOdateFormat(new Date())}
+              max={ISOdateFormat(`${year}-${month}-27`)}
             />
             <Input
               tag="Hora"

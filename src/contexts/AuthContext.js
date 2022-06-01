@@ -66,9 +66,20 @@ export function AuthProvider({ children }) {
 
   function signUp({ name, email, password }) {
     return new Promise(async (resolve, reject) => {
-      await signUpRequest({ name, email, password }).then(resolve, (error) => {
-        reject(error);
-      });
+      await signUpRequest({ name, email, password }).then(
+        ({ sessionId, user }) => {
+          setCookie(undefined, "animesports.session", sessionId, {
+            maxAge: 60 * 60 * (24 * 2), // Two days
+          });
+
+          setSessionId(sessionId);
+          setUser({ ...user, profile: () => <UserProfile userId={user.id} /> });
+          resolve({ user, sessionId });
+        },
+        (error) => {
+          reject(error);
+        }
+      );
     });
   }
 

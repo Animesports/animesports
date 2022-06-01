@@ -45,7 +45,6 @@ export function SeasonProvider({ children }) {
 
   useEffect(() => {
     if (!season.id) return;
-
     Listen("update-season", updateSeason);
   }, [season]);
 
