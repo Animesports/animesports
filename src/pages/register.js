@@ -4,6 +4,7 @@ import Router from "next/router";
 import { useEffect, useState } from "react";
 import { useRef } from "react";
 import { useContext } from "react";
+import { HeadComponents } from "../components/HeadComponents";
 import { Input } from "../components/Input";
 import { Loading } from "../components/Loading";
 import { authContext } from "../contexts/AuthContext";
@@ -31,17 +32,20 @@ export default function Register() {
 
   if (!isFetched)
     return (
-      <div className="container-fwh">
-        <div className={styles.content}>
-          <h1>Registrar</h1>
-          <p>
-            Cadastre-se em nossa plataforma ou faça{" "}
-            <Link href="/login">login</Link>
-          </p>
+      <>
+        <HeadComponents current="/register" />
+        <div className="container-fwh">
+          <div className={styles.content}>
+            <h1>Registrar</h1>
+            <p>
+              Cadastre-se em nossa plataforma ou faça{" "}
+              <Link href="/login">login</Link>
+            </p>
 
-          <Loading />
+            <Loading />
+          </div>
         </div>
-      </div>
+      </>
     );
 
   if (isAuthenticated) {
@@ -131,67 +135,73 @@ export default function Register() {
   }
 
   return (
-    <div className="container-fwh">
-      <div className={styles.content}>
-        <h1>Registrar</h1>
-        <p>
-          Cadastre-se em nossa plataforma ou faça{" "}
-          <Link href="/login">login</Link>
-        </p>
+    <>
+      {" "}
+      <HeadComponents current="/register" />
+      <div className="container-fwh">
+        <div className={styles.content}>
+          <h1>Registrar</h1>
+          <p>
+            Cadastre-se em nossa plataforma ou faça{" "}
+            <Link href="/login">login</Link>
+          </p>
 
-        {["initial"].includes(currentStep) && (
-          <Form ref={formRef} onSubmit={handleNextStep}>
-            <Input
-              name="name"
-              placeholder="Introduza seu nome"
-              tag="nome"
-            ></Input>
-            <Input
-              name="email"
-              placeholder="Insira seu email"
-              tag="email"
-            ></Input>
-            <Input
-              name="password"
-              autoComplete="off"
-              type="password"
-              placeholder="Crie uma senha"
-              tag="senha"
-            ></Input>
+          {["initial"].includes(currentStep) && (
+            <Form ref={formRef} onSubmit={handleNextStep}>
+              <Input
+                name="name"
+                placeholder="Introduza seu nome"
+                tag="nome"
+              ></Input>
+              <Input
+                name="email"
+                placeholder="Insira seu email"
+                tag="email"
+              ></Input>
+              <Input
+                name="password"
+                autoComplete="off"
+                type="password"
+                placeholder="Crie uma senha"
+                tag="senha"
+              ></Input>
 
-            {animation && <button type="button" className={animation}></button>}
-            {!animation && <button type="submit">Próximo</button>}
-          </Form>
-        )}
+              {animation && (
+                <button type="button" className={animation}></button>
+              )}
+              {!animation && <button type="submit">Próximo</button>}
+            </Form>
+          )}
 
-        {["email-validation"].includes(currentStep) && (
-          <Form ref={formRef} onSubmit={handleEmailValidation}>
-            <Input
-              name="code"
-              placeholder="Código de 6 dígitos enviado por email"
-              tag="código"
-            ></Input>
+          {["email-validation"].includes(currentStep) && (
+            <Form ref={formRef} onSubmit={handleEmailValidation}>
+              <Input
+                name="code"
+                placeholder="Código de 6 dígitos enviado por email"
+                tag="código"
+              ></Input>
 
-            {animation && <button className={animation} type="button" />}
-            {!animation && (
-              <>
-                <div className={styles.confirmationBox}>
-                  <button className="opacity" type="submit">
-                    Confirmar
-                  </button>
-                  <span
-                    onClick={() => {
-                      Router.push("/soccer");
-                    }}
-                  >
-                    Confirmar depois
-                  </span>
-                </div>
-              </>
-            )}
-          </Form>
-        )}
+              {animation && <button className={animation} type="button" />}
+              {!animation && (
+                <>
+                  <div className={styles.confirmationBox}>
+                    <button className="opacity" type="submit">
+                      Confirmar
+                    </button>
+                    <span
+                      onClick={() => {
+                        Router.push("/soccer");
+                      }}
+                    >
+                      Confirmar depois
+                    </span>
+                  </div>
+                </>
+              )}
+            </Form>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -7,6 +7,7 @@ import { authContext } from "../contexts/AuthContext";
 import { soccerContext } from "../contexts/SoccerContext";
 import { seasonContext } from "../contexts/SeasonContext";
 import { sortUsersByPoints } from "../utils/Soccer";
+import { HeadComponents } from "./HeadComponents";
 
 export default function Header({
   use,
@@ -79,55 +80,60 @@ export default function Header({
     allFetch && sortUsersByPoints({ users: [user], games, season })[0]?.points;
 
   return (
-    <header className={styles.container}>
-      <div className={styles.headerContent}>
-        <div className={styles.userProfile}>
-          {!isAuthenticated && <img src="/icons/user.svg" alt="user-profile" />}
-          {isAuthenticated && <user.profile />}
-          <span>{points} PONTOS</span>
-        </div>
-        <span className={styles.separator} />
-        <div ref={menuRef} className={styles.itemsList}>
-          <ul>{itemsList}</ul>
-          <div
-            ref={dropDownRef}
-            className={`${styles.dropdown} ${styles[activeMenu && "active"]} ${
-              styles[showButton && "show"]
-            }`}
-          >
-            <button
-              onClick={() => {
-                setActiveMenu(!activeMenu);
-              }}
+    <>
+      <HeadComponents {...{ current }} />
+      <header className={styles.container}>
+        <div className={styles.headerContent}>
+          <div className={styles.userProfile}>
+            {!isAuthenticated && (
+              <img src="/icons/user.svg" alt="user-profile" />
+            )}
+            {isAuthenticated && <user.profile />}
+            <span>{points} PONTOS</span>
+          </div>
+          <span className={styles.separator} />
+          <div ref={menuRef} className={styles.itemsList}>
+            <ul>{itemsList}</ul>
+            <div
+              ref={dropDownRef}
+              className={`${styles.dropdown} ${
+                styles[activeMenu && "active"]
+              } ${styles[showButton && "show"]}`}
             >
-              <img src="/icons/menu.svg" alt="..." />
-            </button>
+              <button
+                onClick={() => {
+                  setActiveMenu(!activeMenu);
+                }}
+              >
+                <img src="/icons/menu.svg" alt="..." />
+              </button>
 
-            <div className={styles.dropdownContent}></div>
+              <div className={styles.dropdownContent}></div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {onSearch && searchList && (
-        <Search
-          initial={initialSearch}
-          onSearch={onSearch}
-          list={searchList}
-          searchRef={searchRef}
-          onChange={() => {
-            updateDynamicMenu({
-              menu: menuRef.current,
-              search: searchRef.current,
-              dropdown: dropDownRef.current,
-              setShowButton,
-            });
-          }}
-          parentNode={parentNode}
-        />
-      )}
+        {onSearch && searchList && (
+          <Search
+            initial={initialSearch}
+            onSearch={onSearch}
+            list={searchList}
+            searchRef={searchRef}
+            onChange={() => {
+              updateDynamicMenu({
+                menu: menuRef.current,
+                search: searchRef.current,
+                dropdown: dropDownRef.current,
+                setShowButton,
+              });
+            }}
+            parentNode={parentNode}
+          />
+        )}
 
-      {(!onSearch || !searchList) && <span ref={searchRef} />}
-    </header>
+        {(!onSearch || !searchList) && <span ref={searchRef} />}
+      </header>
+    </>
   );
 }
 

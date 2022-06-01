@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-page-custom-font */
 // eslint-disable-next-line @next/next/no-document-import-in-page
 import { Html, Head, Main, NextScript } from "next/document";
+import { HeadComponents } from "../components/HeadComponents";
 
 export default function MyDocument() {
   return (

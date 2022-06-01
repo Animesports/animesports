@@ -3,6 +3,7 @@ import Link from "next/link";
 import Router from "next/router";
 import { useRef } from "react";
 import { useContext } from "react";
+import { HeadComponents } from "../components/HeadComponents";
 import { Input } from "../components/Input";
 import { Loading } from "../components/Loading";
 import { authContext } from "../contexts/AuthContext";
@@ -19,17 +20,20 @@ export default function Login() {
 
   if (!isFetched)
     return (
-      <div className="container-fwh">
-        <div className={styles.content}>
-          <h1>Registrar</h1>
-          <p>
-            Cadastre-se em nossa plataforma ou faça{" "}
-            <Link href="/login">login</Link>
-          </p>
+      <>
+        <HeadComponents current="/login" />
+        <div className="container-fwh">
+          <div className={styles.content}>
+            <h1>Registrar</h1>
+            <p>
+              Cadastre-se em nossa plataforma ou faça{" "}
+              <Link href="/login">login</Link>
+            </p>
 
-          <Loading />
+            <Loading />
+          </div>
         </div>
-      </div>
+      </>
     );
 
   if (isAuthenticated) return Router.push("/soccer") && null;
@@ -71,33 +75,36 @@ export default function Login() {
   }
 
   return (
-    <div className="container-fwh">
-      <div className={styles.content}>
-        <div className={styles.title}>
-          <h1>Entrar</h1>
-          <p>
-            Entre com sua conta ou <Link href="/register">registre-se</Link>
-          </p>
-        </div>
+    <>
+      <HeadComponents current="/login" />
+      <div className="container-fwh">
+        <div className={styles.content}>
+          <div className={styles.title}>
+            <h1>Entrar</h1>
+            <p>
+              Entre com sua conta ou <Link href="/register">registre-se</Link>
+            </p>
+          </div>
 
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <Input
-            name="email"
-            placeholder="Introduza seu email"
-            tag="email"
-          ></Input>
-          <Input
-            name="password"
-            autoComplete="off"
-            type="password"
-            placeholder="Insira sua senha"
-            tag="senha"
-          ></Input>
-          <button className={animate} type="submit">
-            {!animate && "Acessar"}
-          </button>
-        </Form>
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <Input
+              name="email"
+              placeholder="Introduza seu email"
+              tag="email"
+            ></Input>
+            <Input
+              name="password"
+              autoComplete="off"
+              type="password"
+              placeholder="Insira sua senha"
+              tag="senha"
+            ></Input>
+            <button className={animate} type="submit">
+              {!animate && "Acessar"}
+            </button>
+          </Form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
