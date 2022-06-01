@@ -1,16 +1,21 @@
 .absolute {
-  position: absolute;
-  background: var(--white);
-  top: 0;
-  left: 0;
+  margin-top: 26rem;
+  position: fixed;
+  width: 100%;
+  max-width: 150rem;
+  top: 5.5rem;
+  left: 50%;
+  transform: translateX(-50%);
   right: 0;
-  bottom: -100vw;
+  bottom: 0;
 }
 
 .container > div {
   max-width: 150rem;
   position: fixed;
+  left: 50%;
 
+  transform: translate(-50%);
   background: var(--white);
   width: 100%;
 }
@@ -21,6 +26,7 @@
 }
 
 .container {
+  height: 100%;
   background: var(--white);
   display: flex;
   flex-direction: column;
@@ -154,5 +160,11 @@
 
   .search:hover {
     background: transparent;
+  }
+}
+
+@media screen and (max-height: 540px), screen and (max-width: 1050px) {
+  .absolute {
+    margin-top: 0;
   }
 }

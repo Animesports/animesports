@@ -65,7 +65,9 @@ export default function Account() {
                 >
                   <div className={styles.leftBox}>
                     <div className={styles.profileBox}>
-                      <div className={styles.userImageBox}>
+                      <div
+                        className={["appear", styles.userImageBox].join(" ")}
+                      >
                         <user.profile />
                         <div
                           onClick={() => {
@@ -77,10 +79,16 @@ export default function Account() {
                         </div>
                       </div>
                       <div className={styles.userName}>
-                        <span>{user.data.name}</span>
+                        <span className="appear">{user.data.name}</span>
                       </div>
                     </div>
-                    <div className={styles.userInfoBox}>
+                    <div
+                      className={[
+                        "appear-up",
+                        "delay200",
+                        styles.userInfoBox,
+                      ].join(" ")}
+                    >
                       <div className={styles.emailInputBox}>
                         <Input
                           name="email"
@@ -116,7 +124,7 @@ export default function Account() {
                   </div>
                   <div className={styles.rightBox}>
                     <div
-                      className={styles.paymentBox}
+                      className={[styles.paymentBox, "opacity"].join(" ")}
                       onClick={() => {
                         user.data.email.verified
                           ? setOpenPayment(true)
@@ -144,7 +152,11 @@ export default function Account() {
                       )}
                       {!payFetched && <Loading />}
                     </div>
-                    <div className={styles.checkBox}>
+                    <div
+                      className={[styles.checkBox, "opacity", "delay300"].join(
+                        " "
+                      )}
+                    >
                       <Checkbox
                         name="twosteps"
                         label="Verificação em duas etapas"
@@ -161,7 +173,11 @@ export default function Account() {
                         checked={config.darkmode}
                       />
                     </div>
-                    <div className={styles.submitBox}>
+                    <div
+                      className={[styles.submitBox, "opacity", "delay300"].join(
+                        " "
+                      )}
+                    >
                       {!processing && !saved && (
                         <button type="submit">Salvar</button>
                       )}

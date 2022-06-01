@@ -48,10 +48,10 @@ export function SoccerDetail({ select, onClose }) {
 
   return (
     <div className={styles.absolute}>
-      <div className={styles.container}>
+      <div className={["appear", styles.container].join(" ")}>
         <div>
           <div>
-            <div className={styles.teams}>
+            <div className={[styles.teams, "opacity", "delay200"].join(" ")}>
               <div className={styles.teamBox}>
                 <img src={teams.visited.logo} alt={teams.visited.code} />
                 <span>
@@ -87,7 +87,12 @@ export function SoccerDetail({ select, onClose }) {
                     teams.visitor.name
                   }+${currentGame.date.toLocaleDateString()}`}
                   target="_blank"
-                  className={[styles.search, styles.large].join(" ")}
+                  className={[
+                    styles.search,
+                    styles.large,
+                    "appear",
+                    "delay300",
+                  ].join(" ")}
                   rel="noreferrer"
                 >
                   <img src="/icons/google.svg" alt="Google" />
