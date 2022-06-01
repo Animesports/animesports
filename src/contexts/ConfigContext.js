@@ -29,6 +29,11 @@ export function ConfigProvider({ children }) {
   async function save() {
     setProcessing(true);
     await updateUserConfig(config, { sessionId }).then(() => {
+      console.info(
+        "Setting User To:",
+        updateObject(user, convertConfigToUser(config))
+      );
+
       setUser(updateObject(user, convertConfigToUser(config)));
     });
     setProcessing(false);

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { soccerContext } from "../contexts/SoccerContext";
 import styles from "../styles/components/SoccerTable.module.css";
 import { getDisplayDate, organizeByDate, sortByDate } from "../utils/Date";
@@ -12,7 +12,6 @@ export function SoccerTable({
   editable,
   customClass,
   onSelect,
-  onlyButtom,
   filter,
 }) {
   const { fetching, games } = useContext(soccerContext);
@@ -22,7 +21,6 @@ export function SoccerTable({
     return <Empty descrition="Nenhum jogo foi agendado ainda" />;
 
   const groupGames = sortByDate(organizeByDate(games));
-
   disable = disable?.filter((item) => ["state"].includes(item)) ?? [];
 
   return (

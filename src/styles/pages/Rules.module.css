@@ -1,6 +1,6 @@
 .container {
   color: var(--gray);
-  padding: 4.8rem 12rem;
+  padding: 4.8rem 4rem;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;

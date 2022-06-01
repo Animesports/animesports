@@ -15,6 +15,12 @@ export function useAnimate(name) {
   ];
 }
 
+export function delay(miliseconds) {
+  return new Promise((a) => {
+    setTimeout(a, miliseconds);
+  });
+}
+
 export function slice(text, opt) {
   if (typeof text !== "string") return text;
   return text.slice(opt.init ?? 0, opt.max ?? text.length);
