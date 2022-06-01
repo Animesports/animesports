@@ -19,6 +19,15 @@ export function HeadComponents({ current }) {
   return (
     <Head>
       <title>{currentIndex[1]}</title>
+
+      <link rel="icon" type="image/x-icon" href="/icons/fav1.ico"></link>
+      <link rel="canonical" href="https://animesports.cf/" />
+
+      <meta name="title" content="title-here" />
+      <meta name="description" content="desc-here" />
+      <meta name="robots" content="index, follow" />
+
+      <meta httpEquiv="content-language" content="pt-br" />
     </Head>
   );
 }
