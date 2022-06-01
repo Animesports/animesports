@@ -20,7 +20,7 @@ export function HeadComponents({ current }) {
     <Head>
       <title>{currentIndex[1]}</title>
 
-      <link rel="icon" type="image/x-icon" href="/icons/fav1.ico"></link>
+      <link rel="icon" type="image/x-icon" href="/icons/fav2.ico"></link>
       <link rel="canonical" href="https://animesports.cf/" />
 
       <meta name="title" content="title-here" />
