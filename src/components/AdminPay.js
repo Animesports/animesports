@@ -196,6 +196,8 @@ export function History({ ["values"]: history, ["ft"]: fetched }) {
 
       <tbody>
         {history.map(({ id, value, user, type }, index) => {
+          if (!user) return null;
+
           return (
             <tr className={leadStyle.row} key={id + index + "history"}>
               <td
